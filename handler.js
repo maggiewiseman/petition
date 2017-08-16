@@ -23,8 +23,9 @@ function handle(query, reqParams, res) {
     }
 
     if(query == 'numSignatures') {
-        dbQuery.numSignatures().then((result) => {
-            res.send(result.toString());
+
+        dbQuery.numSignatures().then((num) => {
+            res.render('thankyou', {count: num});
         }).catch(e => console.error(e.stack));
     }
 
