@@ -52,10 +52,10 @@ function checkCookies(req, res, next) {
     //if they have the cookie then they can go to the signed page, but
     //else they need to be redirected to the regular page
     if(req.cookies['signed'] == 'yes') {
-        if(req.url != '/petition/signed') {
-            res.redirect('/petition/signed');
-        } else {
+        if(req.url == '/petition/signed' || req.url == '/petition/signatures') {
             next();
+        } else {
+            res.redirect('/petition/signed');
         }
     } else {
         if(req.url != '/petition') {
