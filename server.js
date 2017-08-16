@@ -1,8 +1,15 @@
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const handler = require('./handler');
+const hb = require('express-handlebars');
 
 const app = express();
+//cofigure handlebars
+app.engine('handlebars', hb());
+app.set('view engine', 'handlebars');
+app.engine('handlebars', hb({defaultLayout: 'main'}));
+
+app.use(express.static(__dirname + '/public'));
 
 app.use(require('body-parser').urlencoded({
     extended: false
@@ -27,7 +34,7 @@ app.get('/petition/signed', checkCookies, (req, res)=> {
 
 app.get('/petition', checkCookies, (req, res)=> {
     //eventually this will render the main page
-    res.send('Hello World');
+    res.render('petition');
 });
 
 app.get('/petition/signatures', checkCookies, (req, res) => {
@@ -37,7 +44,7 @@ app.get('/petition/signatures', checkCookies, (req, res) => {
 app.use((req,res) => {
     console.error('File Not Found, 404');
     res.status(404);
-    res.send('file not found');
+    res.render('404');
 });
 
 

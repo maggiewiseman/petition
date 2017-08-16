@@ -1,18 +1,18 @@
 const dbQuery = require('./dbQuery');
 
-//Handler will be called bout the server file
+
 /*
 @param the function I want to use from dbQuery
 @param the request object parameters
 @param the response object
 */
 
-const funcMap = {
-    'getSigners' : dbQuery.getSigners,
-    'addSignature' : dbQuery.addSignature,
-    'getSignature' : dbQuery.getSignature,
-    'numSignatures' : dbQuery.numSignatures
-};
+// const funcMap = {
+//     'getSigners' : dbQuery.getSigners,
+//     'addSignature' : dbQuery.addSignature,
+//     'getSignature' : dbQuery.getSignature,
+//     'numSignatures' : dbQuery.numSignatures
+// };
 
 function handle(query, reqParams, res) {
     if(query == 'getSigners') {
@@ -28,6 +28,9 @@ function handle(query, reqParams, res) {
         }).catch(e => console.error(e.stack));
     }
 
+    // if(query == 'addSignature') {
+    //     dbQuery.addSignature()
+    // }
 
 }
 
