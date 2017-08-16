@@ -17,7 +17,7 @@ const dbQuery = require('./dbQuery');
 function handle(query, reqParams, res) {
     if(query == 'getSigners') {
         dbQuery.getSigners().then((result) => {
-            res.send(result);
+            res.render('signatures', {results: result});
         }).catch(e => console.error(e.stack));
 
     }
