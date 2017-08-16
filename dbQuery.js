@@ -31,7 +31,8 @@ function getSignature(id) {
 function numSignatures() {
     let queryStr = 'SELECT COUNT(*) FROM signatures';
     return db.query(queryStr).then((result) => {
-        return(result.rowCount);
+        console.log(result.rows[0].count);
+        return(result.rows[0].count);
     }).catch(e => console.error(e.stack));
 }
 
