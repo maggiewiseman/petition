@@ -33,6 +33,7 @@ function handle(query, reqParams, res) {
         var userData = [reqParams.params['first_name'], reqParams.params['last_name'], reqParams.params['signature']];
         console.log('userData', userData);
         dbQuery.addSignature(userData).then(() => {
+            res.cookie('signed', 'yes');
             res.redirect('/petition/signed');
         }).catch(e => {
             console.error(e.stack);
