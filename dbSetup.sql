@@ -7,4 +7,15 @@ CREATE TABLE signatures (
     signature TEXT NOT NULL
 );
 
-SELECT * FROM signatures;
+
+
+
+INSERT INTO signatures (first_name, last_name, signature) VALUES ('Leonardo', 'DiCaprio', 'nonsense text');
+
+INSERT INTO signatures (first_name, last_name, signature) VALUES ('Maggie', 'Wiseman', 'more nonsense text');
+
+SELECT first_name, last_name FROM signatures;
+
+SELECT signature FROM signatures WHERE id = 2;
+
+SELECT COUNT(*) FROM signatures;
