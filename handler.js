@@ -29,10 +29,14 @@ function handle(query, reqParams, res) {
         }).catch(e => console.error(e.stack));
     }
 
-    // if(query == 'addSignature') {
-    //     dbQuery.addSignature()
-    // }
+    if(query == 'addSignature') {
+        dbQuery.numSignatures().then((num) => {
+            res.render('thankyou', {count: num});
+        }).catch(e => console.error(e.stack));
+    }
 
 }
+
+
 
 module.exports.handle = handle;

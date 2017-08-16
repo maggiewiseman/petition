@@ -41,6 +41,10 @@ app.get('/petition/signatures', checkCookies, (req, res) => {
     handler.handle('getSigners', req.params, res);
 });
 
+app.post('/petition', (req,res) => {
+    handler.handle('addSignature', req.params, res);
+});
+
 app.use((req,res) => {
     console.error('File Not Found, 404');
     res.status(404);
