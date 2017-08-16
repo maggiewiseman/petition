@@ -26,9 +26,19 @@ function handle(query, reqParams, res) {
     }
 
     if(query == 'addSignature') {
-        console.log(reqParams);
-        //dbQuery.addSignatures()
-        renderThankyou(res);
+        console.log('reqParams:', reqParams.params.last_name);
+
+        //console.log();
+        //make reqParams an Array
+        var userData = [reqParams.params['first_name'], reqParams.params['last_name'], reqParams.params['signature']];
+        console.log('userData', userData);
+        dbQuery.addSignature(userData).then(() => {
+            res.redirect('/petition/signed');
+        }).catch(e => {
+            console.error(e.stack);
+            res.render('petition', { 'error' : true });
+        });
+
     }
 
 }
