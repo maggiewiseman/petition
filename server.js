@@ -42,6 +42,7 @@ app.get('/petition/signatures', checkCookies, (req, res) => {
 });
 
 app.post('/petition', (req,res) => {
+    console.log('reqParams: ', req.body);
     handler.handle('addSignature', req.params, res);
 });
 

@@ -19,24 +19,24 @@ function handle(query, reqParams, res) {
         dbQuery.getSigners().then((result) => {
             res.render('signatures', {results: result});
         }).catch(e => console.error(e.stack));
-
     }
 
     if(query == 'numSignatures') {
-
-        dbQuery.numSignatures().then((num) => {
-            res.render('thankyou', {count: num});
-        }).catch(e => console.error(e.stack));
+        renderThankyou(res);
     }
 
     if(query == 'addSignature') {
-        dbQuery.numSignatures().then((num) => {
-            res.render('thankyou', {count: num});
-        }).catch(e => console.error(e.stack));
+        console.log(reqParams);
+        //dbQuery.addSignatures()
+        renderThankyou(res);
     }
 
 }
 
-
+function renderThankyou(res) {
+    dbQuery.numSignatures().then((num) => {
+        res.render('thankyou', {count: num});
+    }).catch(e => console.error(e.stack));
+}
 
 module.exports.handle = handle;
