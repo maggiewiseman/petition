@@ -1,5 +1,6 @@
 const express = require('express');
 const cookieParser = require('cookie-parser');
+const handler = require('./handler');
 
 const app = express();
 
@@ -19,8 +20,9 @@ app.get('/', (req,res) => {
 
 app.get('/petition/signed', checkCookies, (req, res)=> {
     console.log('inside get /petition/signed');
-    //eventually this will render the main page
-    res.send('Thanks for signing');
+
+    handler.handle('numSignatures', req.params, res);
+    //res.send('Thanks for signing');
 });
 
 app.get('/petition', checkCookies, (req, res)=> {
@@ -28,10 +30,8 @@ app.get('/petition', checkCookies, (req, res)=> {
     res.send('Hello World');
 });
 
-
-
 app.get('/petition/signatures', checkCookies, (req, res) => {
-    res.send('signatures');
+    handler.handle('getSigners', req.params, res);
 });
 
 app.use((req,res) => {
