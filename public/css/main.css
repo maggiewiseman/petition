@@ -110,9 +110,22 @@ button:hover {
     background: #D77A61;
 }
 
+/*** THANK YOU PAGE STYLES ***/
 .emphasis {
     font-family: 'Bungee', Arial, sans-serif;
     font-size: 30px;
+}
+
+figure.signature {
+	width: 300px;
+	height: 100px;
+	border: 2px #223843 solid;
+    border-radius: 10px;
+
+}
+
+figure.signature > img {
+	width: 100%;
 }
 
 .error {

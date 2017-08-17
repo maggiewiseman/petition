@@ -19,7 +19,11 @@ function handle(query, req, res) {
         dbQuery.addSignature(validParams).then((result) => {
             console.log('HANDLER: result of addSig: ', result);
             req.session.id = result.rows[0].id;
-            res.redirect('/petition/signed');
+            return dbQuery.getSignature(result.rows[0].id);
+
+        }).then((sigImg)=>{
+            console.log('HANDLER sigIMg: ', sigImg);
+            res.render('thankyou', {'imgsrc': sigImg[0].signature});
         }).catch(e => {
             console.error(e.stack);
             res.render('petition', { 'error' : true });
