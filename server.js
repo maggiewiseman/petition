@@ -34,19 +34,19 @@ app.get('/', (req,res) => {
     res.redirect('/petition');
 });
 
-app.get('/petition/signed', checkCookies, (req, res)=> {
+app.get('/petition/signed', (req, res)=> {
     console.log('SERVER: inside get /petition/signed');
 
     handler.handle('numSignatures', req.params, res);
     //res.send('Thanks for signing');
 });
 
-app.get('/petition', checkCookies, (req, res)=> {
+app.get('/petition', (req, res)=> {
     //eventually this will render the main page
     res.render('petition');
 });
 
-app.get('/petition/signatures', checkCookies, (req, res) => {
+app.get('/petition/signatures', (req, res) => {
     handler.handle('getSigners', req.params, res);
 });
 
