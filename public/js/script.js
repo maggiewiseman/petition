@@ -1,11 +1,10 @@
 
-//client side javascript
-//handle canvas jonks
 (function() {
+    const canvas = document.getElementById('canv');
+    const ctx = canvas.getContext('2d');
+    const hiddenInput = document.getElementById('signature');
 
     function signature() {
-        const canvas = document.getElementById('canv');
-        const ctx = canvas.getContext('2d');
 
         function pointerDown(e) {
             ctx.beginPath();
@@ -21,18 +20,24 @@
         function paint(e) {
             ctx.lineTo(e.offsetX, e.offsetY);
             ctx.stroke();
+            saveSig();
         }
 
         canvas.addEventListener("mousedown", pointerDown);
         canvas.addEventListener("mouseup", pointerUp);
     }
 
+    function saveSig() {
+        var sigData = canvas.toDataURL();
+        hiddenInput.innerHTML = sigData;
+        console.log(sigData);
+    }
     signature();
+
+
 }());
 
 
 
 //in the submit form make canvas stuff the value of the hiddent input field.
 //canvasElement.toDataURL
-
-console.log('it is getting to the client');
