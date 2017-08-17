@@ -42,10 +42,16 @@ function handle(query, reqParams, res) {
 }
 
 function validateParams(params) {
-    var validData = [params['first_name'], params['last_name'], params['signature']];
+    var userData = [params['first_name'], params['last_name'], params['signature']];
 
-    validData.map((item) => {
-        return item = item == "" ? null : item;
+    var validData = [];
+    userData.forEach((item)=> {
+        if(item == "") {
+            console.log('HANDLER: empty string');
+            validData.push(null);
+        } else {
+            validData.push(item);
+        }
     });
 
     console.log('HANDLER: validdata', validData);
