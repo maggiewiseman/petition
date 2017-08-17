@@ -49,7 +49,7 @@ app.get('/petition', (req, res)=> {
 });
 
 app.get('/petition/signatures', (req, res) => {
-    handler.handle('getSigners()', req.params, res);
+    handler.handle('getSigners', req.params, res);
 });
 
 app.post('/petition', (req,res) => {
