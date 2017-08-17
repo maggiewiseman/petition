@@ -5,6 +5,7 @@ const secrets = require('./secrets.json');
 const db = spicedPg(`postgres:${secrets.dbUser}:${secrets.pass}@localhost:5432/petition`);
 //db returns a promise and you will get back a result
 function getSigners() {
+    console.log('DBQUERY: in getSigners');
     let queryStr = 'SELECT first_name, last_name FROM signatures';
     return db.query(queryStr).then((result) => {
         return(result.rows);
@@ -19,6 +20,7 @@ function addSignature(userData) {
 }
 
 function getSignature(id) {
+    console.log('DBQUERY: in getSignature()');
     let param = Array.isArray(id) ? id: [id];
     let queryStr = 'SELECT signature FROM signatures WHERE id = $1';
     return db.query(queryStr, param).then((result) => {

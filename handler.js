@@ -7,9 +7,16 @@ function handle(query, req, res) {
         }).catch(e => console.error(e.stack));
     }
 
-    if(query == 'numSignatures') {
-        dbQuery.numSignatures().then((num) => {
-            res.render('thankyou', {count: num});
+    if(query == 'thankyou') {
+        console.log('HANDLER: inside thankyou');
+        console.log('HANDLER: Id:', req.session);
+        var promiseArr = [];
+        promiseArr.push(dbQuery.numSignatures());
+        promiseArr.push(dbQuery.getSignature(req.session.id));
+
+        Promise.all(promiseArr).then((results)=> {
+            console.log('HANDLER result: ', results[1].signature);
+            res.render('thankyou', {count: results[0], 'imgsrc': results[1][0].signature});
         }).catch(e => console.error(e.stack));
     }
 

@@ -19,7 +19,7 @@ app.use(require('body-parser').urlencoded({
 
 
 //set up to use cookies
-app.use(cookieParser());
+//app.use(cookieParser());
 
 app.use(cookieSession({
     name: 'session',
@@ -34,20 +34,22 @@ app.get('/', (req,res) => {
     res.redirect('/petition');
 });
 
-app.get('/petition/signed', checkCookies, (req, res)=> {
+app.use(checkSession);
+
+app.get('/petition/signed', (req, res)=> {
     console.log('SERVER: inside get /petition/signed');
 
-    handler.handle('numSignatures', req.params, res);
+    handler.handle('thankyou', req, res);
     //res.send('Thanks for signing');
 });
 
-app.get('/petition', checkCookies, (req, res)=> {
+app.get('/petition', (req, res)=> {
     //eventually this will render the main page
     res.render('petition');
 });
 
-app.get('/petition/signatures', checkCookies, (req, res) => {
-    handler.handle('getSigners', req.params, res);
+app.get('/petition/signatures', (req, res) => {
+    handler.handle('getSigners()', req.params, res);
 });
 
 app.post('/petition', (req,res) => {
@@ -65,9 +67,9 @@ app.listen(3000, ()=> {
     console.log('Listening on port 3000');
 });
 
-function checkCookies(req, res, next) {
+function checkSession(req, res, next) {
     //if the cookie exists, redirect to signed page
-    console.log('SERVER: checking for signed cookie', req.cookies['signed']);
+    //console.log('SERVER: checking for signed cookie', req.cookies['signed']);
     console.log('SERVER: url: ', req.url);
     //if they have the cookie then they can go to the signed page, but
     //else they need to be redirected to the regular page
@@ -86,3 +88,14 @@ function checkCookies(req, res, next) {
         }
     }
 }
+
+// function checkSession(req, res, next) {
+//     console.log('SERVER: checkign session id');
+//     if(req.session.id) {
+//         console.log('SERVER: session id exists');
+//         res.redirect('/petition/signed');
+//     } else {
+//         console.log('SERVER: no session id');
+//         res.redirect('/petition');
+//     }
+// }
