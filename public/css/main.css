@@ -1,3 +1,61 @@
+@font-face{
+	font-family: 'Bungee Shade';
+	src: url('/fonts/Bungee-Shade-webfont.woff') format('woff')
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+}
+
+body {
+    background: #D8B4A0;
+    color: #223843;
+}
+
+.wrapper {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+}
+
+h1 {
+    font-family: 'Bungee Shade';
+    font-size: 40px;
+    margin: 0;
+}
+
+h2, p, label {
+    font-family: 'Bungee', Arial, sans-serif;
+    padding: 20px 0;
+}
+
+figure {
+    height: 200px;
+    width: 350px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+img {
+    height: 100%;
+    border: 10px #223843 solid;
+    border-radius: 10px;
+}
+
+form {
+    text-align: center;
+}
+
+input {
+    font-size: 14px;
+    padding: 4px;
+    border: 2px #223843 solid;
+    border-radius: 10px;
+    width: 200px;
+    margin: 30px 10px;
+}
+
 canvas {
     border: 1px black solid;
 }

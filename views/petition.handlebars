@@ -1,19 +1,23 @@
-<h1>Sign this petition to put real chicken in chicken nuggets!</h1>
+<h2>Let's get real chicken in chicken nuggets! Who's with me?</h2>
     <figure><img src="/img/chicken-mcnugget.jpg" alt="fried chicken head"></figure>
     <p class="error">{{#if error}}
     There was a problem with your form. Please try again.
     {{/if}}</p>
 
     <form method="post" action="/petition">
+        <div class="inputs">
         <label for="first_name">First Name</label>
         <input type="text" name="first_name" placeholder="First Name">
         <label for="last_name">Last Name</label>
         <input type="text" name="last_name" placeholder="Last Name">
+    </div>
+    <div class="sig-div">
         <label for="signature">Signature</label>
         <input type="hidden" name="signature" id="signature">
 
         <section>
             <canvas id="canv" width="300" height="100"></canvas>
         </section>
+    </div>
         <button type="submit" name="button">SUBMIT</button>
     </form>
