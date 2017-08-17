@@ -1,7 +1,9 @@
 const express = require('express');
 const cookieParser = require('cookie-parser');
+const cookieSession = require('cookie-session');
 const handler = require('./handler');
 const hb = require('express-handlebars');
+const secrets = require('./secrets.json');
 
 const app = express();
 //cofigure handlebars
@@ -18,6 +20,13 @@ app.use(require('body-parser').urlencoded({
 
 //set up to use cookies
 app.use(cookieParser());
+
+app.use(cookieSession({
+    name: 'session',
+    secret: secrets.sessionSecret,
+    // Cookie Options
+    maxAge: 14 * 24 * 60 * 60 * 1000 // 24 hours
+}));
 
 //if they pass the cookie test then they can go on.
 //If they do not pass the cookie test I need to redirect.
@@ -42,7 +51,7 @@ app.get('/petition/signatures', checkCookies, (req, res) => {
 });
 
 app.post('/petition', (req,res) => {
-    handler.handle('addSignature', {params: req.body}, res);
+    handler.handle('addSignature', req, res);
 });
 
 app.use((req,res) => {

@@ -1,20 +1,6 @@
 const dbQuery = require('./dbQuery');
 
-
-/*
-@param the function I want to use from dbQuery
-@param the request object parameters
-@param the response object
-*/
-
-// const funcMap = {
-//     'getSigners' : dbQuery.getSigners,
-//     'addSignature' : dbQuery.addSignature,
-//     'getSignature' : dbQuery.getSignature,
-//     'numSignatures' : dbQuery.numSignatures
-// };
-
-function handle(query, reqParams, res) {
+function handle(query, req, res) {
     if(query == 'getSigners') {
         dbQuery.getSigners().then((result) => {
             res.render('signatures', {results: result});
@@ -28,16 +14,16 @@ function handle(query, reqParams, res) {
     }
 
     if(query == 'addSignature') {
-        var validParams = validateParams(reqParams.params);
+        var validParams = validateParams(req.body);
 
-        dbQuery.addSignature(validParams).then(() => {
+        dbQuery.addSignature(validParams).then((result) => {
+            console.log('HANDLER: result of addSig: ', result);
             res.cookie('signed', 'yes');
             res.redirect('/petition/signed');
         }).catch(e => {
             console.error(e.stack);
             res.render('petition', { 'error' : true });
         });
-
     }
 }
 
