@@ -8,16 +8,7 @@ function handle(query, req, res) {
     }
 
     if(query == 'thankyou') {
-        console.log('HANDLER: inside thankyou');
-        console.log('HANDLER: Id:', req.session);
-        var promiseArr = [];
-        promiseArr.push(dbQuery.numSignatures());
-        promiseArr.push(dbQuery.getSignature(req.session.id));
-
-        Promise.all(promiseArr).then((results)=> {
-            console.log('HANDLER result: ', results[1].signature);
-            res.render('thankyou', {count: results[0], 'imgsrc': results[1][0].signature});
-        }).catch(e => console.error(e.stack));
+        return renderThankyou(req, res).catch(e => console.error(e.stack));
     }
 
     if(query == 'addSignature') {
@@ -26,11 +17,7 @@ function handle(query, req, res) {
         dbQuery.addSignature(validParams).then((result) => {
             console.log('HANDLER: result of addSig: ', result);
             req.session.id = result.rows[0].id;
-            return dbQuery.getSignature(result.rows[0].id);
-
-        }).then((sigImg)=>{
-            console.log('HANDLER sigIMg: ', sigImg);
-            res.render('thankyou', {'imgsrc': sigImg[0].signature});
+            return renderThankyou(req, res);
         }).catch(e => {
             console.error(e.stack);
             res.render('petition', { 'error' : true });
@@ -55,5 +42,18 @@ function validateParams(params) {
     return validData;
 }
 
+function renderThankyou(req, res) {
+    console.log('HANDLER: inside renderthankyou');
+    console.log('HANDLER: Id:', req.session.id);
+
+    var promiseArr = [];
+    promiseArr.push(dbQuery.numSignatures());
+    promiseArr.push(dbQuery.getSignature(req.session.id));
+
+    return Promise.all(promiseArr).then((results)=> {
+        console.log('HANDLER result: ', results[1].signature);
+        res.render('thankyou', {count: results[0], 'imgsrc': results[1][0].signature});
+    });
+}
 
 module.exports.handle = handle;
