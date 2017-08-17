@@ -29,7 +29,7 @@
 
     function saveSig() {
         var sigData = canvas.toDataURL();
-        hiddenInput.innerHTML = sigData;
+        hiddenInput.value = sigData;
         console.log(sigData);
     }
     signature();
