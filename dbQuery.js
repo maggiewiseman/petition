@@ -13,11 +13,9 @@ function getSigners() {
 
 function addSignature(userData) {
     //userData is an array: first_name, last_name, signature
-    console.log('in dbquery add signature');
-    let queryStr = 'INSERT INTO signatures (first_name, last_name, signature) VALUES ($1, $2, $3)';
-    return db.query(queryStr, userData).then(() => {
-        console.log('signature added');
-    }).catch(e => console.error(e.stack));
+    console.log('DBQUERY: in add signature');
+    let queryStr = 'INSERT INTO signatures (first_name, last_name, signature) VALUES ($1, $2, $3) RETURNING id';
+    return db.query(queryStr, userData);
 }
 
 function getSignature(id) {
@@ -31,7 +29,6 @@ function getSignature(id) {
 function numSignatures() {
     let queryStr = 'SELECT COUNT(*) FROM signatures';
     return db.query(queryStr).then((result) => {
-        console.log(result.rows[0].count);
         return(result.rows[0].count);
     }).catch(e => console.error(e.stack));
 }

@@ -22,17 +22,15 @@ function handle(query, reqParams, res) {
     }
 
     if(query == 'numSignatures') {
-        renderThankyou(res);
+        dbQuery.numSignatures().then((num) => {
+            res.render('thankyou', {count: num});
+        }).catch(e => console.error(e.stack));
     }
 
     if(query == 'addSignature') {
-        console.log('reqParams:', reqParams.params.last_name);
+        var validParams = validateParams(reqParams.params);
 
-        //console.log();
-        //make reqParams an Array
-        var userData = [reqParams.params['first_name'], reqParams.params['last_name'], reqParams.params['signature']];
-        console.log('userData', userData);
-        dbQuery.addSignature(userData).then(() => {
+        dbQuery.addSignature(validParams).then(() => {
             res.cookie('signed', 'yes');
             res.redirect('/petition/signed');
         }).catch(e => {
@@ -41,13 +39,18 @@ function handle(query, reqParams, res) {
         });
 
     }
-
 }
 
-function renderThankyou(res) {
-    dbQuery.numSignatures().then((num) => {
-        res.render('thankyou', {count: num});
-    }).catch(e => console.error(e.stack));
+function validateParams(params) {
+    var validData = [params['first_name'], params['last_name'], params['signature']];
+
+    validData.map((item) => {
+        return item = item == "" ? null : item;
+    });
+
+    console.log('HANDLER: validdata', validData);
+    return validData;
 }
+
 
 module.exports.handle = handle;

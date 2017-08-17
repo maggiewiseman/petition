@@ -26,7 +26,7 @@ app.get('/', (req,res) => {
 });
 
 app.get('/petition/signed', checkCookies, (req, res)=> {
-    console.log('inside get /petition/signed');
+    console.log('SERVER: inside get /petition/signed');
 
     handler.handle('numSignatures', req.params, res);
     //res.send('Thanks for signing');
@@ -42,7 +42,6 @@ app.get('/petition/signatures', checkCookies, (req, res) => {
 });
 
 app.post('/petition', (req,res) => {
-    console.log('reqParams: ', req.body);
     handler.handle('addSignature', {params: req.body}, res);
 });
 
@@ -59,8 +58,8 @@ app.listen(8080, ()=> {
 
 function checkCookies(req, res, next) {
     //if the cookie exists, redirect to signed page
-    console.log('checking for signed cookie', req.cookies['signed']);
-    console.log('url: ', req.url);
+    console.log('SERVER: checking for signed cookie', req.cookies['signed']);
+    console.log('SERVER: url: ', req.url);
     //if they have the cookie then they can go to the signed page, but
     //else they need to be redirected to the regular page
     if(req.cookies['signed'] == 'yes') {
@@ -71,7 +70,7 @@ function checkCookies(req, res, next) {
         }
     } else {
         if(req.url != '/petition') {
-            console.log('url does not equal /petition');
+            console.log('SERVER: url does not equal /petition');
             res.redirect('/petition');
         } else {
             next();
