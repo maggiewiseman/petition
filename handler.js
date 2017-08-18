@@ -1,4 +1,5 @@
 const dbQuery = require('./dbQuery');
+const bcrypt = require('bcryptjs');
 
 function handle(query, req, res) {
     if(query == 'getSigners') {
@@ -25,14 +26,18 @@ function handle(query, req, res) {
     }
 
     if(query == 'registerUser') {
-        //similar to add signature, need to validate params by putting in array and change to null if they are empty strings.
-        var validUserInfo = validateUser(req.body);
+        //need to hash the signature
+        hashPassword(req.body.password).then((hash) =>{
 
+            req.body.password = hash;
+            //similar to add signature, need to validate params by putting in array and change to null if they are empty strings.
+            var validUserInfo = validateUser(req.body);
 
-        //then we need to hash the signature
+            //then we need to query the database to add signature with an array that has first_name, last_name, email, hashed password
+            return dbQuery.addUser(validUserInfo);
+        }).catch(e => console.error(e.stack));
 
-        //then we need to query the database to add signature with an array that has first_name, last_name, email, hashed password
-        dbQuery.addUser(validUserInfo);        //when that comes back successfully with an id, we need to set session.user with first name, last name and user_id
+        //when that comes back successfully with an id, we need to set session.user with first name, last name and user_id
         //then route to /petition and petition will do the logic of checking for signature and log in
     }
 
@@ -86,6 +91,22 @@ function renderThankyou(req, res) {
     return Promise.all(promiseArr).then((results)=> {
         console.log('HANDLER result: ', results[1].signature);
         res.render('thankyou', {count: results[0], 'imgsrc': results[1][0].signature});
+    });
+}
+
+function hashPassword(plainTextPassword) {
+    return new Promise(function(resolve, reject) {
+        bcrypt.genSalt(function(err, salt) {
+            if (err) {
+                return reject(err);
+            }
+            bcrypt.hash(plainTextPassword, salt, function(err, hash) {
+                if (err) {
+                    return reject(err);
+                }
+                resolve(hash);
+            });
+        });
     });
 }
 
