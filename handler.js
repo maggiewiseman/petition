@@ -25,11 +25,14 @@ function handle(query, req, res) {
     }
 
     if(query == 'registerUser') {
-        var validParams = validateUser(req.body);
         //similar to add signature, need to validate params by putting in array and change to null if they are empty strings.
+        var validUserInfo = validateUser(req.body);
+
+
         //then we need to hash the signature
+
         //then we need to query the database to add signature with an array that has first_name, last_name, email, hashed password
-        //when that comes back successfully with an id, we need to set session.user with first name, last name and user_id
+        dbQuery.addUser(validUserInfo);        //when that comes back successfully with an id, we need to set session.user with first name, last name and user_id
         //then route to /petition and petition will do the logic of checking for signature and log in
     }
 
@@ -106,3 +109,12 @@ module.exports.handle = handle;
 //
 // console.log(validateUser(registrationBody));
 // console.log(validateUser(registrationBodyNull));
+
+var registration = { body: {
+    first_name: 'Tiffany',
+    last_name: 'Theiessen',
+    email: 'Tif@gmail',
+    password: 'ilovezack'
+}};
+
+handle('registerUser', registration);

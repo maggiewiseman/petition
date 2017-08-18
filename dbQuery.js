@@ -55,6 +55,7 @@ module.exports.getSigners = getSigners;
 module.exports.addSignature = addSignature;
 module.exports.getSignature = getSignature;
 module.exports.numSignatures = numSignatures;
+module.exports.addUser = addUser;
 
 /* Tests */
 // getSigners().then(result => {
