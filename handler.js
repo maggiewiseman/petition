@@ -82,18 +82,21 @@ function handle(query, req, res) {
             }
 
             //with their first name and last name and id and add to session.user.
-            // req.session.user = {
-            //     id: userInfo.id,
-            //     first_name: userInfo.first_name,
-            //     last_name: userInfo.last_name
-            // };
+            req.session.user = {
+                id: userInfo.id,
+                first_name: userInfo.first_name,
+                last_name: userInfo.last_name
+            };
             //then using user id see if they have a signature.
             return dbQuery.getSigId([userInfo.id]);
         }).then((results)=>{
             if(results.rowCount > 0) {
-                console.log('got something');
+                //so they have a signature
+                req.session.user.sigId = results.row[0].id;
+                renderThankyou(req, res);
             } else {
-                console.log('got nothing');
+                //they don't have a signature send them to petition page
+                res.render('petition');
             }
         }).catch(e => {
             console.error(e.stack);
@@ -251,12 +254,12 @@ module.exports.handle = handle;
 //
 // handle('login', login);
 
-var login2 = { body: {
-    email: 'mw@gmail',
-    password: 'ilovezack'
-}};
-
-handle('login', login2);
+// var login2 = { body: {
+//     email: 'louis@gmail',
+//     password: 'noonelovesme'
+// }};
+//
+// handle('login', login2);
 // var loginBad = { body: {
 //     email: 'Tif@gmail',
 //     password: 'ilovezac'
