@@ -12,7 +12,7 @@ function handle(query, req, res) {
     }
 
     if(query == 'addSignature') {
-        var validParams = validateParams(req.body);
+        var validParams = validateSig(req.body);
 
         dbQuery.addSignature(validParams).then((result) => {
             console.log('HANDLER: result of addSig: ', result);
@@ -23,10 +23,29 @@ function handle(query, req, res) {
             res.render('petition', { 'error' : true });
         });
     }
+
+    if(query == 'registerUser') {
+        var validParams = validateUser(req.body);
+        //similar to add signature, need to validate params by putting in array and change to null if they are empty strings.
+        //then we need to hash the signature
+        //then we need to query the database to add signature with an array that has first_name, last_name, email, hashed password
+        //when that comes back successfully with an id, we need to set session.user with first name, last name and user_id
+        //then route to /petition and petition will do the logic of checking for signature and log in
+    }
+
+    if(query == 'login') {
+        //dbQuery to get password, first_name and last_name and id from users table using e-mail
+        //check password if password matches than set session.user
+        //with their firist name and last name and id and add to session.user.
+        //dbQuery.getSignature(user_id);
+        //then using user id see if they have a signature.  If they do add sigId to the user object.
+        //now that they are logged in direct to /petition.
+        //petition will check if signed in and route accordingly
+    }
 }
 
-function validateParams(params) {
-    var userData = [params['first_name'], params['last_name'], params['signature']];
+function validateSig(params) {
+    var userData = [params['id'], params['first_name'], params['last_name'], params['signature']];
 
     var validData = [];
     userData.forEach((item)=> {
@@ -40,6 +59,17 @@ function validateParams(params) {
 
     console.log('HANDLER: validdata', validData);
     return validData;
+}
+/*
+@params params is an object that is the request body
+*/
+function validateUser(params) {
+    console.log('HANDLER: validUser');
+    var userInfo = [params['first_name'], params['last_name'], params['email'], params['password']];
+
+    return userInfo.map(function(item) {
+        return item == '' ? null : item;
+    });
 }
 
 function renderThankyou(req, res) {
@@ -57,3 +87,22 @@ function renderThankyou(req, res) {
 }
 
 module.exports.handle = handle;
+
+/** TESTS **/
+
+// var registrationBody = {
+//     first_name: 'Tiffany',
+//     last_name: 'Theiessen',
+//     email: 'Tif@gmail',
+//     password: 'ilovezack'
+// };
+//
+// var registrationBodyNull = {
+//     first_name: '',
+//     last_name: 'Theiessen',
+//     email: 'Tif@gmail',
+//     password: ''
+// };
+//
+// console.log(validateUser(registrationBody));
+// console.log(validateUser(registrationBodyNull));

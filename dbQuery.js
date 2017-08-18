@@ -15,7 +15,7 @@ function getSigners() {
 function addSignature(userData) {
     //userData is an array: first_name, last_name, signature
     console.log('DBQUERY: in add signature');
-    let queryStr = 'INSERT INTO signatures (first_name, last_name, signature) VALUES ($1, $2, $3) RETURNING id';
+    let queryStr = 'INSERT INTO signatures (user_id, first_name, last_name, signature) VALUES ($1, $2, $3, $4) RETURNING id';
     return db.query(queryStr, userData);
 }
 
@@ -34,6 +34,22 @@ function numSignatures() {
         return(result.rows[0].count);
     }).catch(e => console.error(e.stack));
 }
+
+//then we need to query the database to add user with an array that has first_name, last_name, email, hashed password
+function addUser(userInfo) {
+    console.log('DBQUERY: in add user.');
+    let queryStr = 'INSERT INTO users (first_name, last_name, email, password) VALUES ($1, $2, $3, $4) RETURNING id';
+    return db.query(queryStr, userInfo);
+}
+
+//userData is an array: first_name, last_name, signature
+console.log('DBQUERY: in add signature');
+
+
+
+//dbQuery to get password, first_name and last_name and id from users table using e-mail
+
+
 
 module.exports.getSigners = getSigners;
 module.exports.addSignature = addSignature;
