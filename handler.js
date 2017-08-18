@@ -188,15 +188,15 @@ module.exports.handle = handle;
 //     email: 'Jen@gmail',
 //     password: 'istilllovebrad'
 // }};
-
-var registration = { body: {
-    first_name: 'Louis',
-    last_name: 'CK',
-    email: 'louis@gmail',
-    password: 'noonelovesme'
-}};
-
-handle('registerUser', registration);
+//
+// var registration = { body: {
+//     first_name: 'Louis',
+//     last_name: 'CK',
+//     email: 'louis@gmail',
+//     password: 'noonelovesme'
+// }};
+//
+// handle('registerUser', registration);
 
 //Failing tests:
 //bcrypt throws error
@@ -221,3 +221,10 @@ handle('registerUser', registration);
 
 //check pass returns a boolean
 //checkPassword('ilovezack', '$2a$10$uC5KEwHDIUBkEqoBy8BLqO2X0i7hcFdbBGRI4r545Kg21FDAvnwhO');
+
+var login = { body: {
+    email: 'Tif@gmail',
+    password: 'ilovezack'
+}};
+
+handle('login', login);
