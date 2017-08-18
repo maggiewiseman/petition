@@ -1,5 +1,5 @@
 const express = require('express');
-const cookieParser = require('cookie-parser');
+//const cookieParser = require('cookie-parser');
 const cookieSession = require('cookie-session');
 const handler = require('./handler');
 const hb = require('express-handlebars');
@@ -48,12 +48,28 @@ app.get('/petition', (req, res)=> {
     res.render('petition');
 });
 
+app.post('/petition', (req,res) => {
+    handler.handle('addSignature', req, res);
+});
+
 app.get('/petition/signatures', (req, res) => {
     handler.handle('getSigners', req.params, res);
 });
 
-app.post('/petition', (req,res) => {
-    handler.handle('addSignature', req, res);
+app.get('/register', (req, res) => {
+    res.render('register');
+});
+
+app.post('/register', (req, res) => {
+    handler.handle('registerUser', req, res);
+});
+
+app.get('/login', (req, res) => {
+    res.render('login');
+});
+
+app.post('/login', (req, res) => {
+    handler.handle('login', req, res);
 });
 
 app.use((req,res) => {
@@ -68,34 +84,48 @@ app.listen(3000, ()=> {
 });
 
 function checkSession(req, res, next) {
-    //if the cookie exists, redirect to signed page
-    //console.log('SERVER: checking for signed cookie', req.cookies['signed']);
-    console.log('SERVER: url: ', req.url);
-    //if they have the cookie then they can go to the signed page, but
-    //else they need to be redirected to the regular page
-    if(req.session.id) {
-        if(req.url == '/petition/signed' || req.url == '/petition/signatures') {
-            next();
+    //if logged in...meaning there is a session userInfo
+    if(req.session.user) {
+        //logged in!
+        if(req.session.user.sigId){
+        //already signed petition!
+            if(req.url == '/petition/signed' || req.url == '/petition/signatures') {
+                next();
+            } else {
+                res.redirect('/petition/signed');
+            }
         } else {
-            res.redirect('/petition/signed');
-        }
+            //logged in but have not signed
+            if(req.url == '/petition') {
+                next();
+            } else {
+                res.redirect('/petition');
+            }
+        }// end signed petition check
     } else {
-        if(req.url != '/petition') {
-            console.log('SERVER: url does not equal /petition');
-            res.redirect('/petition');
-        } else {
+        //not logged in!
+        if(req.url == '/register' || req.url == '/login') {
             next();
+        } else {
+            res.redirect('/register');
         }
     }
-}
 
-// function checkSession(req, res, next) {
-//     console.log('SERVER: checkign session id');
-//     if(req.session.id) {
-//         console.log('SERVER: session id exists');
-//         res.redirect('/petition/signed');
-//     } else {
-//         console.log('SERVER: no session id');
-//         res.redirect('/petition');
-//     }
-// }
+    // console.log('SERVER: url: ', req.url);
+    // //if they have the cookie then they can go to the signed page, but
+    // //else they need to be redirected to the regular page
+    // if(req.session.id) {
+    //     if(req.url == '/petition/signed' || req.url == '/petition/signatures') {
+    //         next();
+    //     } else {
+    //         res.redirect('/petition/signed');
+    //     }
+    // } else {
+    //     if(req.url != '/petition') {
+    //         console.log('SERVER: url does not equal /petition');
+    //         res.redirect('/petition');
+    //     } else {
+    //         next();
+    //     }
+    // }
+}
