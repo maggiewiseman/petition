@@ -134,14 +134,14 @@ module.exports.handle = handle;
 // console.log(validateUser(registrationBody));
 // console.log(validateUser(registrationBodyNull));
 //
-var registration = { body: {
-    first_name: 'Tiffany',
-    last_name: 'Theiessen',
-    email: 'Tif@gmail',
-    password: 'ilovezack'
-}};
-
-handle('registerUser', registration);
+// var registration = { body: {
+//     first_name: 'Tiffany',
+//     last_name: 'Theiessen',
+//     email: 'Tif@gmail',
+//     password: 'ilovezack'
+// }};
+//
+// handle('registerUser', registration);
 
 //Failing tests:
 //bcrypt throws error
