@@ -45,10 +45,15 @@ function addUser(userInfo) {
 //dbQuery to get password, first_name and last_name and id from users table using e-mail
 function getUserInfo(email) {
     console.log('DBQUERY: in getUserInfo');
-    let queryStr = ('SELECT id, first_name, last_name, password FROM users WHERE email = $1');
+    let queryStr = 'SELECT id, first_name, last_name, password FROM users WHERE email = $1';
     return db.query(queryStr, email);
 }
 
+function getSigId(user_id) {
+    console.log('DBQUERY: in getSigId');
+    let queryStr = 'SELECT id FROM signatures WHERE user_id = $1';
+    return db.query(queryStr, user_id);
+}
 
 module.exports.getSigners = getSigners;
 module.exports.addSignature = addSignature;
@@ -56,8 +61,26 @@ module.exports.getSignature = getSignature;
 module.exports.numSignatures = numSignatures;
 module.exports.addUser = addUser;
 module.exports.getUserInfo = getUserInfo;
+module.exports.getSigId = getSigId;
 
 /* Tests */
+// getSigId([1]).then((result) => {
+//     console.log(result);
+//     if(result.rowCount > 0) {
+//         console.log('got something');
+//     } else {
+//         console.log('got nothing');
+//     }
+// }).catch(e => console.error(e.stack));  //got something
+//
+// getSigId([25]).then((result) => {
+//     console.log(result);
+//     if(result.rowCount > 0) {
+//         console.log('got something');
+//     } else {
+//         console.log('got nothing');
+//     }
+// }).catch(e => console.error(e.stack));
 // getUserInfo(['leo@gmail']).then((results) => {
 //     console.log(results);
 // }).catch(e => console.error(e.stack));
