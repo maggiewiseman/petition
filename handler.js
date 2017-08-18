@@ -26,13 +26,12 @@ function handle(query, req, res) {
     }
 
     if(query == 'registerUser') {
+        //similar to add signature, need to validate params by putting in array and change to null if they are empty strings.
+        var validUserInfo = validateUser(req.body);
+        console.log('HANDLER: validUserInfo', validUserInfo);
         //need to hash the signature
-        hashPassword(req.body.password).then((hash) =>{
-
-            req.body.password = hash;
-            //similar to add signature, need to validate params by putting in array and change to null if they are empty strings.
-            var validUserInfo = validateUser(req.body);
-
+        hashPassword(validUserInfo[3]).then((hash) =>{
+            validUserInfo[3] = hash;
             //then we need to query the database to add signature with an array that has first_name, last_name, email, hashed password
             return dbQuery.addUser(validUserInfo);
         }).catch(e => console.error(e.stack));
@@ -73,6 +72,10 @@ function validateSig(params) {
 */
 function validateUser(params) {
     console.log('HANDLER: validUser');
+    // if(params['password'] == '') {
+    //     throw new Error('password is blank');
+    // }
+
     var userInfo = [params['first_name'], params['last_name'], params['email'], params['password']];
 
     return userInfo.map(function(item) {
@@ -130,7 +133,7 @@ module.exports.handle = handle;
 //
 // console.log(validateUser(registrationBody));
 // console.log(validateUser(registrationBodyNull));
-
+//
 var registration = { body: {
     first_name: 'Tiffany',
     last_name: 'Theiessen',
@@ -139,3 +142,13 @@ var registration = { body: {
 }};
 
 handle('registerUser', registration);
+
+//Failing tests:
+var registrationNull = { body: {
+    first_name: 'Tiffany',
+    last_name: 'Theiessen',
+    email: 'Tif@gmail',
+    password: ''
+}};
+
+handle('registerUser', registrationNull);
