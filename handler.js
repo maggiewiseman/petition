@@ -144,11 +144,22 @@ var registration = { body: {
 handle('registerUser', registration);
 
 //Failing tests:
-var registrationNull = { body: {
-    first_name: 'Tiffany',
-    last_name: 'Theiessen',
-    email: 'Tif@gmail',
-    password: ''
-}};
+//bcrypt throws error
+// var registrationNullPW = { body: {
+//     first_name: 'Tiffany',
+//     last_name: 'Theiessen',
+//     email: 'Tif@gmail',
+//     password: ''
+// }};
+//
+// handle('registerUser', registrationNullPW);
 
-handle('registerUser', registrationNull);
+//database throws error
+// var registrationNullName = { body: {
+//     first_name: '',
+//     last_name: 'Theiessen',
+//     email: 'Tif@gmail',
+//     password: 'ilovezack'
+// }};
+//
+// handle('registerUser', registrationNullName);
