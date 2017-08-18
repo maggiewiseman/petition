@@ -23,7 +23,8 @@ CREATE TABLE signatures (
 
 INSERT INTO users (first_name, last_name, email, password) VALUES ('Leo', 'Dicap', 'leo@gmail', 'rose');
 
-INSERT INTO users (first_name, last_name, email, password) VALUES ('Maggie', 'Wiseman', 'mw@gmail', 'ilovepandas');
+INSERT INTO users (first_name, last_name, email, password) VALUES ('Maggie', 'Wiseman', 'mw@gmail', '$2a$10$uC5KEwHDIUBkEqoBy8BLqO2X0i7hcFdbBGRI4r545Kg21FDAvnwhO');
+
 
 INSERT INTO signatures (user_id, first_name, last_name, signature) VALUES ('1', 'Leonardo', 'DiCaprio', 'nonsense text');
 
@@ -34,7 +35,7 @@ SELECT password FROM users WHERE email = 'leo@gmail';
 
 SELECT id, first_name, last_name, password FROM users WHERE email = 'leo@gmail';
 
-
+SELECT id FROM signatures WHERE user_id = 25;
 
 
 --SELECT first_name, last_name FROM signatures;

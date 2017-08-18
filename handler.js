@@ -37,7 +37,6 @@ function handle(query, req, res) {
             return dbQuery.addUser(validUserInfo);
         }).then((id) =>{
             //when that comes back successfully with an id, we need to set session.user with first name, last name and user_id
-            console.log(req, 'that was request');
             req.session.user = {
                 id: id,
                 first_name: req.body.first_name,
@@ -54,25 +53,48 @@ function handle(query, req, res) {
 
     }
 
+    var userInfo;
     if(query == 'login') {
         //put email into an array b/c that's how the query needs it
         let email = [req.body.email];
 
         //dbQuery to get password, first_name and last_name and id from users table using e-mail
-        dbQuery.getUserInfo(email).then((userInfo)=>{
+        dbQuery.getUserInfo(email).then((returnedUserInfo)=>{
             //show me stuff that came back
-            console.log(userInfo);
-            //check password
-            //return checkPassword(req.body.password, hashedP);
-            //if pw is good we go to then, if not good, errors out and we send a message to browswer saying there was an error
-        }).then(()=>{
-            //if we are here pw was good so now we need to ask database for info
-            //db query to get theri
-            //with their first name and last name and id and add to session.user.
-            //then using user id see if they have a signature.
-            //dbQuery.getSignature(user_id);
-        }).then(()=>{
+            //console.log('HANDLER login returnedUserINfo ', returnedUserInfo);
 
+            if(returnedUserInfo.rowCount == 0) {
+                console.error('User does not exist');
+                res.render('login', { 'error' : true });
+            }
+
+            userInfo = returnedUserInfo.rows[0];
+
+            console.log('HANDLER: login: userInfo:', userInfo);
+            console.log('HANDLER: login: password', userInfo.password);
+            //check password
+            return checkPassword(req.body.password, userInfo.password);
+
+        }).then((validPass)=>{
+            if(!validPass) {
+                console.log('HANDLER: password was invalid');
+                res.render('login', { 'error' : true });
+            }
+
+            //with their first name and last name and id and add to session.user.
+            // req.session.user = {
+            //     id: userInfo.id,
+            //     first_name: userInfo.first_name,
+            //     last_name: userInfo.last_name
+            // };
+            //then using user id see if they have a signature.
+            return dbQuery.getSigId([userInfo.id]);
+        }).then((results)=>{
+            if(results.rowCount > 0) {
+                console.log('got something');
+            } else {
+                console.log('got nothing');
+            }
         }).catch(e => {
             console.error(e.stack);
             res.render('login', { 'error' : true });
@@ -222,9 +244,22 @@ module.exports.handle = handle;
 //check pass returns a boolean
 //checkPassword('ilovezack', '$2a$10$uC5KEwHDIUBkEqoBy8BLqO2X0i7hcFdbBGRI4r545Kg21FDAvnwhO');
 
-var login = { body: {
-    email: 'Tif@gmail',
+// var login = { body: {
+//     email: 'Tif@gmail',
+//     password: 'ilovezack'
+// }};
+//
+// handle('login', login);
+
+var login2 = { body: {
+    email: 'mw@gmail',
     password: 'ilovezack'
 }};
 
-handle('login', login);
+handle('login', login2);
+// var loginBad = { body: {
+//     email: 'Tif@gmail',
+//     password: 'ilovezac'
+// }};
+//
+// handle('login', loginBad);
