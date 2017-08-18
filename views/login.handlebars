@@ -1,11 +1,16 @@
-<figure><img src="/img/chicken-mcnugget.jpg" alt="fried chicken head"></figure>
-        <p class="error">{{#if error}}
+<figure>
+    <img src="/img/chicken-mcnugget.jpg" alt="fried chicken head">
+</figure>
+<p class="error">{{#if error}}
         There was a problem with your form. Please try again.
-        {{/if}}</p>
-    <form method="post" action="/login">
-    <div class="inputs login"></div>
+        {{/if}}
+</p>
+<form method="post" action="/login">
+    <div class="inputs login">
         <input type="text" name="email" placeholder="e-mail">
         <label for="password">Password</label>
         <input type="password" name="password" placeholder="password">
+    </div>
         <button type="submit" name="button">SUBMIT</button>
-    </form>
+</form>
+<p class="redirect-p"><a href="/register">Register as new user</a></p>
