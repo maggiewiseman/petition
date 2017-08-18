@@ -42,13 +42,12 @@ function addUser(userInfo) {
     return db.query(queryStr, userInfo);
 }
 
-//userData is an array: first_name, last_name, signature
-console.log('DBQUERY: in add signature');
-
-
-
 //dbQuery to get password, first_name and last_name and id from users table using e-mail
-
+function getUserInfo(email) {
+    console.log('DBQUERY: in getPass');
+    let queryStr = ('SELECT id, first_name, last_name, password FROM users WHERE email = $1');
+    return db.query(queryStr, email);
+}
 
 
 module.exports.getSigners = getSigners;
@@ -56,8 +55,13 @@ module.exports.addSignature = addSignature;
 module.exports.getSignature = getSignature;
 module.exports.numSignatures = numSignatures;
 module.exports.addUser = addUser;
+module.exports.getUserInfo = getUserInfo;
 
 /* Tests */
+// getUserInfo(['leo@gmail']).then((results) => {
+//     console.log(results);
+// }).catch(e => console.error(e.stack));
+
 // getSigners().then(result => {
 //     console.log(result);
 // }).catch(e => console.error(e.stack));
