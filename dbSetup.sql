@@ -32,13 +32,13 @@ INSERT INTO signatures (user_id, first_name, last_name, signature) VALUES ('2', 
 SELECT signature FROM signatures WHERE user_id = 1;
 SELECT password FROM users WHERE email = 'leo@gmail';
 
-
+SELECT id, first_name, last_name, password FROM users WHERE email = 'leo@gmail';
 
 
 
 
 --SELECT first_name, last_name FROM signatures;
 
---SELECT signature FROM signatures WHERE id = 2;
+--
 
 --SELECT COUNT(*) FROM signatures;
