@@ -85,10 +85,13 @@ app.listen(3000, ()=> {
 
 function checkSession(req, res, next) {
     //if logged in...meaning there is a session userInfo
+    console.log('SERVER: checkSession');
     if(req.session.user) {
         //logged in!
+        console.log('SERVER: user logged in');
         if(req.session.user.sigId){
-        //already signed petition!
+            console.log('SERVER: signed petition');
+            //already signed petition!
             if(req.url == '/petition/signed' || req.url == '/petition/signatures') {
                 next();
             } else {

@@ -39,7 +39,9 @@ function numSignatures() {
 function addUser(userInfo) {
     console.log('DBQUERY: in add user.');
     let queryStr = 'INSERT INTO users (first_name, last_name, email, password) VALUES ($1, $2, $3, $4) RETURNING id';
-    return db.query(queryStr, userInfo);
+    return db.query(queryStr, userInfo).then((result) => {
+        return(result.rows);
+    });
 }
 
 //dbQuery to get password, first_name and last_name and id from users table using e-mail
@@ -50,9 +52,11 @@ function getUserInfo(email) {
 }
 
 function getSigId(user_id) {
-    console.log('DBQUERY: in getSigId');
+    console.log('DBQUERY: in getSigId, user_id = ', user_id);
     let queryStr = 'SELECT id FROM signatures WHERE user_id = $1';
-    return db.query(queryStr, user_id);
+    return db.query(queryStr, user_id).then((result) => {
+        return(result);
+    });
 }
 
 module.exports.getSigners = getSigners;

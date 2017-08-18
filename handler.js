@@ -13,11 +13,11 @@ function handle(query, req, res) {
     }
 
     if(query == 'addSignature') {
-        var validParams = validateSig(req.body);
+        var validParams = validateSig(req);
 
         dbQuery.addSignature(validParams).then((result) => {
             console.log('HANDLER: result of addSig: ', result);
-            req.session.id = result.rows[0].id;
+            req.session.user.sigId = result.rows[0].id;
             return renderThankyou(req, res);
         }).catch(e => {
             console.error(e.stack);
@@ -37,8 +37,9 @@ function handle(query, req, res) {
             return dbQuery.addUser(validUserInfo);
         }).then((id) =>{
             //when that comes back successfully with an id, we need to set session.user with first name, last name and user_id
+            console.log('HANDLER: add user id', id);
             req.session.user = {
-                id: id,
+                id: id[0].id,
                 first_name: req.body.first_name,
                 last_name: req.body.last_name
             };
@@ -65,7 +66,7 @@ function handle(query, req, res) {
 
             if(returnedUserInfo.rowCount == 0) {
                 console.error('User does not exist');
-                res.render('login', { 'error' : true });
+                throw new Error ('User does not exist');
             }
 
             userInfo = returnedUserInfo.rows[0];
@@ -111,8 +112,9 @@ function handle(query, req, res) {
     }
 }
 
-function validateSig(params) {
-    var userData = [params['id'], params['first_name'], params['last_name'], params['signature']];
+function validateSig(req) {
+    console.log('HANDLER Validate Sig: req.body', req.body);
+    var userData = [req.session.user['id'], req.session.user['first_name'], req.session.user['last_name'], req.body['signature']];
 
     var validData = [];
     userData.forEach((item)=> {
@@ -145,11 +147,11 @@ function validateUser(params) {
 
 function renderThankyou(req, res) {
     console.log('HANDLER: inside renderthankyou');
-    console.log('HANDLER: Id:', req.session.id);
+    console.log('HANDLER: SigId:', req.session.user.sigId);
 
     var promiseArr = [];
     promiseArr.push(dbQuery.numSignatures());
-    promiseArr.push(dbQuery.getSignature(req.session.id));
+    promiseArr.push(dbQuery.getSignature(req.session.user.sigId));
 
     return Promise.all(promiseArr).then((results)=> {
         console.log('HANDLER result: ', results[1].signature);
