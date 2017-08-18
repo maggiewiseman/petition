@@ -26,6 +26,7 @@ function handle(query, req, res) {
     }
 
     if(query == 'registerUser') {
+
         //similar to add signature, need to validate params by putting in array and change to null if they are empty strings.
         var validUserInfo = validateUser(req.body);
         console.log('HANDLER: validUserInfo', validUserInfo);
@@ -34,18 +35,52 @@ function handle(query, req, res) {
             validUserInfo[3] = hash;
             //then we need to query the database to add signature with an array that has first_name, last_name, email, hashed password
             return dbQuery.addUser(validUserInfo);
-        }).catch(e => console.error(e.stack));
+        }).then((id) =>{
+            //when that comes back successfully with an id, we need to set session.user with first name, last name and user_id
+            console.log(req, 'that was request');
+            req.session.user = {
+                id: id,
+                first_name: req.body.first_name,
+                last_name: req.body.last_name
+            };
 
-        //when that comes back successfully with an id, we need to set session.user with first name, last name and user_id
-        //then route to /petition and petition will do the logic of checking for signature and log in
+            console.log("HANDLER: registerUser session info", req.session.user);
+            //then route to /petition and petition will do the logic of checking for signature and log in
+            res.redirect('/petition');
+        }).catch(e => {
+            console.error(e.stack);
+            res.render('register', { 'error' : true });
+        });
+
     }
 
     if(query == 'login') {
+        //put email into an array b/c that's how the query needs it
+        let email = [req.body.email];
+
         //dbQuery to get password, first_name and last_name and id from users table using e-mail
-        //check password if password matches than set session.user
-        //with their firist name and last name and id and add to session.user.
-        //dbQuery.getSignature(user_id);
-        //then using user id see if they have a signature.  If they do add sigId to the user object.
+        dbQuery.getUserInfo(email).then((userInfo)=>{
+            //show me stuff that came back
+            console.log(userInfo);
+            //check password
+            //return checkPassword(req.body.password, hashedP);
+            //if pw is good we go to then, if not good, errors out and we send a message to browswer saying there was an error
+        }).then(()=>{
+            //if we are here pw was good so now we need to ask database for info
+            //db query to get theri
+            //with their first name and last name and id and add to session.user.
+            //then using user id see if they have a signature.
+            //dbQuery.getSignature(user_id);
+        }).then(()=>{
+
+        }).catch(e => {
+            console.error(e.stack);
+            res.render('login', { 'error' : true });
+        });
+        //if password matches than set session.user
+
+
+
         //now that they are logged in direct to /petition.
         //petition will check if signed in and route accordingly
     }
@@ -113,6 +148,19 @@ function hashPassword(plainTextPassword) {
     });
 }
 
+function checkPassword(textEnteredInLoginForm, hashedPasswordFromDatabase) {
+    return new Promise(function(resolve, reject) {
+        bcrypt.compare(textEnteredInLoginForm, hashedPasswordFromDatabase, function(err, doesMatch) {
+            if (err) {
+                reject(err);
+            } else {
+                console.log('HANDLER CheckPassword: doesMatch:', doesMatch);
+                resolve(doesMatch);
+            }
+        });
+    });
+}
+
 module.exports.handle = handle;
 
 /** TESTS **/
@@ -123,25 +171,32 @@ module.exports.handle = handle;
 //     email: 'Tif@gmail',
 //     password: 'ilovezack'
 // };
-//
-// var registrationBodyNull = {
-//     first_name: '',
-//     last_name: 'Theiessen',
-//     email: 'Tif@gmail',
-//     password: ''
-// };
-//
+// //
+// // var registrationBodyNull = {
+// //     first_name: '',
+// //     last_name: 'Theiessen',
+// //     email: 'Tif@gmail',
+// //     password: ''
+// // };
+// //
 // console.log(validateUser(registrationBody));
 // console.log(validateUser(registrationBodyNull));
 //
 // var registration = { body: {
-//     first_name: 'Tiffany',
-//     last_name: 'Theiessen',
-//     email: 'Tif@gmail',
-//     password: 'ilovezack'
+//     first_name: 'Jennifer',
+//     last_name: 'Aniston',
+//     email: 'Jen@gmail',
+//     password: 'istilllovebrad'
 // }};
-//
-// handle('registerUser', registration);
+
+var registration = { body: {
+    first_name: 'Louis',
+    last_name: 'CK',
+    email: 'louis@gmail',
+    password: 'noonelovesme'
+}};
+
+handle('registerUser', registration);
 
 //Failing tests:
 //bcrypt throws error
@@ -163,3 +218,6 @@ module.exports.handle = handle;
 // }};
 //
 // handle('registerUser', registrationNullName);
+
+//check pass returns a boolean
+//checkPassword('ilovezack', '$2a$10$uC5KEwHDIUBkEqoBy8BLqO2X0i7hcFdbBGRI4r545Kg21FDAvnwhO');

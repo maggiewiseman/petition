@@ -44,7 +44,7 @@ function addUser(userInfo) {
 
 //dbQuery to get password, first_name and last_name and id from users table using e-mail
 function getUserInfo(email) {
-    console.log('DBQUERY: in getPass');
+    console.log('DBQUERY: in getUserInfo');
     let queryStr = ('SELECT id, first_name, last_name, password FROM users WHERE email = $1');
     return db.query(queryStr, email);
 }
