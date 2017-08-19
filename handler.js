@@ -88,12 +88,14 @@ function handle(query, req, res) {
                 first_name: userInfo.first_name,
                 last_name: userInfo.last_name
             };
+            console.log('HANDLER: set req.session.user info');
             //then using user id see if they have a signature.
             return dbQuery.getSigId([userInfo.id]);
         }).then((results)=>{
             if(results.rowCount > 0) {
+                console.log('HANDLER: login session id added');
                 //so they have a signature
-                req.session.user.sigId = results.row[0].id;
+                req.session.user.sigId = results.rows[0].id;
                 renderThankyou(req, res);
             } else {
                 //they don't have a signature send them to petition page
