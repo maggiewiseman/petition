@@ -36,7 +36,7 @@ app.get('/', (req,res) => {
 
 //app.use(checkSession);
 
-app.get('/petition/signed', (req, res)=> {
+app.get('/petition/signed', loggedInCheck, signedPetitionCheck2, (req, res)=> {
     console.log('SERVER: inside get /petition/signed');
 
     handler.handle('thankyou', req, res);
