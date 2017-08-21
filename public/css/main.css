@@ -67,6 +67,7 @@ ul {
 
 li {
     font-family: Arial, sans-serif;
+	font-size: 20px;
 }
 
 figure {
@@ -84,6 +85,9 @@ img {
 
 form {
     text-align: center;
+	display: flex;
+	flex-flow: column nowrap;
+	align-items: center;
 }
 
 input {
@@ -148,4 +152,8 @@ div.inputs {
 	display: flex;
 	flex-flow: column nowrap;
 	align-items: center;
+}
+
+.signees a {
+	font-family: Arial, sans-serif;
 }
