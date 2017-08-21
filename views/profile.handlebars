@@ -1,0 +1,14 @@
+<figure><img src="/img/chicken-mcnugget.jpg" alt="fried chicken head"></figure>
+        <p class="error">{{#if error}}
+        There was a problem with your form. Please try again.
+        {{/if}}</p>
+    <form method="post" action="/profile">
+    <div class="inputs profile"></div>
+        <label for="age">Age</label>
+        <input type="text" name="age" placeholder="age">
+        <label for="city">City</label>
+        <input type="text" name="city" placeholder="City">
+        <label for="homepage">Homepage</label>
+        <input type="text" name="homepage" placeholder="url">
+        <button type="submit" name="button">CONTINUE</button>
+    </form>

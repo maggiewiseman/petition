@@ -56,6 +56,10 @@ app.get('/petition/signatures', (req, res) => {
     handler.handle('getSigners', req.params, res);
 });
 
+app.get('/petition/signatures/:city', (req, res) => {
+    handler.handle('city', req, res);   
+});
+
 app.get('/register', (req, res) => {
     res.render('register');
 });
@@ -70,6 +74,14 @@ app.get('/login', (req, res) => {
 
 app.post('/login', (req, res) => {
     handler.handle('login', req, res);
+});
+
+app.get('/profile', (req, res) => {
+    res.render('/profile');
+});
+
+app.post('/profile', (req, res) => {
+    handler.handle('add_profile', req, res);
 });
 
 app.use((req,res) => {
