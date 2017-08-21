@@ -51,7 +51,7 @@ function handle(query, req, res) {
 
             console.log("HANDLER: registerUser session info", req.session.user);
             //then route to /petition and petition will do the logic of checking for signature and log in
-            res.redirect('/petition');
+            res.redirect('/profile');
         }).catch(e => {
             console.error(e.stack);
             res.render('register', { 'error' : true });

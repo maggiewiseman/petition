@@ -37,7 +37,9 @@ INSERT INTO signatures (signature, user_id) VALUES ('nonsense text', (SELECT id 
 
 
 INSERT INTO user_profiles (user_id, age, city, homepage) VALUES ((SELECT id from users WHERE id='2'), '37', 'Washington', 'mwiseman.com');
---
+
+
+
 -- SELECT age FROM user_profiles WHERE user_id = 2;
 
 -- SELECT signature FROM signatures WHERE user_id = 1;

@@ -57,7 +57,7 @@ app.get('/petition/signatures', (req, res) => {
 });
 
 app.get('/petition/signatures/:city', (req, res) => {
-    handler.handle('city', req, res);   
+    handler.handle('city', req, res);
 });
 
 app.get('/register', (req, res) => {
@@ -77,7 +77,7 @@ app.post('/login', (req, res) => {
 });
 
 app.get('/profile', (req, res) => {
-    res.render('/profile');
+    res.render('profile');
 });
 
 app.post('/profile', (req, res) => {
@@ -111,7 +111,7 @@ function checkSession(req, res, next) {
             }
         } else {
             //logged in but have not signed
-            if(req.url == '/petition') {
+            if(req.url == '/petition' || req.url == '/profile')  {
                 next();
             } else {
                 res.redirect('/petition');
