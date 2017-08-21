@@ -13,9 +13,7 @@
                 {{this.first_name}} {{this.last_name}}
             {{/if}}
             {{#if this.age}}
-                 ({{this.age}}
-                 {{#if this.city}}, <a href="/petition/signatures/{{this.city}}">{{this.city}}</a>
-                 {{/if}})
+                 ({{this.age}}{{#if this.city}}, <a href="/petition/signatures/{{this.city}}">{{this.city}}</a>{{/if}})
             {{/if}}
         </li>
         {{/each}}
