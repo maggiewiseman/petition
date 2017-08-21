@@ -75,7 +75,7 @@ module.exports.getSigId = getSigId;
 module.exports.addProfile = addProfile;
 
 /* Tests */
-addProfile([1, 37, 'Berlin', 'google.com']).then(() => {
+addProfile([1, 37, null, 'google.com']).then(() => {
     console.log('added Profile');
 }).catch(e => console.error(e.stack));
 
