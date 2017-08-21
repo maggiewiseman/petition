@@ -101,11 +101,13 @@ function handle(query, req, res) {
                 console.log('HANDLER: login session id added');
                 //so they have a signature
                 req.session.user.sigId = results.rows[0].id;
-                renderThankyou(req, res);
-            } else {
-                //they don't have a signature send them to petition page
-                res.render('petition');
+                //res.redirect('/petition/signed');
             }
+            //else {
+                //they don't have a signature send them to petition page
+            res.redirect('/petition');
+                //res.render('petition');
+            //}
         }).catch(e => {
             console.error(e.stack);
             res.render('login', { 'error' : true });
