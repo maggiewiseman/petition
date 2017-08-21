@@ -22,7 +22,8 @@ function handle(query, req, res) {
         dbQuery.addSignature(validParams).then((result) => {
             console.log('HANDLER: result of addSig: ', result);
             req.session.user.sigId = result.rows[0].id;
-            return renderThankyou(req, res);
+            return res.redirect('/petition/signed');
+            //return renderThankyou(req, res);
         }).catch(e => {
             console.error(e.stack);
             res.render('petition', { 'error' : true });
