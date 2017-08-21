@@ -59,6 +59,12 @@ function getSigId(user_id) {
     });
 }
 
+function addProfile(profileData) {
+    console.log('DBQUERY in addProfile, user_id = ', profileData);
+    let queryStr = 'INSERT INTO user_profiles (user_id, age, city, homepage) VALUES ((SELECT id from users WHERE id=$1), $2, $3, $4)';
+    return db.query(queryStr, profileData);
+}
+
 module.exports.getSigners = getSigners;
 module.exports.addSignature = addSignature;
 module.exports.getSignature = getSignature;
@@ -66,8 +72,13 @@ module.exports.numSignatures = numSignatures;
 module.exports.addUser = addUser;
 module.exports.getUserInfo = getUserInfo;
 module.exports.getSigId = getSigId;
+module.exports.addProfile = addProfile;
 
 /* Tests */
+addProfile([1, 37, 'Berlin', 'google.com']).then(() => {
+    console.log('added Profile');
+}).catch(e => console.error(e.stack));
+
 // getSigId([1]).then((result) => {
 //     console.log(result);
 //     if(result.rowCount > 0) {
