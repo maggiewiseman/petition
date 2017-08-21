@@ -38,8 +38,18 @@ INSERT INTO signatures (signature, user_id) VALUES ('nonsense text', (SELECT id 
 
 INSERT INTO user_profiles (user_id, age, city, homepage) VALUES ((SELECT id from users WHERE id='2'), '37', 'Washington', 'mwiseman.com');
 
+SELECT users.first_name, users.last_name FROM users JOIN signatures ON users.id = signatures.user_id;
 
+SELECT users.first_name, users.last_name, user_profiles.age, user_profiles.city, user_profiles.homepage FROM users INNER JOIN signatures ON users.id = signatures.user_id JOIN user_profiles ON users.id = user_profiles.user_id;
 
+--
+-- select a.name,b.manufacturer_id,c.id,c.item_desc
+-- from manufacturers as a
+-- inner join
+-- item_manufacturers as b
+-- on b.manufacturer_id=a.id
+-- inner join item as c
+-- on c.id=b.item_id
 -- SELECT age FROM user_profiles WHERE user_id = 2;
 
 -- SELECT signature FROM signatures WHERE user_id = 1;

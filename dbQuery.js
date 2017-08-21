@@ -6,7 +6,7 @@ const db = spicedPg(`postgres:${secrets.dbUser}:${secrets.pass}@localhost:5432/p
 //db returns a promise and you will get back a result
 function getSigners() {
     console.log('DBQUERY: in getSigners');
-    let queryStr = 'SELECT first_name, last_name FROM signatures';
+    let queryStr = 'SELECT users.first_name, users.last_name FROM users JOIN signatures ON users.id = signatures.user_id';
     return db.query(queryStr).then((result) => {
         return(result.rows);
     }).catch(e => console.error(e.stack));
@@ -105,12 +105,12 @@ module.exports.addProfile = addProfile;
 //     console.log(result);
 // }).catch(e => console.error(e.stack));
 //
-addSignature(['Lizzy Sig', 1]).then(() =>{
-    console.log('added signature');
-    return getSigners();
-}).then((result) => {
-    console.log(result);
-}).catch(e => console.error(e.stack));
+// addSignature(['Lizzy Sig', 1]).then(() =>{
+//     console.log('added signature');
+//     return getSigners();
+// }).then((result) => {
+//     console.log(result);
+// }).catch(e => console.error(e.stack));
 
 // numSignatures().then(result => {
 //     console.log(result);
