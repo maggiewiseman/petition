@@ -9,7 +9,20 @@
     -->
     <ul>
         {{#each results}}
-        <li>{{this.first_name}} {{this.last_name}}</li>
+        <li>{{#if this.homepage}}
+            <a href="{{this.homepage}}">{{this.homepage}} </a>
+        {{/if}}
+                {{this.first_name}} {{this.last_name}}
+
+             </li>
         {{/each}}
+        <!-- {{#each results}}
+        <li>{{#if this.homepage}}
+            <a href="{{this.homepage}}>"{{this.first_name}} {{this.last_name}}</a>
+            {{else}}
+                {{this.first_name}} {{this.last_name}}
+            {{/if}}
+             </li>
+        {{/each}} -->
     </li>
 </div>

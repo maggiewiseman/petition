@@ -9,6 +9,7 @@ function getSigners() {
     let queryStr = 'SELECT users.first_name, users.last_name, user_profiles.age, user_profiles.city, user_profiles.homepage FROM users INNER JOIN signatures ON users.id = signatures.user_id JOIN user_profiles ON users.id = user_profiles.user_id';
     //let queryStr = 'SELECT users.first_name, users.last_name FROM users JOIN signatures ON users.id = signatures.user_id';
     return db.query(queryStr).then((result) => {
+        console.log('DBQUERY getSigners:', result.rows);
         return(result.rows);
     }).catch(e => console.error(e.stack));
 }
