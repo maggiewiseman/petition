@@ -109,6 +109,22 @@ function handle(query, req, res) {
             res.render('login', { 'error' : true });
         });
     }
+
+    if(query == 'add_profile') {
+        //get data from request body
+        //make empty strings null
+        var userProfile = [req.session.user.id, req.body['age'], req.body['city'], req.body['homepage']];
+        userProfile = help.validateProfile(userProfile);
+        console.log('HANDLER add_profile: validUserInfo', userProfile);
+        //add them to the database
+        dbQuery.addProfile(userProfile).then(() => {
+            res.redirect('/petition');
+        }).catch(e => {
+            console.error(e.stack);
+            res.render('login', { 'error' : true });
+        });
+
+    }
 }
 
 

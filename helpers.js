@@ -5,15 +5,19 @@ const bcrypt = require('bcryptjs');
 */
 function validateUser(params) {
     console.log('HANDLER: validUser');
-    // if(params['password'] == '') {
-    //     throw new Error('password is blank');
-    // }
 
     var userInfo = [params['first_name'], params['last_name'], params['email'], params['password']];
 
     return userInfo.map(function(item) {
         return item == '' ? null : item;
     });
+}
+
+/*
+@params = array of data
+*/
+function validateProfile(userProfile) {
+    return userProfile.map(item => item == '' ? null : item);
 }
 
 
@@ -68,3 +72,4 @@ module.exports.checkPassword = checkPassword;
 module.exports.hashPassword = hashPassword;
 module.exports.validateUser = validateUser;
 module.exports.validateSig = validateSig;
+module.exports.validateProfile = validateProfile;
