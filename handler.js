@@ -12,6 +12,14 @@ function handle(query, req, res) {
         }).catch(e => console.error(e.stack));
     }
 
+    if(query == 'signersByCity') {
+        let cityName = req.params.cityName;
+        return dbQuery.getSignersByCity([cityName]).then((results) => {
+            res.render('city', {cityName: cityName,
+                results: results});
+        }).catch(e => console.error(e.stack));
+    }
+
     if(query == 'thankyou') {
         return renderThankyou(req, res).catch(e => console.error(e.stack));
     }

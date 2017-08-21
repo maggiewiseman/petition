@@ -34,7 +34,7 @@ app.get('/', (req,res) => {
     res.redirect('/petition');
 });
 
-app.use(checkSession);
+//app.use(checkSession);
 
 app.get('/petition/signed', (req, res)=> {
     console.log('SERVER: inside get /petition/signed');
@@ -43,8 +43,7 @@ app.get('/petition/signed', (req, res)=> {
     //res.send('Thanks for signing');
 });
 
-app.get('/petition', (req, res)=> {
-    //eventually this will render the main page
+app.get('/petition', loggedInCheck, signedPetitionCheck, (req, res)=> {
     res.render('petition');
 });
 
@@ -52,15 +51,18 @@ app.post('/petition', (req,res) => {
     handler.handle('addSignature', req, res);
 });
 
-app.get('/petition/signatures', (req, res) => {
+app.get('/petition/signatures/:city', loggedInCheck, signedPetitionCheck2, (req, res) => {
+    console.log('SERVER: cityname route');
+    handler.handle('signersByCity', req, res);
+});
+
+app.get('/petition/signatures', loggedInCheck, signedPetitionCheck2, (req, res) => {
     handler.handle('getSigners', req.params, res);
 });
 
-app.get('/petition/signatures/:city', (req, res) => {
-    handler.handle('city', req, res);
-});
-
-app.get('/register', (req, res) => {
+//if they are logged in then check if signed
+//if not signed go to /petition page
+app.get('/register', registerLoginCheck, (req, res) => {
     res.render('register');
 });
 
@@ -68,7 +70,7 @@ app.post('/register', (req, res) => {
     handler.handle('registerUser', req, res);
 });
 
-app.get('/login', (req, res) => {
+app.get('/login', registerLoginCheck, (req, res) => {
     res.render('login');
 });
 
@@ -76,7 +78,7 @@ app.post('/login', (req, res) => {
     handler.handle('login', req, res);
 });
 
-app.get('/profile', (req, res) => {
+app.get('/profile', loggedInCheck, profileCheck, (req, res) => {
     res.render('profile');
 });
 
@@ -95,52 +97,85 @@ app.listen(3000, ()=> {
     console.log('Listening on port 3000');
 });
 
-function checkSession(req, res, next) {
-    //if logged in...meaning there is a session userInfo
-    console.log('SERVER: checkSession');
+function registerLoginCheck(req, res, next) {
+
     if(req.session.user) {
-        //logged in!
-        console.log('SERVER: user logged in');
-        if(req.session.user.sigId){
-            console.log('SERVER: signed petition');
-            //already signed petition!
-            if(req.url == '/petition/signed' || req.url == '/petition/signatures') {
-                next();
-            } else {
-                res.redirect('/petition/signed');
-            }
+        //logged in
+        if(req.session.user.sigId) {
+            //already signed petition
+            res.redirect('/petition/signed');
         } else {
-            //logged in but have not signed
-            if(req.url == '/petition' || req.url == '/profile')  {
-                next();
-            } else {
-                res.redirect('/petition');
-            }
-        }// end signed petition check
-    } else {
-        //not logged in!
-        if(req.url == '/register' || req.url == '/login') {
-            next();
-        } else {
-            res.redirect('/register');
+            //logged in but haven't signed petition
+            res.redirect('/petition');
         }
+    } else {
+        //not logged in go to tregistration page
+        next();
+    }
+}
+function loggedInCheck(req, res, next) {
+    if(req.session.user) {
+        next();
+    } else {
+        res.redirect('/register');
+    }
+}
+
+//called by petition route so if they've signed they get redirected
+function signedPetitionCheck(req, res, next) {
+    if(req.session.user.sigId) {
+        res.redirect('/petition/signed');
+    } else {
+        next();
+    }
+}
+
+//called by other stuff so if they've signed they can go ot the page requested. otherwise they get redirected back to the petition page
+function signedPetitionCheck2(req,res, next) {
+    if(req.session.user.sigId) {
+        next();
+    } else {
+        res.redirect('/petition');
+    }
+}
+
+function profileCheck(req, res, next) {
+    console.log('Session profile flag is not being set anywher!');
+    if(req.session.user.profile) {
+        res.redirect('/petition');
+    } else {
+        next();
     }
 
-    // console.log('SERVER: url: ', req.url);
-    // //if they have the cookie then they can go to the signed page, but
-    // //else they need to be redirected to the regular page
-    // if(req.session.id) {
-    //     if(req.url == '/petition/signed' || req.url == '/petition/signatures') {
-    //         next();
-    //     } else {
-    //         res.redirect('/petition/signed');
-    //     }
-    // } else {
-    //     if(req.url != '/petition') {
-    //         console.log('SERVER: url does not equal /petition');
-    //         res.redirect('/petition');
-    //     } else {
-    //         next();
-    //     }
-    // }
 }
+// function checkSession(req, res, next) {
+//     //if logged in...meaning there is a session userInfo
+//     console.log('SERVER: checkSession');
+//     if(req.session.user) {
+//         //logged in!
+//         console.log('SERVER: user logged in');
+//         if(req.session.user.sigId){
+//             console.log('SERVER: signed petition');
+//             //already signed petition!
+//             if(req.url == '/petition/signed' || req.url == '/petition/signatures') {
+//                 console.log('SERVER going to next');
+//                 next();
+//             } else {
+//                 res.redirect('/petition/signed');
+//             }
+//         } else {
+//             //logged in but have not signed
+//             if(req.url == '/petition' || req.url == '/profile')  {
+//                 next();
+//             } else {
+//                 res.redirect('/petition');
+//             }
+//         }// end signed petition check
+//     } else {
+//         //not logged in!
+//         if(req.url == '/register' || req.url == '/login') {
+//             next();
+//         } else {
+//             res.redirect('/register');
+//         }
+//     }

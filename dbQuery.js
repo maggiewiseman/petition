@@ -89,9 +89,9 @@ module.exports.getSignersByCity = getSignersByCity;
 
 /* Tests */
 
-getSignersByCity(['LA']).then((results) => {
-    console.log('results');
-}).catch(e => console.error(e.stack));
+// getSignersByCity(['LA']).then((results) => {
+//     console.log('results');
+// }).catch(e => console.error(e.stack));
 // addProfile([1, 37, null, 'google.com']).then(() => {
 //     console.log('added Profile');
 // }).catch(e => console.error(e.stack));
