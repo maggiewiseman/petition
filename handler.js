@@ -1,7 +1,11 @@
 const dbQuery = require('./dbQuery');
-const bcrypt = require('bcryptjs');
+const help = require('./helpers');
 
 function handle(query, req, res) {
+    /**
+    returns list of people who have signed for signatures page.
+    will need to get city and age here
+    **/
     if(query == 'getSigners') {
         dbQuery.getSigners().then((result) => {
             res.render('signatures', {results: result});
@@ -13,7 +17,7 @@ function handle(query, req, res) {
     }
 
     if(query == 'addSignature') {
-        var validParams = validateSig(req);
+        var validParams = help.validateSig(req);
 
         dbQuery.addSignature(validParams).then((result) => {
             console.log('HANDLER: result of addSig: ', result);
@@ -28,10 +32,10 @@ function handle(query, req, res) {
     if(query == 'registerUser') {
 
         //similar to add signature, need to validate params by putting in array and change to null if they are empty strings.
-        var validUserInfo = validateUser(req.body);
+        var validUserInfo = help.validateUser(req.body);
         console.log('HANDLER: validUserInfo', validUserInfo);
         //need to hash the signature
-        hashPassword(validUserInfo[3]).then((hash) =>{
+        help.hashPassword(validUserInfo[3]).then((hash) =>{
             validUserInfo[3] = hash;
             //then we need to query the database to add signature with an array that has first_name, last_name, email, hashed password
             return dbQuery.addUser(validUserInfo);
@@ -74,7 +78,7 @@ function handle(query, req, res) {
             console.log('HANDLER: login: userInfo:', userInfo);
             console.log('HANDLER: login: password', userInfo.password);
             //check password
-            return checkPassword(req.body.password, userInfo.password);
+            return help.checkPassword(req.body.password, userInfo.password);
 
         }).then((validPass)=>{
             if(!validPass) {
@@ -114,38 +118,7 @@ function handle(query, req, res) {
     }
 }
 
-function validateSig(req) {
-    console.log('HANDLER Validate Sig: req.body', req.body);
-    var userData = [req.session.user['id'], req.session.user['first_name'], req.session.user['last_name'], req.body['signature']];
 
-    var validData = [];
-    userData.forEach((item)=> {
-        if(item == "") {
-            console.log('HANDLER: empty string');
-            validData.push(null);
-        } else {
-            validData.push(item);
-        }
-    });
-
-    console.log('HANDLER: validdata', validData);
-    return validData;
-}
-/*
-@params params is an object that is the request body
-*/
-function validateUser(params) {
-    console.log('HANDLER: validUser');
-    // if(params['password'] == '') {
-    //     throw new Error('password is blank');
-    // }
-
-    var userInfo = [params['first_name'], params['last_name'], params['email'], params['password']];
-
-    return userInfo.map(function(item) {
-        return item == '' ? null : item;
-    });
-}
 
 function renderThankyou(req, res) {
     console.log('HANDLER: inside renderthankyou');
@@ -161,34 +134,7 @@ function renderThankyou(req, res) {
     });
 }
 
-function hashPassword(plainTextPassword) {
-    return new Promise(function(resolve, reject) {
-        bcrypt.genSalt(function(err, salt) {
-            if (err) {
-                return reject(err);
-            }
-            bcrypt.hash(plainTextPassword, salt, function(err, hash) {
-                if (err) {
-                    return reject(err);
-                }
-                resolve(hash);
-            });
-        });
-    });
-}
 
-function checkPassword(textEnteredInLoginForm, hashedPasswordFromDatabase) {
-    return new Promise(function(resolve, reject) {
-        bcrypt.compare(textEnteredInLoginForm, hashedPasswordFromDatabase, function(err, doesMatch) {
-            if (err) {
-                reject(err);
-            } else {
-                console.log('HANDLER CheckPassword: doesMatch:', doesMatch);
-                resolve(doesMatch);
-            }
-        });
-    });
-}
 
 module.exports.handle = handle;
 
