@@ -13,7 +13,7 @@ function handle(query, req, res) {
     }
 
     if(query == 'signersByCity') {
-        let cityName = req.params.cityName;
+        let cityName = req.params.city;
         return dbQuery.getSignersByCity([cityName]).then((results) => {
             res.render('city', {cityName: cityName,
                 results: results});

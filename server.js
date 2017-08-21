@@ -52,7 +52,7 @@ app.post('/petition', (req,res) => {
 });
 
 app.get('/petition/signatures/:city', loggedInCheck, signedPetitionCheck2, (req, res) => {
-    console.log('SERVER: cityname route');
+    console.log('SERVER: city route', req.params.city);
     handler.handle('signersByCity', req, res);
 });
 
