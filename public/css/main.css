@@ -49,6 +49,11 @@ a {
     font-family: 'Bungee', Arial, sans-serif;
 }
 
+
+p {
+	text-align: center;
+}
+
 a,
 a:visited {
     color: #D77A61;
@@ -87,7 +92,6 @@ input {
     border: 2px #223843 solid;
     border-radius: 10px;
     width: 200px;
-    margin: 30px 10px 30px 10px;
 }
 
 canvas {
@@ -98,6 +102,7 @@ canvas {
 
 button {
     font-size: 18px;
+	margin-top: 20px;
     padding: 4px 10px;
     background-color: #223843;
     color: #EFF1F3;
@@ -134,4 +139,13 @@ figure.signature > img {
 	color: #D77A61;
 	text-align: center;
 	margin-top: 30px;
+}
+
+
+div.inputs {
+	width: 50%;
+	margin: 0 auto;
+	display: flex;
+	flex-flow: column nowrap;
+	align-items: center;
 }
