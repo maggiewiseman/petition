@@ -10,11 +10,14 @@
     <ul>
         {{#each results}}
         <li>{{#if this.homepage}}
-            <a href="{{this.homepage}}">{{this.homepage}} </a>
-        {{/if}}
+            <a href="{{this.homepage}}">{{this.first_name}} {{this.last_name}} </a>
+            {{else}}
                 {{this.first_name}} {{this.last_name}}
-
-             </li>
+            {{/if}}
+            {{#if this.age}}
+                 ({{this.age}})
+            {{/if}}
+        </li>
         {{/each}}
         <!-- {{#each results}}
         <li>{{#if this.homepage}}
