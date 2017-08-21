@@ -14,6 +14,15 @@ function getSigners() {
     }).catch(e => console.error(e.stack));
 }
 
+function getSignersByCity(cityName) {
+    console.log('DBQUERY signersByCity: ', cityName);
+    let queryStr = 'SELECT users.first_name, users.last_name, user_profiles.age, user_profiles.city, user_profiles.homepage FROM users INNER JOIN signatures ON users.id = signatures.user_id JOIN user_profiles ON users.id = user_profiles.user_id WHERE user_profiles.city = $1;';
+    return db.query(queryStr, cityName).then((result) => {
+        console.log('DBQUERY gotSignersByCity:', result.rows);
+        return(result.rows);
+    }).catch(e => console.error(e.stack));
+}
+
 function addSignature(userData) {
     //userData is an array: first_name, last_name, signature
     console.log('DBQUERY: in add signature');
@@ -76,8 +85,13 @@ module.exports.addUser = addUser;
 module.exports.getUserInfo = getUserInfo;
 module.exports.getSigId = getSigId;
 module.exports.addProfile = addProfile;
+module.exports.getSignersByCity = getSignersByCity;
 
 /* Tests */
+
+getSignersByCity(['LA']).then((results) => {
+    console.log('results');
+}).catch(e => console.error(e.stack));
 // addProfile([1, 37, null, 'google.com']).then(() => {
 //     console.log('added Profile');
 // }).catch(e => console.error(e.stack));
