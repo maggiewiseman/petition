@@ -17,7 +17,7 @@ function handle(query, req, res) {
     }
 
     if(query == 'addSignature') {
-        var validParams = help.validateSig(req);
+        var validParams = help.validate([req.body.signature, req.session.user.id]);
 
         dbQuery.addSignature(validParams).then((result) => {
             console.log('HANDLER: result of addSig: ', result);
@@ -114,7 +114,7 @@ function handle(query, req, res) {
         //get data from request body
         //make empty strings null
         var userProfile = [req.session.user.id, req.body['age'], req.body['city'], req.body['homepage']];
-        userProfile = help.validateProfile(userProfile);
+        userProfile = help.validate(userProfile);
         console.log('HANDLER add_profile: validUserInfo', userProfile);
         //add them to the database
         dbQuery.addProfile(userProfile).then(() => {

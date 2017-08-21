@@ -15,7 +15,8 @@ function getSigners() {
 function addSignature(userData) {
     //userData is an array: first_name, last_name, signature
     console.log('DBQUERY: in add signature');
-    let queryStr = 'INSERT INTO signatures (user_id, first_name, last_name, signature) VALUES ($1, $2, $3, $4) RETURNING id';
+    let queryStr = 'INSERT INTO signatures (signature, user_id) VALUES ($1, (SELECT id from users WHERE id=$2)) RETURNING id';
+    // let queryStr = 'INSERT INTO signatures (user_id, signature) VALUES ($1, $2) RETURNING id';
     return db.query(queryStr, userData);
 }
 
@@ -75,9 +76,9 @@ module.exports.getSigId = getSigId;
 module.exports.addProfile = addProfile;
 
 /* Tests */
-addProfile([1, 37, null, 'google.com']).then(() => {
-    console.log('added Profile');
-}).catch(e => console.error(e.stack));
+// addProfile([1, 37, null, 'google.com']).then(() => {
+//     console.log('added Profile');
+// }).catch(e => console.error(e.stack));
 
 // getSigId([1]).then((result) => {
 //     console.log(result);
@@ -104,12 +105,12 @@ addProfile([1, 37, null, 'google.com']).then(() => {
 //     console.log(result);
 // }).catch(e => console.error(e.stack));
 //
-// addSignature(['Lizzy', 'Millenaar', 'Lizzy Sig']).then(() =>{
-//     console.log('added signature');
-//     return getSigners();
-// }).then((result) => {
-//     console.log(result);
-// }).catch(e => console.error(e.stack));
+addSignature(['Lizzy Sig', 1]).then(() =>{
+    console.log('added signature');
+    return getSigners();
+}).then((result) => {
+    console.log(result);
+}).catch(e => console.error(e.stack));
 
 // numSignatures().then(result => {
 //     console.log(result);

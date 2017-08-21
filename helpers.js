@@ -14,30 +14,30 @@ function validateUser(params) {
 }
 
 /*
-@params = array of data
+@params = array of data from user or session
 */
-function validateProfile(userProfile) {
-    return userProfile.map(item => item == '' ? null : item);
+function validate(userInput) {
+    return userInput.map(item => item == '' ? null : item);
 }
 
 
-function validateSig(req) {
-    console.log('HANDLER Validate Sig: req.body', req.body);
-    var userData = [req.session.user['id'], req.session.user['first_name'], req.session.user['last_name'], req.body['signature']];
-
-    var validData = [];
-    userData.forEach((item)=> {
-        if(item == "") {
-            console.log('HANDLER: empty string');
-            validData.push(null);
-        } else {
-            validData.push(item);
-        }
-    });
-
-    console.log('HANDLER: validdata', validData);
-    return validData;
-}
+// function validateSig(req) {
+//     console.log('HANDLER Validate Sig: req.body', req.body);
+//     var userData = [req.session.user['id'], req.session.user['first_name'], req.session.user['last_name'], req.body['signature']];
+//
+//     var validData = [];
+//     userData.forEach((item)=> {
+//         if(item == "") {
+//             console.log('HANDLER: empty string');
+//             validData.push(null);
+//         } else {
+//             validData.push(item);
+//         }
+//     });
+//
+//     console.log('HANDLER: validdata', validData);
+//     return validData;
+// }
 
 function hashPassword(plainTextPassword) {
     return new Promise(function(resolve, reject) {
@@ -71,5 +71,4 @@ function checkPassword(textEnteredInLoginForm, hashedPasswordFromDatabase) {
 module.exports.checkPassword = checkPassword;
 module.exports.hashPassword = hashPassword;
 module.exports.validateUser = validateUser;
-module.exports.validateSig = validateSig;
-module.exports.validateProfile = validateProfile;
+module.exports.validate = validate;
