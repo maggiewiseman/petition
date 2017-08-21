@@ -101,26 +101,15 @@ function handle(query, req, res) {
                 console.log('HANDLER: login session id added');
                 //so they have a signature
                 req.session.user.sigId = results.rows[0].id;
-                //res.redirect('/petition/signed');
             }
-            //else {
-                //they don't have a signature send them to petition page
             res.redirect('/petition');
-                //res.render('petition');
-            //}
+
         }).catch(e => {
             console.error(e.stack);
             res.render('login', { 'error' : true });
         });
-        //if password matches than set session.user
-
-
-
-        //now that they are logged in direct to /petition.
-        //petition will check if signed in and route accordingly
     }
 }
-
 
 
 function renderThankyou(req, res) {
