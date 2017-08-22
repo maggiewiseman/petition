@@ -30,6 +30,10 @@ nav ul {
 	float: right;
 }
 
+nav ul.home {
+	float: left;
+}
+
 nav li {
 	display: inline-block;
 	padding: 6px 10px;
@@ -41,10 +45,14 @@ nav a {
 	text-decoration: none;
 	font-size: 14px;
 }
+nav a:visited {
+	color:  #EFF1F3;
+}
 
 nav a:hover {
 	color: #D8B4A0;
 }
+
 
 .wrapper {
     display: flex;
