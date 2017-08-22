@@ -40,9 +40,7 @@ function handle(query, req, res) {
 
     if(query == 'registerUser') {
 
-        //similar to add signature, need to validate params by putting in array and change to null if they are empty strings.
-        var validUserInfo = help.validateUser(req.body);
-        console.log('HANDLER: validUserInfo', validUserInfo);
+        var validUserInfo = setUserData(req);
         //need to hash the signature
         help.hashPassword(validUserInfo[3]).then((hash) =>{
             validUserInfo[3] = hash;
@@ -126,16 +124,9 @@ function handle(query, req, res) {
     }
 
     if(query == 'getProfile') {
-        dbQuery.getProfile([req.session.user.id]).then((results) => {
-            console.log('HANDLER getProfile results: ', results.rows[0]);
-
-            let userInfo = results.rows[0];
-            userInfo.first_name = req.session.user.first_name;
-            userInfo.last_name = req.session.user.last_name;
-
-            console.log('HANDLER userInfo to send to edit profile template: ', userInfo);
-            res.render('edit', userInfo);
-
+        renderProfile(req, res).then((results)=>{
+            console.log('HANDLER userInfo to send to edit profile template: ', results);
+            res.render('edit', results);
         }).catch(e => {
             console.error(e.stack);
             res.render('profile', { 'error' : true });
@@ -160,11 +151,7 @@ function handle(query, req, res) {
 
                 return Promise.all(promiseArr).then(() => {
                     res.redirect('/petition');
-                }).catch(e => {
-                    console.error(e.stack);
-                    res.render('login', { 'error' : true });
                 });
-
             } else {
                 //add user_profile
                 addProfile();
@@ -173,9 +160,21 @@ function handle(query, req, res) {
 
         }).catch(e => {
             console.error(e.stack);
-            res.render('profile', { 'error' : true });
+            res.redirect('/profile/edit');
         });
     }
+}
+
+function renderProfile(req, res) {
+    return dbQuery.getProfile([req.session.user.id]).then((results) => {
+        console.log('HANDLER getProfile results: ', results.rows[0]);
+
+        let userInfo = results.rows[0];
+        userInfo.first_name = req.session.user.first_name;
+        userInfo.last_name = req.session.user.last_name;
+
+        return userInfo;
+    });
 }
 
 function setUserData(req) {
