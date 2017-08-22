@@ -16,11 +16,11 @@ router.get('/petition/signed', mw.loggedInCheck, mw.signedPetitionCheck2, (req, 
 });
 
 router.route('/petition')
-    .get('/petition', mw.loggedInCheck, mw.signedPetitionCheck, (req, res)=> {
+    .get(mw.loggedInCheck, mw.signedPetitionCheck, (req, res)=> {
         res.render('petition');
     })
 
-    .post('/petition', (req,res) => {
+    .post((req,res) => {
         handler('addSignature', req, res);
     });
 
@@ -35,29 +35,42 @@ router.get('/petition/signatures', mw.loggedInCheck, mw.signedPetitionCheck2, (r
 
 //if they are logged in then check if signed
 //if not signed go to /petition page
-router.get('/register', mw.registerLoginCheck, (req, res) => {
-    res.render('register');
-});
+router.route('register')
+    .get(mw.registerLoginCheck, (req, res) => {
+        res.render('register');
+    })
 
-router.post('/register', (req, res) => {
-    handler('registerUser', req, res);
-});
+    .post((req, res) => {
+        handler('registerUser', req, res);
+    });
 
-router.get('/login', mw.registerLoginCheck, (req, res) => {
-    res.render('login');
-});
+router.route('/login')
+    .get(mw.registerLoginCheck, (req, res) => {
+        res.render('login');
+    })
 
-router.post('/login', (req, res) => {
-    handler('login', req, res);
-});
+    .post((req, res) => {
+        handler('login', req, res);
+    });
 
-router.get('/profile', mw.loggedInCheck, mw.profileCheck, (req, res) => {
-    res.render('profile');
-});
+router.route('/profile')
+    .get(mw.loggedInCheck, mw.profileCheck, (req, res) => {
+        res.render('profile');
+    })
 
-router.post('/profile', (req, res) => {
-    handler('add_profile', req, res);
-});
+    .post((req, res) => {
+        handler('add_profile', req, res);
+    });
+
+router.route('/profile/edit')
+    .get((req,res) => {
+        res.render('edit');
+
+    })
+
+    .post((req, res) => {
+        handler('editProfile', req, res);
+    });
 
 router.use((req,res) => {
     console.error('File Not Found, 404');
