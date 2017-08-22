@@ -59,17 +59,17 @@ router.route('/profile')
     })
 
     .post((req, res) => {
-        handler('add_profile', req, res);
+        handler('addProfile', req, res);
     });
 
 router.route('/profile/edit')
     .get(mw.loggedInCheck, (req,res) => {
         console.log(req.session.user);
-        res.render('edit');
+        handler('getProfile', req, res);
     })
 
     .post((req, res) => {
-        handler('editProfile', req, res);
+        handler('updateProfile', req, res);
     });
 
 router.get('/logout', (req, res) => {

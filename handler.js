@@ -118,7 +118,7 @@ function handle(query, req, res) {
         });
     }
 
-    if(query == 'add_profile') {
+    if(query == 'addProfile') {
         //get data from request body
         //make empty strings null
         var userProfile = [req.session.user.id, req.body['age'], req.body['city'], req.body['homepage']];
@@ -132,6 +132,21 @@ function handle(query, req, res) {
             res.render('login', { 'error' : true });
         });
 
+    }
+
+    if(query == 'getProfile') {
+        dbQuery.getProfile([req.session.user.id]).then((results) => {
+            console.log('HANDLER getProfile results: ', results);
+
+            let userInfo = results.rows[0];
+            userInfo.first_name = req.session.user.first_name;
+            userInfo.last_name = req.session.user.last_name;
+            console.log('HANDLER userInfo to send to edit profile template: ', userInfo);
+            res.render('edit', userInfo);
+        }).catch(e => {
+            console.error(e.stack);
+            res.render('profile', { 'error' : true });
+        });
     }
 }
 
