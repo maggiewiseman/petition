@@ -119,7 +119,8 @@ function handle(query, req, res) {
     if(query == 'addProfile') {
         //get data from request body
         //make empty strings null
-        addProfile(req, res);
+        req.session.user.profile = true;
+        return addProfile(req, res);
 
     }
 
@@ -219,13 +220,19 @@ function setUserProfile(req) {
 
 function addProfile(req,res) {
     let userProfile = setUserProfile(req);
-    //add them to the database
-    dbQuery.addProfile(userProfile).then(() => {
+
+    if(!userProfile[1] && !userProfile[2] && !userProfile[3]) {
+        console.log('HANDLER addProfile func: all values null');
         res.redirect('/petition');
-    }).catch(e => {
-        console.error(e.stack);
-        res.render('login', { 'error' : true });
-    });
+    } else {
+        //add them to the database
+        return dbQuery.addProfile(userProfile).then(() => {
+            res.redirect('/petition');
+        }).catch(e => {
+            console.error(e.stack);
+            res.render('login', { 'error' : true });
+        });
+    }
 }
 
 module.exports.handle = handle;
