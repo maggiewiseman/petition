@@ -10,7 +10,7 @@ router.get('/', (req,res) => {
 });
 
 router.get('/petition/signed', mw.loggedInCheck, mw.signedPetitionCheck2, (req, res)=> {
-    console.log('SERVER: inside get /petition/signed');
+    console.log('ROUTER: inside get /petition/signed');
 
     handler('thankyou', req, res);
 });
@@ -25,7 +25,7 @@ router.route('/petition')
     });
 
 router.get('/petition/signatures/:city', mw.loggedInCheck, mw.signedPetitionCheck2, (req, res) => {
-    console.log('SERVER: city route', req.params.city);
+    console.log('ROUTER: city route', req.params.city);
     handler('signersByCity', req, res);
 });
 
