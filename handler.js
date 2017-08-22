@@ -132,8 +132,10 @@ function handle(query, req, res) {
             let userInfo = results.rows[0];
             userInfo.first_name = req.session.user.first_name;
             userInfo.last_name = req.session.user.last_name;
+
             console.log('HANDLER userInfo to send to edit profile template: ', userInfo);
             res.render('edit', userInfo);
+
         }).catch(e => {
             console.error(e.stack);
             res.render('profile', { 'error' : true });
@@ -144,12 +146,19 @@ function handle(query, req, res) {
         //does this person exist in users_profiles?
         dbQuery.getProfile([req.session.user.id]).then((results) => {
             console.log('HANDLER updateProfile results: ', results);
+
             if(results.rows[0]) {
                 //user exists so now we can
                 //update profile
                 console.log('HANDLER: user exists so now we are going to update');
                 var userProfile = setUserProfile(req);
-                dbQuery.updateProfile(userProfile).then(() => {
+                var userData = setUserData(req);
+
+                let promiseArr = [];
+                promiseArr.push(dbQuery.updateProfile(userProfile));
+                promiseArr.push(dbQuery.updateUser(userData));
+
+                return Promise.all(promiseArr).then(() => {
                     res.redirect('/petition');
                 }).catch(e => {
                     console.error(e.stack);
@@ -169,12 +178,19 @@ function handle(query, req, res) {
     }
 }
 
+function setUserData(req) {
+    var userInfo = [req.body['first_name'], req.body['last_name'], req.body['email']];
+    if(req.body.password) {
+        userInfo.push(req.body['password']);
+    }
+    return userInfo = help.validate(userInfo);
+}
 
 function renderThankyou(req, res) {
     console.log('HANDLER: inside renderthankyou');
     console.log('HANDLER: SigId:', req.session.user.sigId);
 
-    var promiseArr = [];
+    let promiseArr = [];
     promiseArr.push(dbQuery.numSignatures());
     promiseArr.push(dbQuery.getSignature(req.session.user.sigId));
 

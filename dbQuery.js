@@ -85,7 +85,7 @@ function getProfile(id) {
 
 function updateUser(userData) {
     console.log('DBQUERY in addProfile, userData = ', userData);
-    let queryStr = 'UPDATE users ';
+    let queryStr = 'UPDATE users SET first_name = $1, last_name = $2, email = $3';
     return db.query(queryStr, userData);
 }
 
