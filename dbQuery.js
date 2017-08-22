@@ -95,6 +95,12 @@ function updateProfile(profileData) {
     return db.query(queryStr, profileData);
 }
 
+function deleteSig(id) {
+    console.log('DBQUERY in delete Sig sigId:', id);
+    let queryStr = 'DELETE FROM signatures WHERE id = $1';
+    return db.query(queryStr, id);
+}
+
 module.exports.getSigners = getSigners;
 module.exports.addSignature = addSignature;
 module.exports.getSignature = getSignature;
@@ -107,6 +113,7 @@ module.exports.getSignersByCity = getSignersByCity;
 module.exports.getProfile = getProfile;
 module.exports.updateUser = updateUser;
 module.exports.updateProfile = updateProfile;
+module.exports.deleteSig = deleteSig;
 
 /* Tests */
 
