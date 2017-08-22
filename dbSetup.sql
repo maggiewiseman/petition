@@ -47,7 +47,7 @@ CREATE TABLE user_profiles (
 
 -- SELECT users.first_name, users.last_name, user_profiles.age, user_profiles.city, user_profiles.homepage FROM users INNER JOIN signatures ON users.id = signatures.user_id JOIN user_profiles ON users.id = user_profiles.user_id WHERE user_profiles.city = 'Washington';
 
---
+-- SELECT users.email, user_profiles.age, user_profiles.city, user_profiles.homepage FROM users INNER JOIN user_profiles ON users.id = user_profiles.user_id WHERE users.id = 7;
 -- select a.name,b.manufacturer_id,c.id,c.item_desc
 -- from manufacturers as a
 -- inner join
