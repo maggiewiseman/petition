@@ -161,6 +161,18 @@ function handle(query, req, res) {
         }).catch(e => {
             console.error(e.stack);
             res.redirect('/profile/edit');
+
+        });
+    }
+
+    if(query == 'deleteSig') {
+        dbQuery.deleteSig([req.session.user.sigId]).then(() => {
+            req.session.user.sigId = null;
+            res.redirect('/petition');
+        }).catch(e => {
+            console.error(e.stack);
+            res.redirect('/petition');
+
         });
     }
 }
@@ -219,6 +231,8 @@ function addProfile(req,res) {
 module.exports.handle = handle;
 
 /** TESTS **/
+
+
 
 // var registrationBody = {
 //     first_name: 'Tiffany',

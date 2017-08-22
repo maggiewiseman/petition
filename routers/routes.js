@@ -78,6 +78,10 @@ router.get('/logout', (req, res) => {
     res.render('login');
 });
 
+router.post('/delete', (req,res) => {
+    handler('deleteSig', req, res);
+});
+
 router.use((req,res) => {
     console.error('File Not Found, 404');
     res.status(404);
