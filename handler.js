@@ -130,7 +130,7 @@ function handle(query, req, res) {
             res.render('edit', results);
         }).catch(e => {
             console.error(e.stack);
-            res.render('profile', { 'error' : true });
+            res.render('profile/edit', { 'error' : true });
         });
     }
 

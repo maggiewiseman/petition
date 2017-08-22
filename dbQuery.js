@@ -79,7 +79,7 @@ function addProfile(profileData) {
 
 function getProfile(id) {
     console.log('DBQUERY in getProfile, user_id=', id);
-    let queryStr ='SELECT users.email, user_profiles.age, user_profiles.city, user_profiles.homepage, user_profiles.id FROM users INNER JOIN user_profiles ON users.id = user_profiles.user_id WHERE users.id = $1';
+    let queryStr ='SELECT users.email, user_profiles.age, user_profiles.city, user_profiles.homepage, user_profiles.id FROM users LEFT OUTER JOIN user_profiles ON users.id = user_profiles.user_id WHERE users.id = $1';
     return db.query(queryStr, id);
 }
 
