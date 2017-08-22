@@ -35,7 +35,7 @@ router.get('/petition/signatures', mw.loggedInCheck, mw.signedPetitionCheck2, (r
 
 //if they are logged in then check if signed
 //if not signed go to /petition page
-router.route('register')
+router.route('/register')
     .get(mw.registerLoginCheck, (req, res) => {
         res.render('register');
     })
@@ -63,14 +63,19 @@ router.route('/profile')
     });
 
 router.route('/profile/edit')
-    .get((req,res) => {
+    .get(mw.loggedInCheck, (req,res) => {
+        console.log(req.session.user);
         res.render('edit');
-
     })
 
     .post((req, res) => {
         handler('editProfile', req, res);
     });
+
+router.get('/logout', (req, res) => {
+    req.session = null;
+    res.render('login');
+});
 
 router.use((req,res) => {
     console.error('File Not Found, 404');
