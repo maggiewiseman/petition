@@ -121,16 +121,7 @@ function handle(query, req, res) {
     if(query == 'addProfile') {
         //get data from request body
         //make empty strings null
-        var userProfile = [req.session.user.id, req.body['age'], req.body['city'], req.body['homepage']];
-        userProfile = help.validate(userProfile);
-        console.log('HANDLER add_profile: validUserInfo', userProfile);
-        //add them to the database
-        dbQuery.addProfile(userProfile).then(() => {
-            res.redirect('/petition');
-        }).catch(e => {
-            console.error(e.stack);
-            res.render('login', { 'error' : true });
-        });
+        addProfile(req, res);
 
     }
 
@@ -143,6 +134,25 @@ function handle(query, req, res) {
             userInfo.last_name = req.session.user.last_name;
             console.log('HANDLER userInfo to send to edit profile template: ', userInfo);
             res.render('edit', userInfo);
+        }).catch(e => {
+            console.error(e.stack);
+            res.render('profile', { 'error' : true });
+        });
+    }
+
+    if(query == "updateProfile") {
+        //does this person exist in users_profiles?
+        dbQuery.getProfile([req.session.user.id]).then((results) => {
+            if(results.rows[0]) {
+                //user exists so now we can
+                //update profile
+
+            } else {
+                //add user_profile
+                addProfile();
+            }
+            //update user
+
         }).catch(e => {
             console.error(e.stack);
             res.render('profile', { 'error' : true });
@@ -165,7 +175,18 @@ function renderThankyou(req, res) {
     });
 }
 
-
+function addProfile(req,res) {
+    var userProfile = [req.session.user.id, req.body['age'], req.body['city'], req.body['homepage']];
+    userProfile = help.validate(userProfile);
+    console.log('HANDLER add_profile: validUserInfo', userProfile);
+    //add them to the database
+    dbQuery.addProfile(userProfile).then(() => {
+        res.redirect('/petition');
+    }).catch(e => {
+        console.error(e.stack);
+        res.render('login', { 'error' : true });
+    });
+}
 
 module.exports.handle = handle;
 
