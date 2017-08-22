@@ -15,13 +15,14 @@ router.get('/petition/signed', mw.loggedInCheck, mw.signedPetitionCheck2, (req, 
     handler('thankyou', req, res);
 });
 
-router.get('/petition', mw.loggedInCheck, mw.signedPetitionCheck, (req, res)=> {
-    res.render('petition');
-});
+router.route('/petition')
+    .get('/petition', mw.loggedInCheck, mw.signedPetitionCheck, (req, res)=> {
+        res.render('petition');
+    })
 
-router.post('/petition', (req,res) => {
-    handler('addSignature', req, res);
-});
+    .post('/petition', (req,res) => {
+        handler('addSignature', req, res);
+    });
 
 router.get('/petition/signatures/:city', mw.loggedInCheck, mw.signedPetitionCheck2, (req, res) => {
     console.log('SERVER: city route', req.params.city);
