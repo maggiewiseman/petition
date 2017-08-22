@@ -136,10 +136,10 @@ function handle(query, req, res) {
 
     if(query == "updateProfile") {
         //does this person exist in users_profiles?
-        dbQuery.getProfile([req.session.user.id]).then((results) => {
+        dbQuery.getProfileId([req.session.user.id]).then((results) => {
             console.log('HANDLER updateProfile results: ', results);
 
-            if(results.rows[0]) {
+            if(results.rows.length > 0) {
                 //user exists so now we can
                 //update profile
                 console.log('HANDLER: user exists so now we are going to update');
@@ -155,7 +155,7 @@ function handle(query, req, res) {
                 });
             } else {
                 //add user_profile
-                addProfile();
+                addProfile(req, res);
             }
             //update user
 
@@ -182,7 +182,7 @@ function renderProfile(req, res) {
     return dbQuery.getProfile([req.session.user.id]).then((results) => {
         console.log('HANDLER getProfile results: ', results.rows[0]);
 
-        let userInfo = results.rows[0];
+        let userInfo = results.rows[0] || {};
         userInfo.first_name = req.session.user.first_name;
         userInfo.last_name = req.session.user.last_name;
 
