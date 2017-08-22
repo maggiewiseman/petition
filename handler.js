@@ -117,8 +117,7 @@ function handle(query, req, res) {
     }
 
     if(query == 'addProfile') {
-        //get data from request body
-        //make empty strings null
+        
         req.session.user.profile = true;
         return addProfile(req, res);
 
