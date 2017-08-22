@@ -79,8 +79,20 @@ function addProfile(profileData) {
 
 function getProfile(id) {
     console.log('DBQUERY in getProfile, user_id=', id);
-    let queryStr ='SELECT users.email, user_profiles.age, user_profiles.city, user_profiles.homepage FROM users INNER JOIN user_profiles ON users.id = user_profiles.user_id WHERE users.id = $1';
+    let queryStr ='SELECT users.email, user_profiles.age, user_profiles.city, user_profiles.homepage, user_profiles.id FROM users INNER JOIN user_profiles ON users.id = user_profiles.user_id WHERE users.id = $1';
     return db.query(queryStr, id);
+}
+
+function updateUser(userData) {
+    console.log('DBQUERY in addProfile, userData = ', userData);
+    let queryStr = 'UPDATE users ';
+    return db.query(queryStr, userData);
+}
+
+function updateProfile(profileData) {
+    console.log('DBQUERY in updateProfile, profileData', profileData);
+    let queryStr = 'UPDATE user_profiles SET age = $2, city = $3, homepage = $4 WHERE user_id = $1';
+    return db.query(queryStr, profileData);
 }
 
 module.exports.getSigners = getSigners;
@@ -93,6 +105,8 @@ module.exports.getSigId = getSigId;
 module.exports.addProfile = addProfile;
 module.exports.getSignersByCity = getSignersByCity;
 module.exports.getProfile = getProfile;
+module.exports.updateUser = updateUser;
+module.exports.updateProfile = updateProfile;
 
 /* Tests */
 

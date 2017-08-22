@@ -2,7 +2,7 @@
         <p class="error">{{#if error}}
         There was a problem with your form. Please try again.
         {{/if}}</p>
-    <form method="post" action="/profile">
+    <form method="post" action="/profile/edit">
     <div class="inputs profile"></div>
 
         <label for="first_name">First Name</label>
@@ -11,8 +11,8 @@
         <input type="text" name="last_name" placeholder="Last Name" value="{{this.last_name}}">
         <label for="email">e-mail</label>
         <input type="text" name="email" placeholder="e-mail" value="{{this.email}}">
-        <label for="password">Password</label>
-        <input type="password" name="password" placeholder="password">
+        <!-- <label for="password">Password</label>
+        <input type="password" name="password" placeholder="password"> -->
         <label for="age">Age</label>
         <input type="text" name="age" placeholder="age" value="{{this.age}}">
         <label for="city">City</label>
@@ -20,4 +20,8 @@
         <label for="homepage">Homepage</label>
         <input type="text" name="homepage" placeholder="url" value="{{this.homepage}}">
         <button type="submit" name="button">UPDATE</button>
+
+    </form>
+
+    <form method="post" action"/password">
     </form>

@@ -127,7 +127,7 @@ function handle(query, req, res) {
 
     if(query == 'getProfile') {
         dbQuery.getProfile([req.session.user.id]).then((results) => {
-            console.log('HANDLER getProfile results: ', results);
+            console.log('HANDLER getProfile results: ', results.rows[0]);
 
             let userInfo = results.rows[0];
             userInfo.first_name = req.session.user.first_name;
@@ -143,9 +143,18 @@ function handle(query, req, res) {
     if(query == "updateProfile") {
         //does this person exist in users_profiles?
         dbQuery.getProfile([req.session.user.id]).then((results) => {
+            console.log('HANDLER updateProfile results: ', results);
             if(results.rows[0]) {
                 //user exists so now we can
                 //update profile
+                console.log('HANDLER: user exists so now we are going to update');
+                var userProfile = setUserProfile(req);
+                dbQuery.updateProfile(userProfile).then(() => {
+                    res.redirect('/petition');
+                }).catch(e => {
+                    console.error(e.stack);
+                    res.render('login', { 'error' : true });
+                });
 
             } else {
                 //add user_profile
@@ -175,10 +184,14 @@ function renderThankyou(req, res) {
     });
 }
 
-function addProfile(req,res) {
+function setUserProfile(req) {
     var userProfile = [req.session.user.id, req.body['age'], req.body['city'], req.body['homepage']];
-    userProfile = help.validate(userProfile);
-    console.log('HANDLER add_profile: validUserInfo', userProfile);
+    return userProfile = help.validate(userProfile);
+    //console.log('HANDLER add_profile: validUserInfo', userProfile);
+}
+
+function addProfile(req,res) {
+    let userProfile = setUserProfile(req);
     //add them to the database
     dbQuery.addProfile(userProfile).then(() => {
         res.redirect('/petition');

@@ -69,6 +69,7 @@ router.route('/profile/edit')
     })
 
     .post((req, res) => {
+        console.log('ROUTES post updateProfile, handing off to handler');
         handler('updateProfile', req, res);
     });
 
