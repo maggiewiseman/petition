@@ -2,8 +2,8 @@ const express = require('express');
 //const cookieParser = require('cookie-parser');
 const cookieSession = require('cookie-session');
 const hb = require('express-handlebars');
-const secrets = require('./secrets.json');
 
+var secret = process.env.SESSION_SECRET || require('./secrets.json').sessionSecret;
 const app = express();
 
 
@@ -23,7 +23,7 @@ app.use(require('body-parser').urlencoded({
 
 app.use(cookieSession({
     name: 'session',
-    secret: secrets.sessionSecret,
+    secret: secret,
     // Cookie Options
     maxAge: 14 * 24 * 60 * 60 * 1000 // 24 hours
 }));

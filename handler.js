@@ -163,7 +163,7 @@ function handle(query, req, res) {
                 //add user_profile
                 addProfile(req, res);
             }
-            //update user
+
 
         }).catch(e => {
             console.error(e.stack);
@@ -200,7 +200,10 @@ function setUserData(req) {
     var userInfo = [req.body['first_name'], req.body['last_name'], req.body['email']];
     if(req.body.password) {
         userInfo.push(req.body['password']);
+    } else {
+        userInfo.push(req.session.user.id);
     }
+
     return userInfo = help.validate(userInfo);
 }
 
