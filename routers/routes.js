@@ -1,7 +1,9 @@
 const express = require('express');
 const mw = require('./middleware');
 const handler = require('../handler').handle;
+const csrf = require('csurf');
 
+const csrfProtection = csrf();
 const router = express.Router();
 
 
@@ -9,15 +11,16 @@ router.get('/', (req,res) => {
     res.redirect('/petition');
 });
 
-router.get('/petition/signed', mw.loggedInCheck, mw.signedPetitionCheck2, (req, res)=> {
+router.get('/petition/signed', mw.loggedInCheck, mw.signedPetitionCheck2, csrfProtection, (req, res)=> {
     console.log('ROUTER: inside get /petition/signed');
 
     handler('thankyou', req, res);
 });
 
 router.route('/petition')
+    .all(csrfProtection)
     .get(mw.loggedInCheck, mw.signedPetitionCheck, (req, res)=> {
-        res.render('petition');
+        res.render('petition', {csrfToken: req.csrfToken()});
     })
 
     .post((req,res) => {
@@ -36,8 +39,10 @@ router.get('/petition/signatures', mw.loggedInCheck, mw.signedPetitionCheck2, (r
 //if they are logged in then check if signed
 //if not signed go to /petition page
 router.route('/register')
+    .all(csrfProtection)
+
     .get(mw.registerLoginCheck, (req, res) => {
-        res.render('register');
+        res.render('register', {csrfToken: req.csrfToken()});
     })
 
     .post((req, res) => {
@@ -45,8 +50,9 @@ router.route('/register')
     });
 
 router.route('/login')
+    .all(csrfProtection)
     .get(mw.registerLoginCheck, (req, res) => {
-        res.render('login');
+        res.render('login', {csrfToken: req.csrfToken()});
     })
 
     .post((req, res) => {
@@ -54,8 +60,10 @@ router.route('/login')
     });
 
 router.route('/profile')
+    .all(csrfProtection)
+
     .get(mw.loggedInCheck, mw.profileCheck, (req, res) => {
-        res.render('profile');
+        res.render('profile', {csrfToken: req.csrfToken()});
     })
 
     .post((req, res) => {
@@ -63,6 +71,7 @@ router.route('/profile')
     });
 
 router.route('/profile/edit')
+    .all(csrfProtection)
     .get(mw.loggedInCheck, (req,res) => {
         console.log(req.session.user);
         handler('getProfile', req, res);
@@ -75,10 +84,10 @@ router.route('/profile/edit')
 
 router.get('/logout', (req, res) => {
     req.session = null;
-    res.render('login');
+    res.render('login', {csrfToken: req.csrfToken()});
 });
 
-router.post('/delete', (req,res) => {
+router.post('/delete', csrfProtection, (req,res) => {
     handler('deleteSig', req, res);
 });
 

@@ -34,7 +34,9 @@ function handle(query, req, res) {
             //return renderThankyou(req, res);
         }).catch(e => {
             console.error(e.stack);
-            res.render('petition', { 'error' : true });
+            res.render('petition', { 'error' : true,
+                csrfToken: req.csrfToken()
+            });
         });
     }
 
@@ -60,7 +62,7 @@ function handle(query, req, res) {
             res.redirect('/profile');
         }).catch(e => {
             console.error(e.stack);
-            res.render('register', { 'error' : true });
+            res.render('register', { 'error' : true, csrfToken: req.csrfToken() });
         });
 
     }
@@ -90,7 +92,7 @@ function handle(query, req, res) {
         }).then((validPass)=>{
             if(!validPass) {
                 console.log('HANDLER: password was invalid');
-                res.render('login', { 'error' : true });
+                res.render('login', { 'error' : true, csrfToken: req.csrfToken() });
             }
 
             //with their first name and last name and id and add to session.user.
@@ -112,12 +114,12 @@ function handle(query, req, res) {
 
         }).catch(e => {
             console.error(e.stack);
-            res.render('login', { 'error' : true });
+            res.render('login', { 'error' : true, csrfToken: req.csrfToken() });
         });
     }
 
     if(query == 'addProfile') {
-        
+
         req.session.user.profile = true;
         return addProfile(req, res);
 
@@ -126,10 +128,11 @@ function handle(query, req, res) {
     if(query == 'getProfile') {
         renderProfile(req, res).then((results)=>{
             console.log('HANDLER userInfo to send to edit profile template: ', results);
+            results.csrfToken = req.csrfToken();
             res.render('edit', results);
         }).catch(e => {
             console.error(e.stack);
-            res.render('profile/edit', { 'error' : true });
+            res.render('profile/edit', { 'error' : true, csrfToken: req.csrfToken() });
         });
     }
 
@@ -207,7 +210,7 @@ function renderThankyou(req, res) {
 
     return Promise.all(promiseArr).then((results)=> {
         console.log('HANDLER result: ', results[1].signature);
-        res.render('thankyou', {count: results[0], 'imgsrc': results[1][0].signature});
+        res.render('thankyou', {count: results[0], 'imgsrc': results[1][0].signature, csrfToken: req.csrfToken()});
     });
 }
 
@@ -229,7 +232,7 @@ function addProfile(req,res) {
             res.redirect('/petition');
         }).catch(e => {
             console.error(e.stack);
-            res.render('login', { 'error' : true });
+            res.render('login', { 'error' : true, csrfToken: req.csrfToken() });
         });
     }
 }

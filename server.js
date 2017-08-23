@@ -4,8 +4,8 @@ const cookieSession = require('cookie-session');
 const hb = require('express-handlebars');
 const secrets = require('./secrets.json');
 
-
 const app = express();
+
 
 //cofigure handlebars
 app.engine('handlebars', hb());
@@ -19,12 +19,15 @@ app.use(require('body-parser').urlencoded({
     extended: false
 }));
 
+//app.use(cookieParser);
+
 app.use(cookieSession({
     name: 'session',
     secret: secrets.sessionSecret,
     // Cookie Options
     maxAge: 14 * 24 * 60 * 60 * 1000 // 24 hours
 }));
+
 
 app.use(require('./routers/routes'));
 
