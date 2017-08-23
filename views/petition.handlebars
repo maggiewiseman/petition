@@ -5,13 +5,14 @@
     {{/if}}</p>
 
     <form method="post" action="/petition">
-    <div class="sig-div">
-        <label for="signature">Signature</label>
-        <input type="hidden" name="signature" id="signature">
+        <input type="hidden" name="_csrf" value="{{csrfToken}}">
+        <div class="sig-div">
+            <label for="signature">Signature</label>
+            <input type="hidden" name="signature" id="signature">
 
-        <section>
-            <canvas id="canv" width="300" height="100"></canvas>
-        </section>
-    </div>
+            <section>
+                <canvas id="canv" width="300" height="100"></canvas>
+            </section>
+        </div>
         <button type="submit" name="button">SUBMIT</button>
     </form>

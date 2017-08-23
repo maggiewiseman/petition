@@ -20,6 +20,7 @@ router.get('/petition/signed', mw.loggedInCheck, mw.signedPetitionCheck2, csrfPr
 router.route('/petition')
     .all(csrfProtection)
     .get(mw.loggedInCheck, mw.signedPetitionCheck, (req, res)=> {
+        console.log('csrf token:', req.csrfToken());
         res.render('petition', {csrfToken: req.csrfToken()});
     })
 
@@ -84,7 +85,7 @@ router.route('/profile/edit')
 
 router.get('/logout', (req, res) => {
     req.session = null;
-    res.render('login', {csrfToken: req.csrfToken()});
+    res.redirect('/login');
 });
 
 router.post('/delete', csrfProtection, (req,res) => {

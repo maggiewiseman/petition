@@ -6,6 +6,7 @@
         {{/if}}
 </p>
 <form method="post" action="/login">
+    <input type="hidden" name="_csrf" value="{{csrfToken}}">
     <div class="inputs login">
         <label for="email">E-mail</label>
         <input type="text" name="email" placeholder="e-mail">

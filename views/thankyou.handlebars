@@ -9,6 +9,8 @@
     {{/this}}
     <a href="/petition/signatures">See all {{count}} signers</a>
 
-    <form action="/delete" method="POST" id="deleteSigForm"></form>
+    <form action="/delete" method="POST" id="deleteSigForm">
+        <input type="hidden" name="_csrf" value="{{csrfToken}}">
+    </form>
     <a href="#" id="delete">Delete My Signature</a>
 </div>
