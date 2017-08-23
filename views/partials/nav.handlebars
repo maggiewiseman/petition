@@ -3,7 +3,11 @@
         <li><a href="/petition">Home</a></li>
     </ul>
     <ul>
+        {{#if nav.loggedin}}
         <li><a href="/profile/edit">Edit Profile</a></li>
         <li><a href="/logout">Logout</a></li>
+        {{else}}
+        <li><a href="/login">Login</a></li>
+        {{/if}}
     </ul>
 </nav>

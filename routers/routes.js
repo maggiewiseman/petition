@@ -21,7 +21,7 @@ router.route('/petition')
     .all(csrfProtection)
     .get(mw.loggedInCheck, mw.signedPetitionCheck, (req, res)=> {
         console.log('csrf token:', req.csrfToken());
-        res.render('petition', {csrfToken: req.csrfToken()});
+        res.render('petition', {csrfToken: req.csrfToken(), nav: {loggedin: true}});
     })
 
     .post((req,res) => {

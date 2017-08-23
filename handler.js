@@ -1,21 +1,23 @@
 const dbQuery = require('./dbQuery');
 const help = require('./helpers');
+const nav = { loggedin: true };
 
 function handle(query, req, res) {
+
     /**
     returns list of people who have signed for signatures page.
     will need to get city and age here
     **/
     if(query == 'getSigners') {
         dbQuery.getSigners().then((result) => {
-            res.render('signatures', {results: result});
+            res.render('signatures', {results: result, nav: nav});
         }).catch(e => console.error(e.stack));
     }
 
     if(query == 'signersByCity') {
         let cityName = req.params.city;
         return dbQuery.getSignersByCity([cityName]).then((results) => {
-            res.render('city', {cityName: cityName,
+            res.render('city', {nav: nav, cityName: cityName,
                 results: results});
         }).catch(e => console.error(e.stack));
     }
@@ -35,7 +37,8 @@ function handle(query, req, res) {
         }).catch(e => {
             console.error(e.stack);
             res.render('petition', { 'error' : true,
-                csrfToken: req.csrfToken()
+                csrfToken: req.csrfToken(),
+                nav: nav
             });
         });
     }
@@ -62,7 +65,7 @@ function handle(query, req, res) {
             res.redirect('/profile');
         }).catch(e => {
             console.error(e.stack);
-            res.render('register', { 'error' : true, csrfToken: req.csrfToken() });
+            res.render('register', { 'error' : true, csrfToken: req.csrfToken()});
         });
 
     }
@@ -129,6 +132,7 @@ function handle(query, req, res) {
         renderProfile(req, res).then((results)=>{
             console.log('HANDLER userInfo to send to edit profile template: ', results);
             results.csrfToken = req.csrfToken();
+            results.nav = nav;
             res.render('edit', results);
         }).catch(e => {
             console.error(e.stack);
@@ -210,7 +214,7 @@ function renderThankyou(req, res) {
 
     return Promise.all(promiseArr).then((results)=> {
         console.log('HANDLER result: ', results[1].signature);
-        res.render('thankyou', {count: results[0], 'imgsrc': results[1][0].signature, csrfToken: req.csrfToken()});
+        res.render('thankyou', {count: results[0], 'imgsrc': results[1][0].signature, csrfToken: req.csrfToken(), nav: nav});
     });
 }
 
@@ -232,7 +236,7 @@ function addProfile(req,res) {
             res.redirect('/petition');
         }).catch(e => {
             console.error(e.stack);
-            res.render('login', { 'error' : true, csrfToken: req.csrfToken() });
+            res.render('login', { 'error' : true, csrfToken: req.csrfToken(), nav: nav });
         });
     }
 }
