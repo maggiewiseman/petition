@@ -183,7 +183,7 @@ figure.signature > img {
 
 
 div.inputs {
-	width: 50%;
+	width: 80%;
 	margin: 0 auto;
 	display: flex;
 	flex-flow: column nowrap;
