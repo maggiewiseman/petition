@@ -31,6 +31,6 @@ app.use(cookieSession({
 
 app.use(require('./routers/routes'));
 
-app.listen(8080, ()=> {
+app.listen(process.env.PORT || 8080, ()=> {
     console.log('Listening on port 8080');
 });
