@@ -1,7 +1,10 @@
 const spicedPg = require('spiced-pg');
-const secrets = require('./secrets.json');
-var localUrl = secrets.dbUser ? `postgres:${secrets.dbUser}:${secrets.pass}@localhost:5432/petition` : `postgres:blank:blank@localhost:5432/petition`;
+var localUrl = '';
 
+if(!process.env.DATABASE_URL) {
+    const secrets = require('./secrets.json');
+    localUrl = `postgres:${secrets.dbUser}:${secrets.pass}@localhost:5432/petition`;
+}
 var dbUrl = process.env.DATABASE_URL || localUrl;
 
 const db = spicedPg(dbUrl);
