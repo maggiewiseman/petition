@@ -1,8 +1,10 @@
 const spicedPg = require('spiced-pg');
 const secrets = require('./secrets.json');
+var localUrl = secrets.dbUser ? `postgres:${secrets.dbUser}:${secrets.pass}@localhost:5432/petition` : `postgres:blank:blank@localhost:5432/petition`;
 
-//forward slashes are optional
-const db = spicedPg(`postgres:${secrets.dbUser}:${secrets.pass}@localhost:5432/petition`);
+var dbUrl = process.env.DATABASE_URL || localUrl;
+
+const db = spicedPg(dbUrl);
 //db returns a promise and you will get back a result
 function getSigners() {
     console.log('DBQUERY: in getSigners');
