@@ -17,7 +17,7 @@ function pmGetCache(key){
             if (err) {
                 reject(err);
             } else {
-                console.log('HANDLER getSigners about to resolve: ', data);
+                console.log('HANDLER getCache about to resolve: ', data);
                 resolve(data);
             }
         });
@@ -156,35 +156,61 @@ function handle(query, req, res) {
 
         }).then((validPass)=>{
             if(!validPass) {
-                //when they do it incorrectly thsi error will trigger.
-                //I should check to see how many login attempts they have made.
-                //if they have made none, then I will start a counter and
-                //send an appropriate error message to the console.
-                //if they have made more than 3, then I will tell them the time they must wait
-                // pmGetCache('login_attempts').then((numLoggedIn) => {
-                //     if(numLoggedIn){
-                //         numLoggedIn +=1;
-                //         if(numLoggedIn > 2) {
-                //             res.render('login', { 'error' : true, csrfToken: req.csrfToken(), 'numAttempts' : numLoggedIn });
-                //         }
-                //         pmSetCache('login_attempts', )
-                //     }
-                // })
-                // pmSetCache('')
-                console.log('HANDLER: password was invalid');
-                throw new Error('Password invalid');
-                //return res.render('login', { 'error' : true, csrfToken: req.csrfToken() });
-            }
+                console.log('HANDLER login: invalid password');
+                return pmGetCache('login_attempts').then((numLoggedIn) => {
+                    if(!numLoggedIn) {
+                        console.log('HANDLER login: first failed attempt');
+                        //this is their first failed login or the timer ran out
+                        //set a new cache
+                        return pmSetCache('login_attempts', 1, 60);
+                    } else {
+                        console.log('HANDLER login: numLoggedIn before increment: ', numLoggedIn);
+                        //they have logged in before!
+                        numLoggedIn = parseInt(numLoggedIn, 10);
+                        numLoggedIn++;
+                        let time = 60;
+                        return pmSetCache('login_attempts', numLoggedIn, time).then(()=>{
+                            console.log('HANDLER login: numloggedIn incremented, reset cache');
+                            return numLoggedIn;
+                        });
+                    }
+                }).then((numLoggedIn)=>{
+                    if(numLoggedIn > 2) {
+                        console.log('HANDLER login: too many login attempts');
+                        //too many attempts!
+                        //set a flag that prevents this login function from running at all.
+                        //send an appropriate error message.
+                        let lockOutInfo = {
+                            timer: 90
+                        };
 
-            //with their first name and last name and id and add to session.user.
-            req.session.user = {
-                id: userInfo.id,
-                first_name: userInfo.first_name,
-                last_name: userInfo.last_name
-            };
-            console.log('HANDLER: set req.session.user info');
-            //then using user id see if they have a signature.
-            return dbQuery.getSigId([userInfo.id]);
+                        return pmSetCache('lockedOut', true, lockOutInfo.timer).then(()=> {
+                            throw new Error('Too many attempts to login. Your account is locked.');
+                        });
+                    } else {
+                        console.log('HANDLER login: less than 3 attempts, throwing error');
+                        throw new Error('Password Invalid');
+                    }
+                });
+            }
+        }).then(()=>{
+            return pmGetCache('lockedOut').then((lockedOut) => {
+                console.log('HANDLER login: checking lockout');
+                if(!lockedOut){
+                    console.log('HANDLER login: locked out is nil');
+                    req.session.user = {
+                        id: userInfo.id,
+                        first_name: userInfo.first_name,
+                        last_name: userInfo.last_name
+                    };
+                    console.log('HANDLER: set req.session.user info');
+                    //then using user id see if they have a signature.
+                    return dbQuery.getSigId([userInfo.id]);
+                } else {
+                    console.log('HANDLER login: user lockedOut');
+                    throw new Error('Too many attempts to login. Your account is locked.');
+                }
+            });
         }).then((results)=>{
             if(results.rowCount > 0) {
                 console.log('HANDLER: login session id added');
