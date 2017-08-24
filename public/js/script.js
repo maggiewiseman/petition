@@ -27,8 +27,12 @@
 
             canvas.addEventListener("mousedown", pointerDown);
             canvas.addEventListener("mouseup", pointerUp);
-            canvas.addEventListener("touchstart", pointerDown);
-            canvas.addEventListener("touchend", pointerUp);
+            canvas.addEventListener("touchstart", function(e) {
+                e.preventDefault();
+                pointerDown(e);
+            });
+            document.body.addEventListener("touchend", pointerUp);
+
         }
 
         signature();
