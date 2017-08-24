@@ -37,9 +37,9 @@ function handle(query, req, res) {
                 //there's no signature data stored, need to query db
                 console.log('data is null');
                 return dbQuery.getSigners().then((result) => {
-                    res.render('signatures', {results: result, nav: nav});
 
                     return new Promise((resolve, reject) => {
+                        console.log('promise is working');
                         var time = 14*24*60;
                         client.set('signers', JSON.stringify(result), 'EX', time, (err,data) => {
                             if (err) {
@@ -48,8 +48,9 @@ function handle(query, req, res) {
                                 resolve(data);
                             }
                         });
+                    }).then(()=>{
+                        res.render('signatures', {results: result, nav: nav});
                     });
-
                 });
             }
         }).catch(e => console.error(e.stack));
