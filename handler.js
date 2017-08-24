@@ -23,7 +23,16 @@ function handle(query, req, res) {
     }
 
     if(query == 'thankyou') {
-        return renderThankyou(req, res).catch(e => console.error(e.stack));
+        console.log('HANDLER: SigId:', req.session.user.sigId);
+
+        let promiseArr = [];
+        promiseArr.push(dbQuery.numSignatures());
+        promiseArr.push(dbQuery.getSignature(req.session.user.sigId));
+
+        return Promise.all(promiseArr).then((results)=> {
+            console.log('HANDLER result: ', results[1].signature);
+            res.render('thankyou', {count: results[0], 'imgsrc': results[1][0].signature, csrfToken: req.csrfToken(), nav: nav});
+        }).catch(e => console.error(e.stack));
     }
 
     if(query == 'addSignature') {
@@ -33,7 +42,6 @@ function handle(query, req, res) {
             console.log('HANDLER: result of addSig: ', result);
             req.session.user.sigId = result.rows[0].id;
             return res.redirect('/petition/signed');
-            //return renderThankyou(req, res);
         }).catch(e => {
             console.error(e.stack);
             res.render('petition', { 'error' : true,
@@ -124,7 +132,10 @@ function handle(query, req, res) {
     if(query == 'addProfile') {
 
         req.session.user.profile = true;
-        return addProfile(req, res);
+        return addProfile(req, res).catch(e => {
+            console.error(e.stack);
+            res.render('profile', { 'error' : true, csrfToken: req.csrfToken(), nav: nav });
+        });
 
     }
 
@@ -207,26 +218,13 @@ function setUserData(req) {
     return userInfo = help.validate(userInfo);
 }
 
-function renderThankyou(req, res) {
-    console.log('HANDLER: inside renderthankyou');
-    console.log('HANDLER: SigId:', req.session.user.sigId);
-
-    let promiseArr = [];
-    promiseArr.push(dbQuery.numSignatures());
-    promiseArr.push(dbQuery.getSignature(req.session.user.sigId));
-
-    return Promise.all(promiseArr).then((results)=> {
-        console.log('HANDLER result: ', results[1].signature);
-        res.render('thankyou', {count: results[0], 'imgsrc': results[1][0].signature, csrfToken: req.csrfToken(), nav: nav});
-    });
-}
-
 function setUserProfile(req) {
     var userProfile = [req.session.user.id, req.body['age'], req.body['city'], req.body['homepage']];
     return userProfile = help.validate(userProfile);
     //console.log('HANDLER add_profile: validUserInfo', userProfile);
 }
 
+//used by addProfile and updateProfile in the case where there's no profile for a new user
 function addProfile(req,res) {
     let userProfile = setUserProfile(req);
 
@@ -237,9 +235,6 @@ function addProfile(req,res) {
         //add them to the database
         return dbQuery.addProfile(userProfile).then(() => {
             res.redirect('/petition');
-        }).catch(e => {
-            console.error(e.stack);
-            res.render('login', { 'error' : true, csrfToken: req.csrfToken(), nav: nav });
         });
     }
 }

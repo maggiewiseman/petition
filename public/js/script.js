@@ -10,10 +10,12 @@
                 ctx.beginPath();
                 ctx.moveTo(e.offsetX, e.offsetY);
                 canvas.addEventListener('mousemove', paint);
+                canvas.addEventListener('touchmove', paint);
             }
 
             function pointerUp(e) {
                 canvas.removeEventListener('mousemove', paint);
+                canvas.removeEventListener('touchmove', paint);
                 paint(e);
             }
 
@@ -25,6 +27,8 @@
 
             canvas.addEventListener("mousedown", pointerDown);
             canvas.addEventListener("mouseup", pointerUp);
+            canvas.addEventListener("touchstart", pointerDown);
+            canvas.addEventListener("touchend", pointerUp);
         }
 
         signature();
