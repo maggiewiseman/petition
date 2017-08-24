@@ -1,6 +1,8 @@
 const dbQuery = require('./dbQuery');
 const help = require('./helpers');
+const redis = require('redis');
 const nav = { loggedin: true };
+
 
 function handle(query, req, res) {
 
@@ -9,6 +11,8 @@ function handle(query, req, res) {
     will need to get city and age here
     **/
     if(query == 'getSigners') {
+        //here we are going to check redis first and if jonks is there, we're going to send that back.
+
         dbQuery.getSigners().then((result) => {
             res.render('signatures', {results: result, nav: nav});
         }).catch(e => console.error(e.stack));
