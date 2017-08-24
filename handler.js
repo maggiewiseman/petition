@@ -19,20 +19,24 @@ function handle(query, req, res) {
     **/
     if(query == 'getSigners') {
         //here we are going to check redis first and if jonks is there, we're going to send that back.
-        client.get('city', function(err, data){
-            if (err) {
-                return console.log(err);
-            }
-            if(data){
-                console.log('HANDLER data: ', data);
-            } else {
-                console.log('data is null');
-            }
-        });
-
-
-        dbQuery.getSigners().then((result) => {
-            res.render('signatures', {results: result, nav: nav});
+        return new Promise((resolve, reject) => {
+            client.get('city', function(err, data){
+                if (err) {
+                    reject(err);
+                } else {
+                    if(data){
+                        console.log('HANDLER data: ', data);
+                    } else {
+                        console.log('data is null');
+                    }
+                    resolve(data);
+                }
+            });
+        }).then((data) => {
+            console.log('HANDLER then data: ', data);
+            return dbQuery.getSigners().then((result) => {
+                res.render('signatures', {results: result, nav: nav});
+            });
         }).catch(e => console.error(e.stack));
     }
 
