@@ -4,18 +4,16 @@
     if(canvas) {
         const ctx = canvas.getContext('2d');
 
-        function signature() {
+        (function signature() {
 
             function pointerDown(e) {
                 ctx.beginPath();
                 ctx.moveTo(e.offsetX, e.offsetY);
                 canvas.addEventListener('mousemove', paint);
-                canvas.addEventListener('touchmove', paint);
             }
 
             function pointerUp(e) {
                 canvas.removeEventListener('mousemove', paint);
-                canvas.removeEventListener('touchmove', paint);
                 paint(e);
             }
 
@@ -27,15 +25,38 @@
 
             canvas.addEventListener("mousedown", pointerDown);
             canvas.addEventListener("mouseup", pointerUp);
+
+        })();
+
+        (function touchSignature() {
+
+            function pointerDown(e) {
+                ctx.beginPath();
+                console.log(e);
+                ctx.moveTo(e.targetTouches[0].pageX - canvas.offsetLeft, e.targetTouches[0].pageY - canvas.offsetTop);
+                canvas.addEventListener('touchmove', paintTouch);
+            }
+
+            function pointerUp(e) {
+                canvas.removeEventListener('touchmove', paintTouch);
+                paintTouch(e);
+            }
+
+            function paintTouch(e) {
+                console.log('paint Touch e:', e);
+                ctx.lineTo(e.targetTouches[0].pageX- canvas.offsetLeft, e.targetTouches[0].pageY - canvas.offsetTop);
+                ctx.stroke();
+                saveSig();
+            }
+
             canvas.addEventListener("touchstart", function(e) {
                 e.preventDefault();
                 pointerDown(e);
             });
+            canvas.addEventListener("touchend", pointerUp);
             document.body.addEventListener("touchend", pointerUp);
 
-        }
-
-        signature();
+        })();
     }
 
     function saveSig() {
