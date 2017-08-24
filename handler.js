@@ -83,17 +83,10 @@ function handle(query, req, res) {
         dbQuery.addSignature(validParams).then((result) => {
             console.log('HANDLER: result of addSig: ', result);
             req.session.user.sigId = result.rows[0].id;
-            return res.redirect('/petition/signed');
+            return delCachedSignatures();
         }).then(()=>{
-            return new Promise((resolve, reject) => {
-                client.del('signers', (err, data) => {
-                    if(err){
-                        reject(err);
-                    } else {
-                        resolve(data);
-                    }
-                });
-            });
+            res.redirect('/petition/signed');
+
         }).catch(e => {
             console.error(e.stack);
             res.render('petition', { 'error' : true,
@@ -204,30 +197,31 @@ function handle(query, req, res) {
     }
 
     if(query == "updateProfile") {
-        //does this person exist in users_profiles?
-        dbQuery.getProfileId([req.session.user.id]).then((results) => {
-            console.log('HANDLER updateProfile results: ', results);
 
-            if(results.rows.length > 0) {
-                //user exists so now we can
-                //update profile
-                console.log('HANDLER: user exists so now we are going to update');
-                var userProfile = setUserProfile(req);
-                var userData = setUserData(req);
+        delCachedSignatures().then(() => {
+            //does this person exist in users_profiles?
+            dbQuery.getProfileId([req.session.user.id]).then((results) => {
+                console.log('HANDLER updateProfile results: ', results);
 
-                let promiseArr = [];
-                promiseArr.push(dbQuery.updateProfile(userProfile));
-                promiseArr.push(dbQuery.updateUser(userData));
+                if(results.rows.length > 0) {
+                    //user exists so now we can
+                    //update profile
+                    console.log('HANDLER: user exists so now we are going to update');
+                    var userProfile = setUserProfile(req);
+                    var userData = setUserData(req);
 
-                return Promise.all(promiseArr).then(() => {
-                    res.redirect('/petition');
-                });
-            } else {
-                //add user_profile
-                addProfile(req, res);
-            }
+                    let promiseArr = [];
+                    promiseArr.push(dbQuery.updateProfile(userProfile));
+                    promiseArr.push(dbQuery.updateUser(userData));
 
-
+                    return Promise.all(promiseArr).then(() => {
+                        res.redirect('/petition');
+                    });
+                } else {
+                    //add user_profile
+                    addProfile(req, res);
+                }
+            });
         }).catch(e => {
             console.error(e.stack);
             res.redirect('/profile/edit');
@@ -245,6 +239,18 @@ function handle(query, req, res) {
 
         });
     }
+}
+
+function delCachedSignatures(){
+    return new Promise((resolve, reject) => {
+        client.del('signers', (err, data) => {
+            if(err){
+                reject(err);
+            } else {
+                resolve(data);
+            }
+        });
+    });
 }
 
 function renderProfile(req, res) {
