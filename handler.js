@@ -10,7 +10,18 @@ client.on('error', (err) => {
     console.log(err);
 });
 
-
+function pmGetCache(key){
+    return new Promise((resolve, reject) => {
+        client.get(key, function(err, data){
+            if (err) {
+                reject(err);
+            } else {
+                console.log('HANDLER getSigners about to resolve: ', data);
+                resolve(data);
+            }
+        });
+    });
+}
 function handle(query, req, res) {
 
     /**
@@ -19,16 +30,7 @@ function handle(query, req, res) {
     **/
     if(query == 'getSigners') {
         //here we are going to check redis first and if jonks is there, we're going to send that back.
-        return new Promise((resolve, reject) => {
-            client.get('signers', function(err, data){
-                if (err) {
-                    reject(err);
-                } else {
-                    console.log('HANDLER getSigners about to resolve: ', data);
-                    resolve(data);
-                }
-            });
-        }).then((data) => {
+        pmGetCache('signers').then((data) => {
             if(data) {
                 console.log(data);
                 var results = JSON.parse(data);
@@ -170,6 +172,7 @@ function handle(query, req, res) {
 
         }).catch(e => {
             console.error(e.stack);
+
             res.render('login', { 'error' : true, csrfToken: req.csrfToken() });
         });
     }
