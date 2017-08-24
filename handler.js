@@ -84,6 +84,16 @@ function handle(query, req, res) {
             console.log('HANDLER: result of addSig: ', result);
             req.session.user.sigId = result.rows[0].id;
             return res.redirect('/petition/signed');
+        }).then(()=>{
+            return new Promise((resolve, reject) => {
+                client.del('signers', (err, data) => {
+                    if(err){
+                        reject(err);
+                    } else {
+                        resolve(data);
+                    }
+                });
+            });
         }).catch(e => {
             console.error(e.stack);
             res.render('petition', { 'error' : true,
