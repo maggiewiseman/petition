@@ -92,7 +92,7 @@ function handle(query, req, res) {
         dbQuery.addSignature(validParams).then((result) => {
             console.log('HANDLER: result of addSig: ', result);
             req.session.user.sigId = result.rows[0].id;
-            return delCachedSignatures();
+            return delCachedSignatures('signers');
         }).then(()=>{
             res.redirect('/petition/signed');
 
@@ -134,42 +134,59 @@ function handle(query, req, res) {
 
     var userInfo;
     if(query == 'login') {
+
         //put email into an array b/c that's how the query needs it
         let email = [req.body.email];
+        //let loginCacheKey = 'login_attempts_' + JSON.stringify(email);
+        //let lockedCacheKey = 'locked_out_' + JSON.stringify(email);
+        let loginCacheKey = 'login_attempts_';
+        let lockedCacheKey = 'locked_out_' ;
+        console.log('loginCacheKey', loginCacheKey);
+        console.log('lockedCacheKey', lockedCacheKey);
+        return pmGetCache(lockedCacheKey).then((lockedOutInfo)=>{
+            if(!lockedOutInfo) {
+                dbQuery.getUserInfo(email).then((returnedUserInfo)=>{
+                    //show me stuff that came back
+                    //console.log('HANDLER login returnedUserINfo ', returnedUserInfo);
 
-        //dbQuery to get password, first_name and last_name and id from users table using e-mail
-        dbQuery.getUserInfo(email).then((returnedUserInfo)=>{
-            //show me stuff that came back
-            //console.log('HANDLER login returnedUserINfo ', returnedUserInfo);
+                    if(returnedUserInfo.rowCount == 0) {
+                        console.error('User does not exist');
+                        throw new Error ('User does not exist');
+                    }
 
-            if(returnedUserInfo.rowCount == 0) {
-                console.error('User does not exist');
-                throw new Error ('User does not exist');
+                    userInfo = returnedUserInfo.rows[0];
+
+                    console.log('HANDLER: login: userInfo:', userInfo);
+                    console.log('HANDLER: login: password', userInfo.password);
+                    //check password
+
+                    return help.checkPassword(req.body.password, userInfo.password);
+                });
+            } else {
+                lockedOutInfo = JSON.parse(lockedOutInfo);
+                lockedOutInfo.timer = lockedOutInfo.timer * 2;
+                return pmSetCache(lockedCacheKey, JSON.stringify(lockedOutInfo), lockedOutInfo.timer).then(()=>{
+                    throw new Error(`Account is locked. You will need to wait ${lockedOutInfo.timer} seconds`);
+                });
+
             }
-
-            userInfo = returnedUserInfo.rows[0];
-
-            console.log('HANDLER: login: userInfo:', userInfo);
-            console.log('HANDLER: login: password', userInfo.password);
-            //check password
-            return help.checkPassword(req.body.password, userInfo.password);
-
         }).then((validPass)=>{
+
             if(!validPass) {
                 console.log('HANDLER login: invalid password');
-                return pmGetCache('login_attempts').then((numLoggedIn) => {
+                return pmGetCache(loginCacheKey).then((numLoggedIn) => {
                     if(!numLoggedIn) {
                         console.log('HANDLER login: first failed attempt');
                         //this is their first failed login or the timer ran out
                         //set a new cache
-                        return pmSetCache('login_attempts', 1, 60);
+                        return pmSetCache(loginCacheKey, 1, 60);
                     } else {
                         console.log('HANDLER login: numLoggedIn before increment: ', numLoggedIn);
                         //they have logged in before!
                         numLoggedIn = parseInt(numLoggedIn, 10);
                         numLoggedIn++;
                         let time = 60;
-                        return pmSetCache('login_attempts', numLoggedIn, time).then(()=>{
+                        return pmSetCache(loginCacheKey, numLoggedIn, time).then(()=>{
                             console.log('HANDLER login: numloggedIn incremented, reset cache');
                             return numLoggedIn;
                         });
@@ -183,8 +200,7 @@ function handle(query, req, res) {
                         let lockOutInfo = {
                             timer: 90
                         };
-
-                        return pmSetCache('lockedOut', true, lockOutInfo.timer).then(()=> {
+                        return pmSetCache(lockedCacheKey, JSON.stringify(lockOutInfo), lockOutInfo.timer).then(()=> {
                             throw new Error('Too many attempts to login. Your account is locked.');
                         });
                     } else {
@@ -194,23 +210,32 @@ function handle(query, req, res) {
                 });
             }
         }).then(()=>{
-            return pmGetCache('lockedOut').then((lockedOut) => {
-                console.log('HANDLER login: checking lockout');
-                if(!lockedOut){
-                    console.log('HANDLER login: locked out is nil');
-                    req.session.user = {
-                        id: userInfo.id,
-                        first_name: userInfo.first_name,
-                        last_name: userInfo.last_name
-                    };
-                    console.log('HANDLER: set req.session.user info');
-                    //then using user id see if they have a signature.
-                    return dbQuery.getSigId([userInfo.id]);
-                } else {
-                    console.log('HANDLER login: user lockedOut');
-                    throw new Error('Too many attempts to login. Your account is locked.');
-                }
-            });
+            return pmGetCache(lockedCacheKey);
+        }).then((lockedOutInfo) => {
+            console.log('HANDLER login: checking lockout');
+            if(!lockedOutInfo){
+                console.log('HANDLER login: locked out is nil');
+                req.session.user = {
+                    id: userInfo.id,
+                    first_name: userInfo.first_name,
+                    last_name: userInfo.last_name
+                };
+                console.log('HANDLER: set req.session.user info');
+                return delCachedSignatures(loginCacheKey);
+
+            } else {
+                lockedOutInfo = JSON.parse(lockedOutInfo);
+                console.log('LOCKED OUT INFO: ', lockedOutInfo);
+                lockedOutInfo.timer = lockedOutInfo.timer * 2;
+
+                console.log('HANDLER login: user lockedOut. Time to wait: ', lockedOutInfo.timer);
+                return pmSetCache(lockedCacheKey, true, lockedOutInfo.timer).then(()=> {
+                    throw new Error(`Account is locked. You will need to wait ${lockedOutInfo.timer} seconds`);
+                });
+            }
+        }).then(()=>{
+            //then using user id see if they have a signature.
+            return dbQuery.getSigId([userInfo.id]);
         }).then((results)=>{
             if(results.rowCount > 0) {
                 console.log('HANDLER: login session id added');
@@ -292,9 +317,9 @@ function handle(query, req, res) {
     }
 }
 
-function delCachedSignatures(){
+function delCachedSignatures(key){
     return new Promise((resolve, reject) => {
-        client.del('signers', (err, data) => {
+        client.del(key, (err, data) => {
             if(err){
                 reject(err);
             } else {
