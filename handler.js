@@ -156,8 +156,24 @@ function handle(query, req, res) {
 
         }).then((validPass)=>{
             if(!validPass) {
+                //when they do it incorrectly thsi error will trigger.
+                //I should check to see how many login attempts they have made.
+                //if they have made none, then I will start a counter and
+                //send an appropriate error message to the console.
+                //if they have made more than 3, then I will tell them the time they must wait
+                // pmGetCache('login_attempts').then((numLoggedIn) => {
+                //     if(numLoggedIn){
+                //         numLoggedIn +=1;
+                //         if(numLoggedIn > 2) {
+                //             res.render('login', { 'error' : true, csrfToken: req.csrfToken(), 'numAttempts' : numLoggedIn });
+                //         }
+                //         pmSetCache('login_attempts', )
+                //     }
+                // })
+                // pmSetCache('')
                 console.log('HANDLER: password was invalid');
-                res.render('login', { 'error' : true, csrfToken: req.csrfToken() });
+                throw new Error('Password invalid');
+                //return res.render('login', { 'error' : true, csrfToken: req.csrfToken() });
             }
 
             //with their first name and last name and id and add to session.user.
@@ -179,8 +195,7 @@ function handle(query, req, res) {
 
         }).catch(e => {
             console.error(e.stack);
-
-            res.render('login', { 'error' : true, csrfToken: req.csrfToken() });
+            res.render('login', { 'errorMsg' : e.message, csrfToken: req.csrfToken() });
         });
     }
 
