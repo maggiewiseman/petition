@@ -20,31 +20,36 @@ function handle(query, req, res) {
     if(query == 'getSigners') {
         //here we are going to check redis first and if jonks is there, we're going to send that back.
         return new Promise((resolve, reject) => {
-            client.get('city', function(err, data){
+            client.get('signers', function(err, data){
                 if (err) {
                     reject(err);
                 } else {
-                    // if(data){
-                    //     console.log('HANDLER data: ', data);
-                    // } else {
-                    //     console.log('data is null');
-                    // }
+                    console.log('HANDLER getSigners about to resolve: ', data);
                     resolve(data);
                 }
             });
         }).then((data) => {
             if(data) {
-                console.log('Handler data: ', data);
+                res.render('signatures', {results: JSON.parse(data), nav: nav});
             } else {
+                //there's no signature data stored, need to query db
                 console.log('data is null');
+                return dbQuery.getSigners().then((result) => {
+                    res.render('signatures', {results: result, nav: nav});
+                    return result;
+                });
             }
-            console.log('HANDLER then data: ', data);
-            return dbQuery.getSigners().then((result) => {
-                res.render('signatures', {results: result, nav: nav});
+        }).then((result)=> {
+            return new Promise((resolve, reject) => {
+                client.setex('signers', 60*24*14, JSON.stringify(result), (err,data) => {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve(data);
+                    }
+                });
             });
         }).catch(e => console.error(e.stack));
-
-
     }
 
     if(query == 'signersByCity') {
