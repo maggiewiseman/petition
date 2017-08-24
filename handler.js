@@ -30,25 +30,28 @@ function handle(query, req, res) {
             });
         }).then((data) => {
             if(data) {
-                res.render('signatures', {results: JSON.parse(data), nav: nav});
+                console.log(data);
+                var results = JSON.parse(data);
+                res.render('signatures', {results: results, nav: nav});
             } else {
                 //there's no signature data stored, need to query db
                 console.log('data is null');
                 return dbQuery.getSigners().then((result) => {
                     res.render('signatures', {results: result, nav: nav});
-                    return result;
+
+                    return new Promise((resolve, reject) => {
+                        var time = 14*24*60;
+                        client.set('signers', JSON.stringify(result), 'EX', time, (err,data) => {
+                            if (err) {
+                                reject(err);
+                            } else {
+                                resolve(data);
+                            }
+                        });
+                    });
+
                 });
             }
-        }).then((result)=> {
-            return new Promise((resolve, reject) => {
-                client.setex('signers', 60*24*14, JSON.stringify(result), (err,data) => {
-                    if (err) {
-                        reject(err);
-                    } else {
-                        resolve(data);
-                    }
-                });
-            });
         }).catch(e => console.error(e.stack));
     }
 
