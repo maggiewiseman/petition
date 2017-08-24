@@ -24,20 +24,27 @@ function handle(query, req, res) {
                 if (err) {
                     reject(err);
                 } else {
-                    if(data){
-                        console.log('HANDLER data: ', data);
-                    } else {
-                        console.log('data is null');
-                    }
+                    // if(data){
+                    //     console.log('HANDLER data: ', data);
+                    // } else {
+                    //     console.log('data is null');
+                    // }
                     resolve(data);
                 }
             });
         }).then((data) => {
+            if(data) {
+                console.log('Handler data: ', data);
+            } else {
+                console.log('data is null');
+            }
             console.log('HANDLER then data: ', data);
             return dbQuery.getSigners().then((result) => {
                 res.render('signatures', {results: result, nav: nav});
             });
         }).catch(e => console.error(e.stack));
+
+
     }
 
     if(query == 'signersByCity') {
