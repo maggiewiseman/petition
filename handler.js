@@ -137,15 +137,15 @@ function handle(query, req, res) {
 
         //put email into an array b/c that's how the query needs it
         let email = [req.body.email];
-        //let loginCacheKey = 'login_attempts_' + JSON.stringify(email);
-        //let lockedCacheKey = 'locked_out_' + JSON.stringify(email);
-        let loginCacheKey = 'login_attempts_';
-        let lockedCacheKey = 'locked_out_' ;
+        let loginCacheKey = 'login_attempts_' + JSON.stringify(email);
+        let lockedCacheKey = 'locked_out_' + JSON.stringify(email);
+        // let loginCacheKey = 'login_attempts_';
+        // let lockedCacheKey = 'locked_out_' ;
         console.log('loginCacheKey', loginCacheKey);
         console.log('lockedCacheKey', lockedCacheKey);
         return pmGetCache(lockedCacheKey).then((lockedOutInfo)=>{
             if(!lockedOutInfo) {
-                dbQuery.getUserInfo(email).then((returnedUserInfo)=>{
+                return dbQuery.getUserInfo(email).then((returnedUserInfo)=>{
                     //show me stuff that came back
                     //console.log('HANDLER login returnedUserINfo ', returnedUserInfo);
 
