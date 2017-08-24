@@ -11,6 +11,7 @@ client.on('error', (err) => {
 });
 
 function pmGetCache(key){
+    console.log('HANDLER pmGetCache.');
     return new Promise((resolve, reject) => {
         client.get(key, function(err, data){
             if (err) {
@@ -22,6 +23,22 @@ function pmGetCache(key){
         });
     });
 }
+
+function pmSetCache(key, value, time) {
+    console.log('HANDLER pmSetCache.');
+    return new Promise((resolve, reject) => {
+
+        client.set(key, value, 'EX', time, (err,data) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(data);
+            }
+        });
+    });
+}
+
+
 function handle(query, req, res) {
 
     /**
@@ -39,18 +56,8 @@ function handle(query, req, res) {
                 //there's no signature data stored, need to query db
                 console.log('data is null');
                 return dbQuery.getSigners().then((result) => {
-
-                    return new Promise((resolve, reject) => {
-                        console.log('promise is working');
-                        var time = 14*24*60;
-                        client.set('signers', JSON.stringify(result), 'EX', time, (err,data) => {
-                            if (err) {
-                                reject(err);
-                            } else {
-                                resolve(data);
-                            }
-                        });
-                    }).then(()=>{
+                    var time = 14*24*60;
+                    pmSetCache('signers', JSON.stringify(result), time).then(()=>{
                         res.render('signatures', {results: result, nav: nav});
                     });
                 });
