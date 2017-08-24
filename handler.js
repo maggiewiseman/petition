@@ -3,6 +3,13 @@ const help = require('./helpers');
 const redis = require('redis');
 const nav = { loggedin: true };
 
+var host = process.env.DATABASE_REDIS || 'localhost';
+const client =redis.createClient({ host: host, port: process.env.PORT || 6379});
+
+client.on('error', (err) => {
+    console.log(err);
+});
+
 
 function handle(query, req, res) {
 
@@ -12,6 +19,17 @@ function handle(query, req, res) {
     **/
     if(query == 'getSigners') {
         //here we are going to check redis first and if jonks is there, we're going to send that back.
+        client.get('city', function(err, data){
+            if (err) {
+                return console.log(err);
+            }
+            if(data){
+                console.log('HANDLER data: ', data);
+            } else {
+                console.log('data is null');
+            }
+        });
+
 
         dbQuery.getSigners().then((result) => {
             res.render('signatures', {results: result, nav: nav});
