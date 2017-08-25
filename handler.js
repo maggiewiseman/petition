@@ -3,8 +3,8 @@ const help = require('./helpers');
 const redis = require('redis');
 const nav = { loggedin: true };
 
-var host = process.env.REDIS_URL || 'localhost';
-const client =redis.createClient(process.env.REDIS_URL || {host:host, port: 6379});
+//var host = process.env.REDIS_URL || 'localhost';
+const client =redis.createClient(process.env.REDIS_URL || {host:'localhost', port: 6379});
 
 client.on('error', (err) => {
     console.log(err);
@@ -106,12 +106,20 @@ function handle(query, req, res) {
 
     if(query == 'registerUser') {
 
-        var validUserInfo = setUserData(req);
-        //need to hash the signature
-        help.hashPassword(validUserInfo[3]).then((hash) =>{
-            validUserInfo[3] = hash;
-            //then we need to query the database to add signature with an array that has first_name, last_name, email, hashed password
-            return dbQuery.addUser(validUserInfo);
+        return new Promise((resolve, reject) => {
+            if(!(req.body.first_name && req.body.last_name && req.body.email && req.body.password)){
+                reject('All fields are required when registering');
+            } else {
+                resolve();
+            }
+        }).then(() => {
+            var validUserInfo = setUserData(req);
+            //need to hash the signature
+            return help.hashPassword(validUserInfo[3]).then((hash) =>{
+                validUserInfo[3] = hash;
+                //then we need to query the database to add signature with an array that has first_name, last_name, email, hashed password
+                return dbQuery.addUser(validUserInfo);
+            });
         }).then((id) =>{
             //when that comes back successfully with an id, we need to set session.user with first name, last name and user_id
             console.log('HANDLER: add user id', id);
@@ -126,7 +134,7 @@ function handle(query, req, res) {
             res.redirect('/profile');
         }).catch(e => {
             console.error(e.stack);
-            res.render('register', { 'error' : true, csrfToken: req.csrfToken()});
+            res.render('register', { 'errorMsg' : e.message, csrfToken: req.csrfToken()});
         });
 
     }
@@ -341,6 +349,7 @@ function renderProfile(req, res) {
 }
 
 function setUserData(req) {
+
     var userInfo = [req.body['first_name'], req.body['last_name'], req.body['email']];
     if(req.body.password) {
         userInfo.push(req.body['password']);
