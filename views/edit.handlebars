@@ -3,7 +3,7 @@
         {{/if}}</p>
     <form method="post" action="/profile/edit">
         <input type="hidden" name="_csrf" value="{{csrfToken}}">
-        <div class="inputs profile">
+        <div class="inputs profile edit">
             <label for="first_name">First Name</label>
             <input type="text" name="first_name" placeholder="First Name" value="{{this.first_name}}">
             <label for="last_name">Last Name</label>

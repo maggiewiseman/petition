@@ -205,7 +205,8 @@ canvas {
 /*** thanks/signatures styles ***/
 div.thanks,
 div.signees,
-div.login {
+div.login,
+div.profile {
 	margin-top: 20px;
     text-align: center;
 }
@@ -246,14 +247,20 @@ div.inputs {
 	min-width: 300px;
 }
 
-.register p {
+.register p,
+.inputs p{
     display: inline-block;
     margin: 6px;
 }
 
-.register button {
+.register button,
+.profile button {
     width: 200px;
     margin: 0 auto;
+}
+
+.edit button {
+    margin-top: 10px;
 }
 
 label {
