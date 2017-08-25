@@ -1,11 +1,15 @@
 const express = require('express');
-//const cookieParser = require('cookie-parser');
 const cookieSession = require('cookie-session');
 const hb = require('express-handlebars');
 
-var secret = process.env.SESSION_SECRET || require('./secrets.json').sessionSecret;
-const app = express();
+var session = require('express-session'),
+    Store = require('connect-redis')(session);
 
+
+var secret = process.env.SESSION_SECRET || require('./secrets.json').sessionSecret;
+var host = process.env.DATABASE_REDIS || 'localhost';
+
+const app = express();
 
 //cofigure handlebars
 app.engine('handlebars', hb());
@@ -19,14 +23,25 @@ app.use(require('body-parser').urlencoded({
     extended: false
 }));
 
+
+app.use(session({
+    store: new Store({
+        ttl: 3600,
+        host: host,
+        port: process.env.PORT || 6379
+    }),
+    resave: false,
+    saveUninitialized: true,
+    secret: secret
+}));
 //app.use(cookieParser);
 
-app.use(cookieSession({
-    name: 'session',
-    secret: secret,
-    // Cookie Options
-    maxAge: 14 * 24 * 60 * 60 * 1000 // 24 hours
-}));
+// app.use(cookieSession({
+//     name: 'session',
+//     secret: secret,
+//     // Cookie Options
+//     maxAge: 14 * 24 * 60 * 60 * 1000 // 24 hours
+// }));
 
 
 app.use(require('./routers/routes'));

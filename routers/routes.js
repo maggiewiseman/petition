@@ -84,7 +84,13 @@ router.route('/profile/edit')
     });
 
 router.get('/logout', (req, res) => {
-    req.session = null;
+    req.session.destroy((err) => {
+        if(err) {
+            console.error(err);
+        } else {
+            console.log('ROUTER: user logged out');
+        }
+    });
     res.redirect('/login');
 });
 
