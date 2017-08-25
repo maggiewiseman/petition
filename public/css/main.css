@@ -36,7 +36,7 @@ nav li {
 }
 
 nav a {
-	font-family: Arial, sans-serif;
+	font-family: 'Poppins', sans-serif;
 	color: #EFF1F3;
 	text-decoration: none;
 	font-size: 14px;
@@ -51,15 +51,15 @@ nav a:hover {
 
 h1 {
 	font-family: 'Lobster Two', cursive;
-    font-size: 100px;
-    margin: 30px 0 10px 0;
+    font-size: 140px;
+    margin: 100px 0 10px 0;
     line-height: 40px;
 	color: white;
 }
 
 h2 {
     padding: 30px 0;
-    font-family: Arial, sans-serif;
+    font-family: 'Poppins', sans-serif;
 	color: #363636;
 	font-size: 40px;
 	text-align: center;
@@ -69,7 +69,7 @@ h2 {
 p,
 label,
 a {
-    font-family: 'Bungee', Arial, sans-serif;
+    font-family: 'Poppins', sans-serif;
 }
 
 
@@ -185,7 +185,7 @@ button:hover {
 
 /*** petition page styles ***/
 .petition h2 {
-	margin-top: 40vh;
+	margin-top: 27vh;
 	color: #363636;
 }
 
