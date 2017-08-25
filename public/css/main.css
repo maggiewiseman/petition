@@ -266,4 +266,6 @@ div.inputs {
 label {
 	width: 100px;
     text-align: left;
+    padding-right: 20px;
+    float: left;
 }
