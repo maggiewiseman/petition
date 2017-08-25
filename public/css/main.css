@@ -280,18 +280,13 @@ div.edit {
     width: 100%;
     height: auto;
 }
-
-/*.edit .side-img {
-    width: 45%;
-    display: inline-block;
- }
-
-.edit .form-div {
-    width: 45%;
-    display: inline-block;
-}*/
+.edit input {
+    margin: 5px 0;
+}
 
 .edit button {
+    text-align: center;
+    margin: 0 auto;
     margin-top: 10px;
 }
 
