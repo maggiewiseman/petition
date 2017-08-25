@@ -237,8 +237,26 @@ figure.signature > img {
 
 div.inputs {
 	width: 80%;
-	margin: 0 auto;
 	display: flex;
 	flex-flow: column nowrap;
-	align-items: center;
+	justify-content: flex-start;
+}
+
+.register {
+	min-width: 300px;
+}
+
+.register p {
+    display: inline-block;
+    margin: 6px;
+}
+
+.register button {
+    width: 200px;
+    margin: 0 auto;
+}
+
+label {
+	width: 100px;
+    text-align: left;
 }

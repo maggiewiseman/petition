@@ -16,15 +16,20 @@
     <form method="post" action="/register">
         <input type="hidden" name="_csrf" value="{{csrfToken}}">
         <div class="inputs register">
-            <label for="first_name">First Name</label>
-            <input type="text" name="first_name" placeholder="First Name">
-            <label for="last_name">Last Name</label>
-            <input type="text" name="last_name" placeholder="Last Name">
-            <label for="email">e-mail</label>
-            <input type="text" name="email" placeholder="e-mail">
-            <label for="password">Password</label>
-            <input type="password" name="password" placeholder="password">
-            <button type="submit" name="button">SUBMIT</button>
+                <div>
+                <p>
+                <input type="text" name="first_name" placeholder="First Name"></p>
+                <p>
+                <input type="text" name="last_name" placeholder="Last Name"></p>
+            </div>
+            <div>
+                <p>
+                <input type="text" name="email" placeholder="e-mail"></p>
+                <p>
+                <input type="password" name="password" placeholder="password"></p>
+
+            </div>
+            <p><button type="submit" name="button">Join!</button></p>
         </div>
     </form>
 
