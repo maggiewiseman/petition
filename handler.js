@@ -4,7 +4,7 @@ const redis = require('redis');
 const nav = { loggedin: true };
 
 var host = process.env.REDIS_URL || 'localhost';
-const client =redis.createClient({ host: host, port: 6379});
+const client =redis.createClient(process.env.REDIS_URL || {host:host, port: 6379});
 
 client.on('error', (err) => {
     console.log(err);
