@@ -31,7 +31,7 @@ app.use(session({
         host: host,
         port: 6379
     }),
-    resave: false,
+    resave: true,
     saveUninitialized: true,
     secret: secret
 }));
