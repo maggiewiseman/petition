@@ -49,6 +49,11 @@ nav a:hover {
 	color: #363636;
 }
 
+.logo {
+    font-family: 'Lobster Two', cursive;
+    font-size: 18px;
+    color: white;
+}
 h1 {
 	font-family: 'Lobster Two', cursive;
     font-size: 140px;
@@ -285,12 +290,8 @@ div.edit {
 }
 
 .edit button {
-    text-align: center;
-    margin: 0 auto;
     margin-top: 10px;
 }
-
-
 
 label {
     width: 150px;
