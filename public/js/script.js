@@ -2,6 +2,7 @@
 (function() {
     const canvas = document.getElementById('canv');
     if(canvas) {
+        carousel();
         const ctx = canvas.getContext('2d');
         const clearBtn = document.getElementById('clear-btn');
 
@@ -70,6 +71,38 @@
         const hiddenInput = document.getElementById('signature');
         hiddenInput.value = sigData;
         console.log(sigData);
+    }
+
+    function carousel() {
+        var current = 0;
+        var next = 1;
+        var timer;
+
+        var images = document.getElementsByClassName('chicken');
+
+        function moveImages() {
+
+            images[current].classList.remove('onscreen');
+            images[current].classList.add('exit');
+            images[next].classList.add('onscreen');
+
+            current = next;
+            next = current + 1;
+            if(next >= images.length) {
+                next = 0;
+            }
+        }
+
+        document.addEventListener('transitionend', function(){
+            for(var i = 0; i < images.length; i++){
+                if(images[i].classList.contains('exit')){
+                    images[i].classList.remove('exit');
+                    timer = setTimeout(moveImages, 5000);
+                }
+            }
+        });
+
+        timer = setTimeout(moveImages, 5000);
     }
 
     var deleteLink = document.getElementById('delete');
