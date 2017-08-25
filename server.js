@@ -28,7 +28,7 @@ app.use(session({
     store: new Store({
         ttl: 3600, //time to live
         host: host,
-        port: process.env.PORT || 6379
+        port: 6379
     }),
     resave: false,
     saveUninitialized: true,
