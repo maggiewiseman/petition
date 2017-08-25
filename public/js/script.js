@@ -78,7 +78,7 @@
         var next = 1;
         var timer;
 
-        var images = document.getElementsByClassName('chicken');
+        var images = document.getElementsByClassName('food');
 
         function moveImages() {
 

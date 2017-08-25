@@ -1,12 +1,7 @@
-@font-face{
-	font-family: 'Bungee Shade';
-	src: url('/fonts/Bungee-Shade-webfont.woff') format('woff')
-}
-
-@font-face{
-	font-family: 'Bungee';
-	src: url('/fonts/Bungee-Regular-webfont.woff') format('woff')
-}
+/*
+font-family: 'Lobster Two', cursive;
+font-family: 'Poppins', sans-serif;
+*/
 
 * {
     box-sizing: border-box;
@@ -14,15 +9,16 @@
 }
 
 body {
-    background: #D8B4A0;
-    color: #223843;
+	background: #fff;
+    color: #363636;
 }
 
 nav {
 	width: 100%;
 	height: 40px;
 	display: fixed;
-	background: #223843;
+	background: #F26419;
+	border-bottom: 1px #363636 solid;
 }
 
 nav ul {
@@ -53,34 +49,21 @@ nav a:hover {
 	color: #D8B4A0;
 }
 
-
-.wrapper {
-    display: flex;
-    flex-flow: column nowrap;
-    align-items: center;
-    width: 80%;
-    margin: 0 auto;
-}
-
 h1 {
-    font-family: 'Bungee Shade';
-    font-size: 40px;
+	font-family: 'Lobster Two', cursive;
+    font-size: 100px;
     margin: 30px 0 10px 0;
     line-height: 40px;
+	color: white;
 }
 
 h2 {
     padding: 30px 0;
     font-family: Arial, sans-serif;
-}
+	color: #363636;
+	font-size: 40px;
+	text-align: center;
 
-h2.petition {
-	margin: 40px 0 0 0;
-
-}
-div.thanks,
-div.signees {
-    text-align: center;
 }
 
 p,
@@ -96,7 +79,7 @@ p {
 
 a,
 a:visited {
-    color: #D77A61;
+    color: #1f8e0b;
     margin: 0 auto;
     font-size: 20px;
 }
@@ -110,29 +93,45 @@ li {
 	font-size: 20px;
 }
 
+.wrapper {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    width: 80%;
+    margin: 0 auto;
+}
+
 figure,
 #carousel {
-	position: relative;
+	top: 0px;
+	left: 0px;
     margin: 0 auto;
     text-align: center;
 	height: 50vh;
+	width: 100%;
 }
 
-.chicken {
+#carousel {
+	position: absolute;
+}
+
+.food {
     position: absolute;
     left: 0;
+	top: 40px;
 	width: 100%;
     height: 50vh;
     transform: translateX(100%);
+	z-index: -1;
 }
 
-.chicken.onscreen {
+.food.onscreen {
     transform: translateX(0);
     transition-property: Transform;
     transition-duration: 1s;
 }
 
-.chicken.exit {
+.food.exit {
     transform: translateX(-100%);
     transition-property: Transform;
     transition-duration: 1s;
@@ -140,20 +139,19 @@ figure,
 
 img {
     height: 100%;
-    border: 10px #223843 solid;
-    border-radius: 10px;
+    border: 4px #363636 solid;
+
 }
 
-.chicken img {
+.food img {
     width: 100%;
 	height: 100%;
     object-fit: cover;
-	border-radius: none;
+	border-radius: 0px;
 	border: none;
 	box-shadow: 2px 2px 2px 2px rgba(0,0,0,0.5);
 
 }
-
 
 form {
     text-align: center;
@@ -162,32 +160,19 @@ form {
 	align-items: center;
 }
 
-#peition-form-div {
-	text-align: center;
-	display: flex;
-	flex-flow: column nowrap;
-	align-items: center;
-}
-
 input {
     font-size: 14px;
     padding: 4px;
-    border: 2px #223843 solid;
+    border: 2px #1f8e0b solid;
     border-radius: 10px;
     width: 200px;
-}
-
-canvas {
-    border: 2px #223843 solid;
-    border-radius: 10px;
-
 }
 
 button {
     font-size: 18px;
 	margin-top: 20px;
     padding: 4px 10px;
-    background-color: #223843;
+    background-color: #1f8e0b;
     color: #EFF1F3;
     border-radius: 10px;
     cursor: pointer;
@@ -196,6 +181,30 @@ button {
 
 button:hover {
     background: #D77A61;
+}
+
+/*** petition page styles ***/
+.petition h2 {
+	margin-top: 40vh;
+	color: #363636;
+}
+
+#petition-form-div {
+	text-align: center;
+	display: flex;
+	flex-flow: column nowrap;
+	align-items: center;
+}
+
+canvas {
+    border: 2px #1f8e0b solid;
+    border-radius: 10px;
+}
+
+/*** thanks/signatures styles ***/
+div.thanks,
+div.signees {
+    text-align: center;
 }
 
 /*** THANK YOU PAGE STYLES ***/
@@ -207,9 +216,8 @@ button:hover {
 figure.signature {
 	width: 300px;
 	height: 100px;
-	border: 2px #223843 solid;
+	border: 2px #1f8e0b solid;
     border-radius: 10px;
-
 }
 
 figure.signature > img {
@@ -219,11 +227,10 @@ figure.signature > img {
 .error {
 	font-family: 'Bungee', Arial, sans-serif;
 	font-size: 18px;
-	color: #D77A61;
+	color: #1f8e0b;
 	text-align: center;
 	margin-top: 30px;
 }
-
 
 div.inputs {
 	width: 80%;

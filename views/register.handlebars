@@ -1,20 +1,30 @@
-<figure><img src="/img/chicken-mcnugget.jpg" alt="fried chicken head"></figure>
-        <p class="error">{{#if errorMsg}}
-        There was a problem with your form. {{errorMsg}} Please try again. 
-        {{/if}}</p>
-    <form method="post" action="/register">
-        <input type="hidden" name="_csrf" value="{{csrfToken}}">
-        <div class="inputs register">
-            <label for="first_name">First Name</label>
-            <input type="text" name="first_name" placeholder="First Name">
-            <label for="last_name">Last Name</label>
-            <input type="text" name="last_name" placeholder="Last Name">
-            <label for="email">e-mail</label>
-            <input type="text" name="email" placeholder="e-mail">
-            <label for="password">Password</label>
-            <input type="password" name="password" placeholder="password">
-            <button type="submit" name="button">SUBMIT</button>
-        </div>
-    </form>
+<div id="carousel">
+    <div class="food onscreen"><img src="/img/anne-preble-198119.jpg" alt="market"></div>
+    <div class="food"><img src="/img/luke-syres-223433.jpg" alt="chickens"></div>
+    <div class="food"><img src="/img/arnaldo-aldana-203173.jpg" alt="cabbages"></div>
+    <div class="food"><img src="/img/keit-trysh-295253.jpg" alt="root veggies"></div>
+    <div class="food"><img src="/img/peter-feghali-110596.jpg" alt="greens"></div>
+    <div class="food"><img src="/img/rachael-gorjestani-154909.jpg" alt="eggs"></div>
+</div>
+
+<h2>Support Local Farms</h2>
+<p class="error">{{#if errorMsg}}
+    There was a problem with your form. {{errorMsg}} Please try again.
+    {{/if}}
+</p>
+<form method="post" action="/register">
+    <input type="hidden" name="_csrf" value="{{csrfToken}}">
+    <div class="inputs register">
+        <label for="first_name">First Name</label>
+        <input type="text" name="first_name" placeholder="First Name">
+        <label for="last_name">Last Name</label>
+        <input type="text" name="last_name" placeholder="Last Name">
+        <label for="email">e-mail</label>
+        <input type="text" name="email" placeholder="e-mail">
+        <label for="password">Password</label>
+        <input type="password" name="password" placeholder="password">
+        <button type="submit" name="button">SUBMIT</button>
+    </div>
+</form>
 
 <p class="redirect-p">If you are already a member, please <a href="/login">login</a></p>

@@ -1,30 +1,34 @@
+<div class="petition">
+    <h2>Pledge to eat local for 1 month! <br>
+     Who's in?</h2>
     <div id="carousel">
-        <div class="chicken onscreen"><img src="/img/mcnuggets-raw.jpg" alt="raw meat for chicken nuggets"></div>
-        <div class="chicken"><img src="/img/the-real-pink-slime.jpg" alt="the real pink slime"></div>
-        <div class="chicken"><img src="/img/nugget-chicken.jpg" alt="nuggets acting like chickens"></div>
-        <div class="chicken"><img src="/img/PinkSlime.gif" alt="pinkSlime facts"></div>
+        <div class="food onscreen"><img src="/img/anne-preble-198119.jpg" alt="market"></div>
+        <div class="food"><img src="/img/luke-syres-223433.jpg" alt="chickens"></div>
+        <div class="food"><img src="/img/arnaldo-aldana-203173.jpg" alt="cabbages"></div>
+        <div class="food"><img src="/img/keit-trysh-295253.jpg" alt="root veggies"></div>
+        <div class="food"><img src="/img/peter-feghali-110596.jpg" alt="greens"></div>
+        <div class="food"><img src="/img/rachael-gorjestani-154909.jpg" alt="eggs"></div>
     </div>
+    <div class="under-carousel">
+        <p class="error">{{#if error}}
+        There was a problem with your form. Please try again.
+        {{/if}}</p>
+        <div id="peition-form-div">
+            <form method="post" action="/petition">
+                <input type="hidden" name="_csrf" value="{{csrfToken}}">
+                <div class="sig-div">
+                    <label for="signature">Signature</label>
+                    <input type="hidden" name="signature" id="signature">
 
-    <h2 class="petition">Let's get real chicken in chicken nuggets! Who's with me?</h2>
-
-    <p class="error">{{#if error}}
-    There was a problem with your form. Please try again.
-    {{/if}}</p>
-    <div id="peition-form-div">
-    <form method="post" action="/petition">
-        <input type="hidden" name="_csrf" value="{{csrfToken}}">
-        <div class="sig-div">
-            <label for="signature">Signature</label>
-            <input type="hidden" name="signature" id="signature">
-
-            <section>
-                <canvas id="canv" width="300" height="100"></canvas>
-            </section>
+                    <section>
+                        <canvas id="canv" width="300" height="100"></canvas>
+                    </section>
+                </div>
+                <div id="button-div">
+                    <button id="clear-btn" type="button" name="clear">CLEAR</button>
+                    <button type="submit" name="button">SUBMIT</button>
+                </div>
+            </form>
         </div>
-        <div id="button-div">
-            <button id="clear-btn" type="button" name="clear">CLEAR</button>
-            <button type="submit" name="button">SUBMIT</button>
-        </div>
-    </form>
-
+    </div>
 </div>
