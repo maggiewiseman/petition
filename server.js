@@ -24,14 +24,22 @@ app.use(require('body-parser').urlencoded({
     extended: false
 }));
 
+var sessionStore = {};
+if(process.env.REDIS_URL){
+    sessionStore = {
+        url: process.env.REDIS_URL
+    };
+} else {
+    sessionStore = {
+        ttl: 3600, //time to live
+        host: host,
+        port: 6379
+    };
+}
+
 app.use(cookieParser());
 app.use(session({
-    store: new Store({
-        url: process.env.REDIS_URL
-        // ttl: 3600, //time to live
-        // host: host,
-        // port: 6379
-    }),
+    store: new Store(sessionStore),
     resave: true,
     saveUninitialized: true,
     secret: secret
