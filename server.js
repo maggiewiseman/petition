@@ -1,5 +1,6 @@
 const express = require('express');
 //const cookieSession = require('cookie-session');
+const cookieParser = require('cookie-parser');
 const hb = require('express-handlebars');
 
 var session = require('express-session'),
@@ -34,7 +35,7 @@ app.use(session({
     saveUninitialized: true,
     secret: secret
 }));
-//app.use(cookieParser);
+app.use(cookieParser);
 
 // app.use(cookieSession({
 //     name: 'session',
