@@ -203,7 +203,8 @@ canvas {
 
 /*** thanks/signatures styles ***/
 div.thanks,
-div.signees {
+div.signees,
+div.login {
 	margin-top: 20px;
     text-align: center;
 }

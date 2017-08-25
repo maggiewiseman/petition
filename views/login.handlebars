@@ -1,18 +1,20 @@
-<figure>
-    <img src="/img/anne-preble-198119.jpg" alt="farm pic">
-</figure>
-<p class="error">{{#if errorMsg}}
-        There was a problem with your form. Please try again. {{errorMsg}}
-        {{/if}}
-</p>
-<form method="post" action="/login">
-    <input type="hidden" name="_csrf" value="{{csrfToken}}">
-    <div class="inputs login">
-        <label for="email">E-mail</label>
-        <input type="text" name="email" placeholder="e-mail">
-        <label for="password">Password</label>
-        <input type="password" name="password" placeholder="password">
-    </div>
-        <button type="submit" name="button">SUBMIT</button>
-</form>
-<p class="redirect-p"><a href="/register">Register as new user</a></p>
+<div class="login">
+    <figure>
+        <img src="/img/anne-preble-198119.jpg" alt="farm pic">
+    </figure>
+    <p class="error">{{#if errorMsg}}
+            There was a problem with your form. Please try again. {{errorMsg}}
+            {{/if}}
+    </p>
+    <form method="post" action="/login">
+        <input type="hidden" name="_csrf" value="{{csrfToken}}">
+        <div class="inputs login">
+            <label for="email">E-mail</label>
+            <input type="text" name="email" placeholder="e-mail">
+            <label for="password">Password</label>
+            <input type="password" name="password" placeholder="password">
+        </div>
+            <button type="submit" name="button">SUBMIT</button>
+    </form>
+    <p class="redirect-p"><a href="/register">Register as new user</a></p>
+</div>
