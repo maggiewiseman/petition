@@ -18,7 +18,7 @@ nav {
 	height: 40px;
 	display: fixed;
 	background: #F26419;
-	border-bottom: 1px #363636 solid;
+	border-bottom: 1px #C75215 solid;
 }
 
 nav ul {
@@ -46,7 +46,7 @@ nav a:visited {
 }
 
 nav a:hover {
-	color: #D8B4A0;
+	color: #363636;
 }
 
 h1 {
@@ -58,10 +58,10 @@ h1 {
 }
 
 h2 {
-    padding: 30px 0;
+    padding: 30px 0 0 0;
     font-family: 'Poppins', sans-serif;
 	color: #363636;
-	font-size: 40px;
+	font-: ;size: 30px;
 	text-align: center;
 
 }
@@ -180,7 +180,7 @@ button {
 }
 
 button:hover {
-    background: #D77A61;
+    background: #F26419;
 }
 
 /*** petition page styles ***/
@@ -204,6 +204,7 @@ canvas {
 /*** thanks/signatures styles ***/
 div.thanks,
 div.signees {
+	margin-top: 20px;
     text-align: center;
 }
 
