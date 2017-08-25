@@ -7,7 +7,7 @@ var session = require('express-session'),
 
 
 var secret = process.env.SESSION_SECRET || require('./secrets.json').sessionSecret;
-var host = process.env.DATABASE_REDIS || 'localhost';
+var host = process.env.REDIS_URL || 'localhost';
 
 const app = express();
 
@@ -30,7 +30,7 @@ app.use(session({
         host: host,
         port: process.env.PORT || 6379
     }),
-    resave: false, 
+    resave: false,
     saveUninitialized: true,
     secret: secret
 }));

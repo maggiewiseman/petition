@@ -3,7 +3,7 @@ const help = require('./helpers');
 const redis = require('redis');
 const nav = { loggedin: true };
 
-var host = process.env.DATABASE_REDIS || 'localhost';
+var host = process.env.REDIS_URL || 'localhost';
 const client =redis.createClient({ host: host, port: process.env.PORT || 6379});
 
 client.on('error', (err) => {
