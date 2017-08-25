@@ -35,7 +35,7 @@ app.use(session({
     saveUninitialized: true,
     secret: secret
 }));
-app.use(cookieParser);
+app.use(cookieParser());
 
 // app.use(cookieSession({
 //     name: 'session',

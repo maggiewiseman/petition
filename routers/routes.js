@@ -3,7 +3,7 @@ const mw = require('./middleware');
 const handler = require('../handler').handle;
 const csrf = require('csurf');
 
-const csrfProtection = csrf();
+const csrfProtection = csrf({ cookie: true });
 const router = express.Router();
 
 
