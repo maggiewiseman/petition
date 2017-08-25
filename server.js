@@ -27,9 +27,10 @@ app.use(require('body-parser').urlencoded({
 app.use(cookieParser());
 app.use(session({
     store: new Store({
-        ttl: 3600, //time to live
-        host: host,
-        port: 6379
+        url: process.env.REDIS_URL
+        // ttl: 3600, //time to live
+        // host: host,
+        // port: 6379
     }),
     resave: true,
     saveUninitialized: true,
