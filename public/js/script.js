@@ -1,8 +1,9 @@
 
 (function() {
     const canvas = document.getElementById('canv');
+    carousel();
     if(canvas) {
-        carousel();
+
         const ctx = canvas.getContext('2d');
         const clearBtn = document.getElementById('clear-btn');
 
