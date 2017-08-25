@@ -24,7 +24,7 @@ app.use(require('body-parser').urlencoded({
     extended: false
 }));
 
-
+app.use(cookieParser());
 app.use(session({
     store: new Store({
         ttl: 3600, //time to live
@@ -35,7 +35,7 @@ app.use(session({
     saveUninitialized: true,
     secret: secret
 }));
-app.use(cookieParser());
+
 
 // app.use(cookieSession({
 //     name: 'session',
