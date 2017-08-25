@@ -133,8 +133,8 @@ function handle(query, req, res) {
             //then route to /petition and petition will do the logic of checking for signature and log in
             res.redirect('/profile');
         }).catch(e => {
-            console.error(e.stack);
-            res.render('register', { 'errorMsg' : e.message, csrfToken: req.csrfToken()});
+            console.error(e);
+            res.render('register', { 'errorMsg' : e, csrfToken: req.csrfToken()});
         });
 
     }
