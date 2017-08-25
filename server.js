@@ -1,5 +1,5 @@
 const express = require('express');
-const cookieSession = require('cookie-session');
+//const cookieSession = require('cookie-session');
 const hb = require('express-handlebars');
 
 var session = require('express-session'),
@@ -26,11 +26,11 @@ app.use(require('body-parser').urlencoded({
 
 app.use(session({
     store: new Store({
-        ttl: 3600,
+        ttl: 3600, //time to live
         host: host,
         port: process.env.PORT || 6379
     }),
-    resave: false,
+    resave: false, 
     saveUninitialized: true,
     secret: secret
 }));

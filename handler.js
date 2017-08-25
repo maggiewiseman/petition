@@ -81,7 +81,6 @@ function handle(query, req, res) {
         promiseArr.push(dbQuery.getSignature(req.session.user.sigId));
 
         return Promise.all(promiseArr).then((results)=> {
-            console.log('HANDLER result: ', results[1].signature);
             res.render('thankyou', {count: results[0], 'imgsrc': results[1][0].signature, csrfToken: req.csrfToken(), nav: nav});
         }).catch(e => console.error(e.stack));
     }
@@ -92,7 +91,7 @@ function handle(query, req, res) {
         dbQuery.addSignature(validParams).then((result) => {
             console.log('HANDLER: result of addSig: ', result);
             req.session.user.sigId = result.rows[0].id;
-            return delCachedSignatures('signers');
+            return delCached('signers');
         }).then(()=>{
             res.redirect('/petition/signed');
 
@@ -221,7 +220,7 @@ function handle(query, req, res) {
                     last_name: userInfo.last_name
                 };
                 console.log('HANDLER: set req.session.user info');
-                return delCachedSignatures(loginCacheKey);
+                return delCached(loginCacheKey);
 
             } else {
                 lockedOutInfo = JSON.parse(lockedOutInfo);
@@ -274,7 +273,7 @@ function handle(query, req, res) {
 
     if(query == "updateProfile") {
 
-        delCachedSignatures().then(() => {
+        delCached('signers').then(() => {
             //does this person exist in users_profiles?
             dbQuery.getProfileId([req.session.user.id]).then((results) => {
                 console.log('HANDLER updateProfile results: ', results);
@@ -317,7 +316,7 @@ function handle(query, req, res) {
     }
 }
 
-function delCachedSignatures(key){
+function delCached(key){
     return new Promise((resolve, reject) => {
         client.del(key, (err, data) => {
             if(err){

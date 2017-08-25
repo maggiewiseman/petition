@@ -64,7 +64,7 @@ router.route('/profile')
     .all(csrfProtection)
 
     .get(mw.loggedInCheck, mw.profileCheck, (req, res) => {
-        res.render('profile', {csrfToken: req.csrfToken()});
+        res.render('profile', {csrfToken: req.csrfToken(), nav : { loggedin: true } });
     })
 
     .post((req, res) => {

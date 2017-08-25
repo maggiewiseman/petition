@@ -126,6 +126,13 @@ form {
 	align-items: center;
 }
 
+#peition-form-div {
+	text-align: center;
+	display: flex;
+	flex-flow: column nowrap;
+	align-items: center;
+}
+
 input {
     font-size: 14px;
     padding: 4px;

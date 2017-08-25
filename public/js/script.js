@@ -3,6 +3,12 @@
     const canvas = document.getElementById('canv');
     if(canvas) {
         const ctx = canvas.getContext('2d');
+        const clearBtn = document.getElementById('clear-btn');
+
+
+        clearBtn.addEventListener('click', function(){
+            ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+        });
 
         (function signature() {
 

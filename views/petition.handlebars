@@ -3,7 +3,7 @@
     <p class="error">{{#if error}}
     There was a problem with your form. Please try again.
     {{/if}}</p>
-
+    <div id="peition-form-div">
     <form method="post" action="/petition">
         <input type="hidden" name="_csrf" value="{{csrfToken}}">
         <div class="sig-div">
@@ -14,5 +14,10 @@
                 <canvas id="canv" width="300" height="100"></canvas>
             </section>
         </div>
-        <button type="submit" name="button">SUBMIT</button>
+        <div id="button-div">
+            <button id="clear-btn" type="button" name="clear">CLEAR</button>
+            <button type="submit" name="button">SUBMIT</button>
+        </div>
     </form>
+
+</div>
