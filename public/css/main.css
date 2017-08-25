@@ -55,6 +55,7 @@ h1 {
     margin: 100px 0 10px 0;
     line-height: 40px;
 	color: white;
+	text-align: center;
 }
 
 h2 {
@@ -211,7 +212,7 @@ div.login {
 
 /*** THANK YOU PAGE STYLES ***/
 .emphasis {
-    font-family: 'Bungee', Arial, sans-serif;
+    font-family: 'Lobster Two', cursive;
     font-size: 30px;
 }
 
@@ -240,8 +241,4 @@ div.inputs {
 	display: flex;
 	flex-flow: column nowrap;
 	align-items: center;
-}
-
-.signees a {
-	font-family: Arial, sans-serif;
 }
