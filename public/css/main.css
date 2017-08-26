@@ -60,7 +60,7 @@ nav a:hover {
 }
 h1 {
 	font-family: 'Lobster Two', cursive;
-    font-size: 140px;
+    font-size: 9em;
     margin: 100px 0 10px 0;
     line-height: 40px;
 	color: white;
@@ -314,4 +314,18 @@ label {
     text-align: left;
     padding-right: 20px;
     float: left;
+}
+
+@media (max-width: 507px) {
+    body {
+        font-size: 10px;
+    }
+
+    h1 {
+        font-size: 7em;
+    }
+
+    .logo {
+        display: none;
+    }
 }
