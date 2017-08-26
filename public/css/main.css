@@ -32,6 +32,8 @@ nav ul {
 
 nav ul.home {
 	float: left;
+    -webkit-margin-before: 0;
+    -webkit-padding-start: 0;
 }
 
 nav li {
