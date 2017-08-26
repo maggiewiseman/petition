@@ -3,7 +3,10 @@
     const canvas = document.getElementById('canv');
     const hiddenInput = document.getElementById('signature');
 
-    carousel();
+    if(document.getElementById('carousel')) {
+        carousel();
+    }
+
     if(canvas) {
 
         const ctx = canvas.getContext('2d');
