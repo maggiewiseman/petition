@@ -1,6 +1,8 @@
 
 (function() {
     const canvas = document.getElementById('canv');
+    const hiddenInput = document.getElementById('signature');
+
     carousel();
     if(canvas) {
 
@@ -10,6 +12,7 @@
 
         clearBtn.addEventListener('click', function(){
             ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+            hiddenInput.value = "";
         });
 
         (function signature() {
@@ -69,9 +72,7 @@
 
     function saveSig() {
         var sigData = canvas.toDataURL();
-        const hiddenInput = document.getElementById('signature');
         hiddenInput.value = sigData;
-        console.log(sigData);
     }
 
     function carousel() {

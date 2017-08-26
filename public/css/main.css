@@ -233,6 +233,10 @@ figure.signature > img {
 	width: 100%;
 }
 
+.thanks figure.signature {
+    border: none;
+}
+
 .error {
 	font-family: 'Bungee', Arial, sans-serif;
 	font-size: 18px;
