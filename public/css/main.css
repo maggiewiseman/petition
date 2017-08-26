@@ -233,6 +233,11 @@ figure.top-fig > img {
     border: 2px #F26419 solid;
 }
 
+figure.top-fig-green > img {
+    box-shadow: 2px 2px 4px 0px rgba(0,0,0,0.5);
+    border: 2px #1f8e0b solid;
+}
+
 figure.signature {
 	width: 300px;
 	height: 100px;
@@ -267,7 +272,7 @@ div.inputs {
 /*** register styles ***/
 .above-fold,
 .below-fold {
-    height: 100vh;
+    min-height: 100vh;
 }
 
 .register {
