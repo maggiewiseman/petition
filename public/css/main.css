@@ -21,6 +21,10 @@ nav {
 	border-bottom: 1px #C75215 solid;
 }
 
+.fa {
+    color: white;
+    padding-right: 5px;
+}
 nav ul {
 	list-style: none;
 	float: right;
@@ -37,12 +41,12 @@ nav li {
 
 nav a {
 	font-family: 'Poppins', sans-serif;
-	color: #EFF1F3;
+	color: white;
 	text-decoration: none;
 	font-size: 14px;
 }
 nav a:visited {
-	color:  #EFF1F3;
+	color:  white;
 }
 
 nav a:hover {
