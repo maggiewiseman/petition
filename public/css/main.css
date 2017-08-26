@@ -64,7 +64,7 @@ h1 {
 }
 
 h2 {
-    padding: 30px 0 0 0;
+    margin-top: 20px;
     font-family: 'Poppins', sans-serif;
 	color: #363636;
 	font-: ;size: 30px;
@@ -191,7 +191,8 @@ button:hover {
 
 /*** petition page styles ***/
 .petition h2 {
-	margin-top: 27vh;
+	margin-top: 31vh;
+    margin-bottom: 10px;
 	color: #363636;
 }
 
@@ -216,10 +217,14 @@ div.profile {
     text-align: center;
 }
 
-/*** THANK YOU PAGE STYLES ***/
 .emphasis {
     font-family: 'Lobster Two', cursive;
     font-size: 30px;
+}
+
+figure.top-fig > img {
+    box-shadow: 2px 2px 4px 0px rgba(0,0,0,0.5);
+    border: 2px #F26419 solid;
 }
 
 figure.signature {
@@ -227,6 +232,8 @@ figure.signature {
 	height: 100px;
 	border: 2px #1f8e0b solid;
     border-radius: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 figure.signature > img {
@@ -293,7 +300,8 @@ div.edit {
     margin: 5px 0;
 }
 
-.edit button {
+.edit button,
+.petition button {
     margin-top: 10px;
 }
 

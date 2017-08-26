@@ -10,14 +10,15 @@
         <div class="food"><img src="/img/rachael-gorjestani-154909.jpg" alt="eggs"></div>
     </div>
     <div class="under-carousel">
-        <p class="error">{{#if error}}
-        There was a problem with your form. Please try again.
-        {{/if}}</p>
         <div id="peition-form-div">
             <form method="post" action="/petition">
                 <input type="hidden" name="_csrf" value="{{csrfToken}}">
                 <div class="sig-div">
+            
                     <p>Become part of the locavor movement! <br>Sign below to show your commitment to local eating: </p>
+                    <p class="error">{{#if error}}
+                    There was a problem with your form. Please try again.
+                    {{/if}}</p>
                     <input type="hidden" name="signature" id="signature">
 
                     <section>

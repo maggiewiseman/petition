@@ -268,22 +268,22 @@ function handle(query, req, res) {
     }
 
     if(query == 'getProfile') {
-        renderProfile(req, res).then((results)=>{
+        return renderProfile(req, res).then((results)=>{
             console.log('HANDLER userInfo to send to edit profile template: ', results);
             results.csrfToken = req.csrfToken();
             results.nav = nav;
             res.render('edit', results);
         }).catch(e => {
             console.error(e.stack);
-            res.render('profile/edit', { 'error' : true, csrfToken: req.csrfToken() });
+            res.render('edit', { 'errorMsg' : e, csrfToken: req.csrfToken() });
         });
     }
 
     if(query == "updateProfile") {
 
-        delCached('signers').then(() => {
+        return delCached('signers').then(() => {
             //does this person exist in users_profiles?
-            dbQuery.getProfileId([req.session.user.id]).then((results) => {
+            return dbQuery.getProfileId([req.session.user.id]).then((results) => {
                 console.log('HANDLER updateProfile results: ', results);
 
                 if(results.rows.length > 0) {
@@ -302,13 +302,12 @@ function handle(query, req, res) {
                     });
                 } else {
                     //add user_profile
-                    addProfile(req, res);
+                    return addProfile(req, res);
                 }
             });
         }).catch(e => {
             console.error(e.stack);
             res.redirect('/profile/edit');
-
         });
     }
 
