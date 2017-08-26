@@ -265,6 +265,10 @@ div.inputs {
 	justify-content: flex-start;
 }
 /*** register styles ***/
+.above-fold,
+.below-fold {
+    height: 100vh;
+}
 
 .register {
 	min-width: 300px;
@@ -302,14 +306,40 @@ div.inputs {
     width: 200px;
     margin: 0 auto;
 }
+#more > div.side-img > figure {
+    margin-top: 30px;
+    width: 100%;
+}
 
-div.edit {
+#more > div.side-img > figure img {
+    width: 100%;
+}
+
+#more li {
+    margin: 10px 0;
+}
+
+#more h2 {
+    font-family: 'Lobster Two', cursive;
+    font-size: 30px;
+    padding-top: 20px;
+    color:#F26419;
+}
+
+.more-p {
+    margin-top: 40px;
+}
+
+
+div.edit,
+div#more {
     margin-top: 20px;
     display: grid;
     grid-template-columns: 50% 50%;
     grid-template-rows: 1fr;
 
 }
+
 
 
 .edit figure {
@@ -338,6 +368,11 @@ label {
     text-align: left;
     padding-right: 20px;
     float: left;
+}
+
+footer {
+    height: 50px;
+    background-color: #1f8e0b;
 }
 
 @media (max-width: 507px) {
