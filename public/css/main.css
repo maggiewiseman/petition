@@ -193,7 +193,11 @@ button:hover {
     background: #F26419;
 }
 
+/*** register styles ***/
+
+
 /*** petition page styles ***/
+.register h2,
 .petition h2 {
 	margin-top: 31vh;
     margin-bottom: 10px;
@@ -211,6 +215,7 @@ canvas {
     border: 2px #1f8e0b solid;
     border-radius: 10px;
 }
+
 
 /*** thanks/signatures styles ***/
 div.thanks,
@@ -265,6 +270,7 @@ div.inputs {
 
 .register {
 	min-width: 300px;
+    text-align: center;
 }
 
 .register p,
