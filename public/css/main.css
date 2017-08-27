@@ -297,6 +297,7 @@ div.inputs {
 .above-fold,
 .below-fold {
     min-height: 100vh;
+    text-align: center;
 }
 
 .register {
@@ -309,12 +310,23 @@ div.inputs {
     margin-bottom: 10px;
 }
 
-.register #more-btn {
-    background: #F26419;
+.btn {
     border: transparent solid 2px;
-    color: white;
     padding: 5px 10px;
     text-decoration: none;
+    
+}
+
+.register #more-btn {
+    background: #F26419;
+    color: white;
+    margin: 0 auto;
+}
+
+#signup-btn {
+    background: #1f8e0b;
+    color: white;
+
 }
 
 .register #more-btn:hover {
@@ -322,6 +334,13 @@ div.inputs {
     border:  #F26419 solid 2px;
     color:  #F26419;
     z-index: 2000;
+}
+
+#signup-btn:hover {
+    background: white;
+    border:  #1f8e0b solid 2px;
+    color:  #1f8e0b;
+
 }
 
 .register p,
@@ -356,7 +375,7 @@ div.inputs {
 }
 
 .more-p {
-    margin-top: 40px;
+    margin: 40px;
 }
 
 
