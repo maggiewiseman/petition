@@ -154,7 +154,20 @@ img {
 
 }
 
+.food .img-txt {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    color: white;
+}
+
 .food img {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
 	height: 100%;
     object-fit: cover;
@@ -164,6 +177,7 @@ img {
     z-index: -1;
 
 }
+
 
 form {
     text-align: center;
@@ -196,9 +210,18 @@ button:hover {
 }
 
 /*** petition page styles ***/
-.petition h2 {
-	margin-top: 19vh;
+.petition .carousel-text {
+    color: white;
+    width: 80%;
+    margin: 0 auto;
+    margin-top: 5vh;
+    font-size: 1.7em;
+    font-family: 'Poppins', sans-serif;
+}
+.under-carousel h2 {
+	margin-top: 51vh;
     margin-bottom: 10px;
+
 
 }
 
