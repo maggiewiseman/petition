@@ -62,7 +62,7 @@ nav a:hover {
 h1 {
 	font-family: 'Lobster Two', cursive;
     font-size: 9em;
-    margin: 50px 0 10px 0;
+    margin: 50px 0 40px 0;
 	color: white;
 	text-align: center;
 }
@@ -71,7 +71,6 @@ h2 {
     margin-top: 20px;
     font-family: 'Poppins', sans-serif;
 	color: #363636;
-	font-: ;size: 30px;
 	text-align: center;
 
 }
@@ -306,15 +305,15 @@ div.inputs {
 }
 
 .register h2 {
-    margin-top: 14vh;
-    margin-bottom: 10px;
+    margin-top: 23vh;
+    margin-bottom: 1.25em;
 }
 
 .btn {
     border: transparent solid 2px;
     padding: 5px 10px;
     text-decoration: none;
-    
+
 }
 
 .register #more-btn {
@@ -423,12 +422,17 @@ footer {
 
 @media (max-width: 507px) {
     body {
-        font-size: 16px;
+        font-size: 12px;
     }
 
+
+
     h1 {
-        font-size: 7em;
+        font-size: 6em;
     }
+
+    .register h2 {
+        margin-top: 15vh;
 
     .logo {
         display: none;
