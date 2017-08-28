@@ -110,7 +110,10 @@ li {
     margin: 0 auto;
 }
 
-figure,
+figure {
+    height: 30vh;
+}
+
 #carousel {
 	top: 40px;
 	left: 0px;
