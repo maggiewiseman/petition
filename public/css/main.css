@@ -425,14 +425,20 @@ footer {
         font-size: 12px;
     }
 
-
+    div.edit,
+    div#more {
+        margin-top: 20px;
+        display: grid;
+        grid-template-columns: 50% 50%;
+        grid-template-rows: 1fr;
+    }
 
     h1 {
         font-size: 6em;
     }
 
     .register h2 {
-        margin-top: 15vh;
+        margin-top: 18vh;
 
     .logo {
         display: none;
