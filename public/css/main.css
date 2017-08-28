@@ -440,7 +440,8 @@ footer {
     }
 
     .register h2 {
-        margin-top: 18vh;
+        /*margin-top: 18vh;*/
+    }
 
     .logo {
         display: none;
