@@ -416,6 +416,7 @@ label {
 }
 
 footer {
+    margin-top: 1em;
     height: 50px;
     background-color: #1f8e0b;
 }
@@ -427,9 +428,7 @@ footer {
 
     div.edit,
     div#more {
-        margin-top: 20px;
-        display: grid;
-        grid-template-columns: 50% 50%;
+        grid-template-columns: 1fr;
         grid-template-rows: 1fr;
     }
 
