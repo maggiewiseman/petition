@@ -1,5 +1,7 @@
 # Petition
 ![Landing page. Shows registration](https://raw.githubusercontent.com/maggiewiseman/petition/master/assets/screenshots/LandingPage.png =400x)
+
+<img src="https://raw.githubusercontent.com/maggiewiseman/petition/master/assets/screenshots/LandingPage.png" width="400px" />
 ## Summary
 An app that collects signatures for a pledge.  Front end uses HTML5 Canvas and Handlebars.  Back end uses Express.js on Node.js with Redis for caching and Postgresql for persistent storage.
 
