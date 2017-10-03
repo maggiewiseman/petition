@@ -26,4 +26,4 @@ An app that collects signatures for a pledge.  Front end uses HTML5 Canvas and H
 
 * Cookie-session data is stored in Redis. Once a user has signed the petition a flag is set in the session data that allows them to see all the signers.
 
-<img src="https://raw.githubusercontent.com/maggiewiseman/petition/master/assets/screenshots/Signature.png" width="400px" alt="Shows a list of signers with links to their websites and cities." width="400px" alt="Shows page with list of all signers" />
+<img src="https://raw.githubusercontent.com/maggiewiseman/petition/master/assets/screenshots/allSigs.png" width="400px" alt="Shows a list of signers with links to their websites and cities." width="400px" alt="Shows page with list of all signers" />
