@@ -2,6 +2,9 @@ const express = require('express');
 //const cookieSession = require('cookie-session');
 const cookieParser = require('cookie-parser');
 const hb = require('express-handlebars');
+const compression = require('compression');
+
+
 
 var session = require('express-session'),
     Store = require('connect-redis')(session);
@@ -12,14 +15,14 @@ var host = process.env.REDIS_URL || 'localhost';
 
 const app = express();
 
+
 //cofigure handlebars
 app.engine('handlebars', hb());
 app.set('view engine', 'handlebars');
 app.engine('handlebars', hb({defaultLayout: 'main'}));
 
-
+app.use(compression());
 app.use(express.static(__dirname + '/public'));
-
 app.use(require('body-parser').urlencoded({
     extended: false
 }));
