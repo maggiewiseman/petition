@@ -1,7 +1,6 @@
 # Petition
-![Landing page. Shows registration](https://raw.githubusercontent.com/maggiewiseman/petition/master/assets/screenshots/LandingPage.png =400x)
+<a href="https://eat-local-pledge.herokuapp.com/login" taret="_blank">See it live</a>
 
-<img src="https://raw.githubusercontent.com/maggiewiseman/petition/master/assets/screenshots/LandingPage.png" width="400px" />
 ## Summary
 An app that collects signatures for a pledge.  Front end uses HTML5 Canvas and Handlebars.  Back end uses Express.js on Node.js with Redis for caching and Postgresql for persistent storage.
 
@@ -17,7 +16,14 @@ An app that collects signatures for a pledge.  Front end uses HTML5 Canvas and H
 ## Features
 
 * Login and registration. Passwords hashed using the bcrypt library. 
+<img src="https://raw.githubusercontent.com/maggiewiseman/petition/master/assets/screenshots/LandingPage.png" width="400px" alt="Landing page. Shows registration" />
+
 * Users can save and edit basic profile information
+<img src="https://raw.githubusercontent.com/maggiewiseman/petition/master/assets/screenshots/profileUpdate.png" width="400px" alt="Shows that a user can update profile information." width="400px" alt="Landing page. Shows registration" />
+
 * Users can use a a mouse or their finger (on mobile) to sign the pledge.  They have the option to delete their signature at any time. 
-* Cookie-session data is stored in Redis
-*
+<img src="https://raw.githubusercontent.com/maggiewiseman/petition/master/assets/screenshots/Signature.png" width="400px" alt="Shows a signature on the signature page" />
+
+* Cookie-session data is stored in Redis. Once a user has signed the petition a flag is set in the session data that allows them to see all the signers.
+
+<img src="https://raw.githubusercontent.com/maggiewiseman/petition/master/assets/screenshots/Signature.png" width="400px" alt="Shows a list of signers with links to their websites and cities." width="400px" alt="Shows page with list of all signers" />
